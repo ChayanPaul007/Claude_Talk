@@ -1,0 +1,1063 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Working With Claude</title>
+<meta name="description" content="A 3-hour interactive session on using Claude for research, coding and everything in between — November 2026.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500;1,9..144,600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<div id="bg"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div><div class="grid"></div></div>
+<canvas id="net"></canvas>
+<div id="viewport"><div id="deck">
+
+<!-- ================================================================== -->
+<!-- 00 · OPENING                                                        -->
+<!-- ================================================================== -->
+
+<section class="slide title" data-module="00 · Opening">
+  
+  <div class="kicker">3-hour interactive session · November 2026</div>
+  <h1>Working with Claude, <span class="accent">beyond the chat box</span></h1>
+  <p class="sub">Research, code and everything in between: skills, connectors, plugins, agents, and the habits that make them useful.</p>
+  <div class="meta"><span>Chayan Kumar Paul</span><span>·</span><span>IISc Bengaluru</span><span>·</span><span>press <kbd>?</kbd> for controls</span></div>
+  <aside class="notes">
+    <p>Welcome. Set expectations: this is not "what is an LLM". Everyone here has used Claude. The aim is to move from <b>asking questions</b> to <b>building a working setup</b>.</p>
+    <p>Ask everyone to open claude.ai in a browser and, if they have it, a terminal with Claude Code.</p>
+  </aside>
+</section>
+
+<section class="slide" data-module="00 · Opening">
+  <div class="kicker">How today works</div>
+  <h2>Three hours, nine stops, lots of <span class="hl">hands-on</span></h2>
+  <div class="cols c3 mt">
+    <div class="card edge-gold"><span class="icon">⌨️</span><h3>"Try it" slides</h3><p>Yellow-striped slides are exercises with a timer. Prompts have a <b>copy</b> button.</p></div>
+    <div class="card edge-teal"><span class="icon">🧭</span><h3>Bring your own work</h3><p>A paper you're reading, a repo you're stuck on, a dataset. Real tasks teach more than toy ones.</p></div>
+    <div class="card edge-accent"><span class="icon">🙋</span><h3>Interrupt me</h3><p>Questions mid-slide are welcome. We have buffer time in every module.</p></div>
+  </div>
+  <div class="card mt-l" style="padding:22px 30px">
+    <p><b>Have open:</b> claude.ai (web or desktop) · a terminal with <code>claude</code> installed (optional for part 1) · one PDF of a paper from your field</p>
+  </div>
+  <aside class="notes"><p>Check how many people have Claude Code installed. If many don't, point them to the install slide in Module 3 now so it installs during Module 2.</p>
+  <pre style="font-size:13px">curl -fsSL https://claude.ai/install.sh | bash</pre></aside>
+</section>
+
+<section class="slide" id="agenda" data-module="00 · Opening">
+  <div class="kicker">Agenda</div>
+  <h2>The map</h2>
+  <div class="agenda">
+    <a href="#" data-goto="m0" data-plan="00|Opening · 0:00–0:15"><span class="n">00</span>Opening &amp; what's new<span class="t">0:00 · 15m</span></a>
+    <a href="#" data-goto="m1" data-plan="01|Mental model · 0:15–0:30"><span class="n">01</span>The mental model<span class="t">0:15 · 15m</span></a>
+    <a href="#" data-goto="m2" data-plan="02|Claude apps for research · 0:30–1:10"><span class="n">02</span>Claude apps for research<span class="t">0:30 · 40m</span></a>
+    <a href="#" data-goto="brk" data-plan="☕|Break · 1:10–1:20"><span class="n">☕</span>Break<span class="t">1:10 · 10m</span></a>
+    <a href="#" data-goto="m3" data-plan="03|Claude Code · 1:20–2:10"><span class="n">03</span>Claude Code, in depth<span class="t">1:20 · 50m</span></a>
+    <a href="#" data-goto="m4" data-plan="04|Chrome &amp; Office · 2:10–2:20"><span class="n">04</span>Claude in Chrome &amp; Office<span class="t">2:10 · 10m</span></a>
+    <a href="#" data-goto="m5" data-plan="05|API &amp; Agent SDK · 2:20–2:40"><span class="n">05</span>API &amp; Agent SDK<span class="t">2:20 · 20m</span></a>
+    <a href="#" data-goto="m6" data-plan="06|Research integrity · 2:40–2:48"><span class="n">06</span>Research integrity<span class="t">2:40 · 8m</span></a>
+    <a href="#" data-goto="m7" data-plan="07|Capstone &amp; Q&amp;A · 2:48–3:00"><span class="n">07</span>Capstone &amp; Q&amp;A<span class="t">2:48 · 12m</span></a>
+  </div>
+  <aside class="notes"><p>Each row is clickable. Press <b>O</b> anytime for the slide overview, <b>P</b> to open the presenter window on your laptop screen.</p></aside>
+</section>
+
+<section class="slide" id="m0" data-module="00 · Opening">
+  <div class="kicker">Quick poll · hands up</div>
+  <h2>Where are you today?</h2>
+  <div class="cols c4 mt">
+    <div class="card f zoom"><span class="icon">💬</span><h3>Chat daily</h3><p>Use claude.ai for writing, questions, explaining.</p></div>
+    <div class="card f zoom"><span class="icon">📁</span><h3>Projects &amp; skills</h3><p>Have set up a Project, a custom skill or a connector.</p></div>
+    <div class="card f zoom"><span class="icon">⌨️</span><h3>Claude Code</h3><p>Let Claude edit files and run commands in a repo.</p></div>
+    <div class="card f zoom"><span class="icon">🔧</span><h3>API / SDK</h3><p>Called Claude from your own script or pipeline.</p></div>
+  </div>
+  <p class="lead mt-l f">Most people stop at column 1. Today is about <span class="hl">columns 2–4</span>.</p>
+  <aside class="notes"><p>Reveal each card and ask for hands. Note the ratio. If the room is heavy on col 1, slow down in Module 1; if heavy on col 3, you can move faster through Module 3 basics.</p></aside>
+</section>
+
+<section class="slide" data-module="00 · Opening">
+  <div class="kicker">The last six months</div>
+  <h2>A lot moved since mid-2026</h2>
+  <div class="timeline">
+    <div class="tl-item f"><div class="d">30 Jun</div><h3>Claude Science <span class="tag beta">beta</span></h3><p>A research workbench: literature, code, figures, auditable history.</p></div>
+    <div class="tl-item f"><div class="d">Jul – Aug</div><h3>Memory reworked</h3><p>Editable, categorized entries, shared across chat and agent tasks.</p></div>
+    <div class="tl-item f"><div class="d">16 Sep</div><h3>"One Claude"</h3><p>Cowork folded into every chat. Docs, Slides and Design added.</p></div>
+    <div class="tl-item f"><div class="d">22 Sep – 7 Oct</div><h3>Claude 5.5 family</h3><p>Opus 5.5, Sonnet 5.5, Haiku 5.5.</p></div>
+    <div class="tl-item f"><div class="d">25 Sep</div><h3>Plugin directory</h3><p>Public portal to publish skills + connectors as plugins.</p></div>
+    <div class="tl-item f"><div class="d">9 – 12 Nov</div><h3>Fable 5.2 · Meetings</h3><p>New top model; Claude joins calls <span class="tag beta">beta</span>. Code Mode <span class="tag exp">exp</span>.</p></div>
+  </div>
+  <p class="lead mt-l f">If your mental model of Claude is from early 2026, parts of it are already out of date.</p>
+  <aside class="notes">
+    <ul>
+      <li>Claude Science: public beta 30 Jun 2026, Pro/Max/Team/Enterprise, macOS/Linux, can run on an HPC login node.</li>
+      <li>Memory: 10 Jul categorized entries; 25 Aug memory across chat + Cowork, editable Topics, sensitive topics off by default.</li>
+      <li>16 Sep: Cowork stopped being a separate mode; Docs/Slides/Design available from any chat.</li>
+      <li>Fable 5.2 + Mythos 5.2 on 9 Nov (Mythos only for verified orgs). Meetings beta for Team/Enterprise on Google Meet.</li>
+    </ul>
+    <p>Re-check release notes the day before the talk: support.claude.com → Release notes.</p>
+  </aside>
+</section>
+
+<section class="slide" data-module="00 · Opening">
+  <div class="kicker">Models · November 2026</div>
+  <h2>Pick the model for the task, not out of habit</h2>
+  <div class="cols c4">
+    <div class="card edge-green"><h3>Haiku 5.5</h3><p class="small muted">claude-haiku-5-5</p><p class="mt">Fast and cheap. Bulk classification, extraction, tagging 10,000 abstracts.</p></div>
+    <div class="card edge-blue"><h3>Sonnet 5.5</h3><p class="small muted">claude-sonnet-5-5</p><p class="mt">Daily driver. Writing, analysis, most coding. Faster and cheaper than Sonnet 5.</p></div>
+    <div class="card edge-accent"><h3>Opus 5.5</h3><p class="small muted">claude-opus-5-5</p><p class="mt">Hard reasoning and long agentic work. 1M-token context in Claude Code.</p></div>
+    <div class="card edge-gold"><h3>Fable 5.2</h3><p class="small muted">claude-fable-5-2</p><p class="mt">The top tier. Proofs, deep debugging, research design. 1M context.</p></div>
+  </div>
+  <div class="cols mt-l">
+    <div class="card f"><h3>🎚 Effort is a second dial</h3><p>Same model, more or less thinking. Low for edits and lookups; high for math, debugging and planning. In Claude Code: <code>/effort</code>.</p></div>
+    <div class="card f"><h3>💸 Cheapest good-enough wins</h3><p>Prototype with a big model, then check whether a smaller one gives the same answers on 20 examples. Usually it does for routine steps.</p></div>
+  </div>
+  <aside class="notes"><p>Mythos 5.2 exists but only for organizations verified through Anthropic's programs. Not relevant for most of the audience.</p>
+  <p>Sonnet 5.5 numbers (30% faster, up to 30% cheaper per task) are Anthropic-reported.</p></aside>
+</section>
+
+<!-- ================================================================== -->
+<!-- 01 · MENTAL MODEL                                                   -->
+<!-- ================================================================== -->
+
+<section class="slide section" id="m1" data-module="01 · Mental model">
+  <div class="num">01</div>
+  <div class="kicker">Module 01</div>
+  <h1>The mental model</h1>
+  <p class="lead">Every feature we'll see today is one of three things: <b>instructions</b>, <b>access</b>, or <b>delegation</b>.</p>
+  <div class="time">0:15 → 0:30</div>
+</section>
+
+<section class="slide" data-module="01 · Mental model">
+  <div class="kicker">The core idea</div>
+  <h2>Claude only knows what's in its context window</h2>
+  <div class="flow mt">
+    <div class="step f"><span>what you</span><b>Say</b><span>prompt</span></div><div class="arrow f">+</div>
+    <div class="step f"><span>what it</span><b>Knows</b><span>files, memory, project</span></div><div class="arrow f">+</div>
+    <div class="step f"><span>what it</span><b>Can reach</b><span>connectors, tools</span></div><div class="arrow f">+</div>
+    <div class="step f"><span>how it</span><b>Checks</b><span>tests, sources, review</span></div><div class="arrow f">=</div>
+    <div class="step f" style="border-color:var(--accent)"><span>the</span><b class="accent">Result</b><span>quality</span></div>
+  </div>
+  <p class="lead mt-l f">A bad answer is usually a <span class="hl">context problem</span>, not a model problem. Before rewording the prompt, ask: what did it not know?</p>
+  <aside class="notes"><p>Key framing for the whole talk. Every later feature fills one of these boxes: Projects/CLAUDE.md/memory → "knows"; connectors/MCP → "can reach"; hooks/tests/reviewer agents → "checks".</p></aside>
+</section>
+
+<section class="slide" data-module="01 · Mental model">
+  <div class="kicker">The extension stack</div>
+  <h2>Seven layers, from a sentence to a team of agents</h2>
+  <div class="stack">
+    <div class="layer f left" style="--c:var(--ink-3)"><b>Prompt</b><span>What you type right now</span><em>one message</em></div>
+    <div class="layer f left" style="--c:var(--blue)"><b>Project / CLAUDE.md</b><span>Standing instructions + files for one piece of work</span><em>always loaded</em></div>
+    <div class="layer f left" style="--c:var(--teal)"><b>Memory</b><span>Facts Claude learns about you over time; editable</span><em>across chats</em></div>
+    <div class="layer f left" style="--c:var(--green)"><b>Skills</b><span>Playbooks: how to do a task, plus scripts and templates</span><em>loaded on demand</em></div>
+    <div class="layer f left" style="--c:var(--gold)"><b>Connectors (MCP)</b><span>Live access to Drive, GitHub, Gmail, databases, instruments</span><em>tools + data</em></div>
+    <div class="layer f left" style="--c:var(--accent)"><b>Plugins</b><span>A bundle: skills + connectors + agents + hooks, installed in one click</span><em>shareable</em></div>
+    <div class="layer f left" style="--c:var(--rose)"><b>Agents</b><span>Subagents, workflows, scheduled tasks: Claude delegating to Claude</span><em>parallel work</em></div>
+  </div>
+  <aside class="notes"><p>Walk bottom-up. Point out "always loaded" vs "loaded on demand": that's why a giant CLAUDE.md is bad and a skill is good.</p></aside>
+</section>
+
+<section class="slide" data-module="01 · Mental model">
+  <div class="kicker">The most-asked question</div>
+  <h2>Skill vs connector vs plugin</h2>
+  <table class="cmp">
+    <tr><th></th><th>Skill</th><th>Connector (MCP)</th><th>Plugin</th></tr>
+    <tr class="f"><td>Gives Claude…</td><td><b>Know-how</b>: steps, conventions, scripts</td><td><b>Access</b>: tools and live data</td><td><b>A package</b> of both (and more)</td></tr>
+    <tr class="f"><td>Made of</td><td>A folder with <code>SKILL.md</code> + optional files</td><td>An MCP server (local or remote URL)</td><td><code>plugin.json</code> + skills, agents, hooks, MCP</td></tr>
+    <tr class="f"><td>Costs context</td><td>Only a short description until it's used</td><td>Tool definitions (searched on demand)</td><td>Whatever it contains</td></tr>
+    <tr class="f"><td>Example</td><td>"Format figures our lab's way"</td><td>Zotero library, lab LIMS, GitHub</td><td>"Lab toolkit": style skill + DB connector</td></tr>
+    <tr class="f"><td>Works in</td><td>Apps, Claude Code, API</td><td>Apps, Claude Code, API</td><td>Apps, Claude Code, Chrome</td></tr>
+  </table>
+  <p class="lead mt f"><b>Rule of thumb:</b> explained it twice → make a <b>skill</b>. Pasted the same data twice → add a <b>connector</b>. Sharing with your lab → ship a <b>plugin</b>.</p>
+  <aside class="notes"><p>One directory now lists all three (claude.ai/directory). Anthropic opened a submission portal for plugins on 25 Sep 2026.</p></aside>
+</section>
+
+<section class="slide" data-module="01 · Mental model">
+  <div class="kicker">Why skills scale</div>
+  <h2>Progressive disclosure: pay for what you use</h2>
+  <div class="cols w60">
+    <div class="stack">
+      <div class="layer f" style="--c:var(--green);grid-template-columns:150px 1fr"><b>Level 1</b><span><b>name + description</b> sit in context all the time. ~1 line per skill.</span></div>
+      <div class="layer f" style="--c:var(--gold);grid-template-columns:150px 1fr"><b>Level 2</b><span>When a task matches, Claude reads the <b>SKILL.md body</b>.</span></div>
+      <div class="layer f" style="--c:var(--accent);grid-template-columns:150px 1fr"><b>Level 3</b><span>Only if needed: <b>reference files, scripts, templates</b> in the folder.</span></div>
+    </div>
+    <pre class="f">lab-figures/
+├── <span class="k">SKILL.md</span>        <span class="c"># when + how</span>
+├── style.mplstyle  <span class="c"># matplotlib style</span>
+├── palette.json
+└── scripts/
+    └── <span class="n">check_fig.py</span> <span class="c"># run, not read</span></pre>
+  </div>
+  <p class="lead mt-l f">So you can install 50 skills without slowing anything down. <span class="hl">The description is what makes it trigger</span>: write it like a search query.</p>
+  <aside class="notes"><p>Scripts in a skill are executed, not loaded into context, so they're context-cheap and deterministic. Good place for validation code.</p></aside>
+</section>
+
+<!-- ================================================================== -->
+<!-- 02 · CLAUDE APPS FOR RESEARCH                                        -->
+<!-- ================================================================== -->
+
+<section class="slide section" id="m2" data-module="02 · Claude apps for research">
+  <div class="num">02</div>
+  <div class="kicker">Module 02</div>
+  <h1>Claude apps for research</h1>
+  <p class="lead">claude.ai on web, desktop and mobile: Projects, memory, connectors, skills, Artifacts, and Claude Science.</p>
+  <div class="time">0:30 → 1:10</div>
+</section>
+
+<section class="slide" data-module="02 · Claude apps for research">
+  <div class="kicker">Since 16 September 2026</div>
+  <h2>"One Claude": chat and agent are the same place</h2>
+  <div class="cols w60">
+    <div>
+      <p class="lead">Cowork used to be a separate mode. Now any conversation can:</p>
+      <ul class="clean mt">
+        <li class="f">work on files and folders you give it, for many steps</li>
+        <li class="f">keep running a long task in the background and notify you</li>
+        <li class="f">use your connectors and skills without switching modes</li>
+        <li class="f">produce real deliverables: Docs, Slides, Sheets, designs, code</li>
+      </ul>
+    </div>
+    <div class="card edge-accent f"><h3>What this means for you</h3><p>Stop asking for <i>advice</i> on a task. Hand over the <b>task</b>: "here's the folder of 40 PDFs; build the comparison table and flag papers that use the same dataset."</p></div>
+  </div>
+  <aside class="notes"><p>Release notes: Cowork capabilities available from any conversation without choosing a mode; chats, tasks, projects, connectors and skills carry over. Rolled out gradually to Pro and Max on web, desktop and mobile. The "Cowork" name still shows up in help docs and plugin names.</p></aside>
+</section>
+
+<section class="slide" data-module="02 · Claude apps for research">
+  <div class="kicker">Projects</div>
+  <h2>One Project per paper, thesis chapter or grant</h2>
+  <div class="cols">
+    <div>
+      <ul class="clean">
+        <li><b>Knowledge:</b> drafts, key papers, reviewer comments, notation sheet</li>
+        <li><b>Instructions:</b> audience, style, what not to do</li>
+        <li><b>Every chat inside</b> starts with all of it, no re-pasting</li>
+      </ul>
+      <p class="mt muted small">Large projects are searched rather than fully loaded, so it's fine to add many files.</p>
+    </div>
+    <div class="prompt f">You're helping me write a paper on [topic] for [venue].
+Audience: [who reads it].
+Notation: follow notation.md exactly.
+Style: plain, precise, no hype words ("novel", "groundbreaking").
+Never invent citations. If a claim needs one, write [CITE?].
+When you're unsure about the physics/biology, say so and ask me.</div>
+  </div>
+  <aside class="notes"><p>The [CITE?] trick is the single most useful line for researchers: it turns hallucinated references into visible placeholders.</p></aside>
+</section>
+
+<section class="slide" data-module="02 · Claude apps for research">
+  <div class="kicker">Memory</div>
+  <h2>Memory is now a list you can read and edit</h2>
+  <div class="cols c3">
+    <div class="card edge-teal"><h3>Entries, not a summary</h3><p>Since July: separate, categorized items Claude reads and updates. Find them in <b>Settings → Memory</b>.</p></div>
+    <div class="card edge-blue"><h3>Shared across work</h3><p>Since August: the same memory spans chats and agent tasks. Topics are editable.</p></div>
+    <div class="card edge-rose"><h3>Sensitive stays out</h3><p>Health and beliefs are excluded unless you turn on "Include sensitive topics".</p></div>
+  </div>
+  <div class="cols mt-l">
+    <div class="prompt f">Remember: my thesis uses SI units, British spelling, and the symbol κ for thermal conductivity. My advisor prefers short paragraphs.</div>
+    <div class="card f"><h3>Habit</h3><p>Once a month, open the memory list and delete stale entries. Old wrong facts cause odd answers.</p><p class="mt">Use an <b>incognito chat</b> for anything you don't want remembered.</p></div>
+  </div>
+  <aside class="notes"><p>Dates: 10 Jul 2026 (categorized entries), 25 Aug 2026 (memory across chat and Cowork, editable Topics, sensitive-topics setting).</p></aside>
+</section>
+
+<section class="slide" data-module="02 · Claude apps for research">
+  <div class="kicker">Connectors</div>
+  <h2>Give Claude access instead of copy-pasting</h2>
+  <div class="cols w60">
+    <div>
+      <ul class="clean">
+        <li class="f"><b>Directory connectors:</b> reviewed by Anthropic. Drive, Gmail, Calendar, GitHub, Notion, Slack, Microsoft 365 and many more. One-click OAuth.</li>
+        <li class="f"><b>Custom connectors:</b> paste the URL of any remote MCP server. Your lab can host one for an instrument DB or cluster queue.</li>
+        <li class="f"><b>Per-chat control:</b> turn connectors on only where needed. Fewer tools = better tool choice.</li>
+      </ul>
+    </div>
+    <div class="card edge-gold f">
+      <h3>Research examples</h3>
+      <p>📚 Search your reference library while drafting<br>📂 Read the shared lab Drive folder of protocols<br>🐙 Open issues on the analysis repo<br>📅 "Find two hours next week for the reading group"</p>
+    </div>
+  </div>
+  <p class="lead mt-l f">Look for your tools at <b>claude.ai/directory</b>, which now lists connectors, skills and plugins together.</p>
+  <aside class="notes"><p>Microsoft 365 connector gained write tools on 7 Jul 2026 (email, calendar, OneDrive/SharePoint; Teams read-only); requires admin consent. Warn about connecting institutional email: check IISc IT policy.</p></aside>
+</section>
+
+<section class="slide" data-module="02 · Claude apps for research">
+  <div class="kicker">Skills in the app</div>
+  <h2>Built-in skills, plus your own</h2>
+  <div class="cols w40">
+    <div>
+      <div class="card edge-green"><h3>Already there</h3><p>Word, PDF, Excel and PowerPoint skills: Claude reads and writes real files.</p></div>
+      <div class="card edge-accent mt"><h3>Make one</h3><p>Ask Claude to use the <b>skill-creator</b> skill. It interviews you and writes the folder. Upload under <b>Settings → Capabilities → Skills</b>.</p></div>
+    </div>
+    <pre class="f copy"><span class="c">---</span>
+<span class="k">name</span>: paper-litnote
+<span class="k">description</span>: <span class="s">Turn a research paper (PDF, arXiv link)
+  into a structured literature note. Use when the
+  user shares a paper and says summarise, notes,
+  lit note, or "what does this paper do".</span>
+<span class="c">---</span>
+<span class="y"># Literature note</span>
+1. One-line takeaway (≤ 25 words).
+2. Problem · Method · Data · Key result (with
+   section/page refs for every claim).
+3. Assumptions and limits the authors admit.
+4. Limits they don't admit (mark as MY READING).
+5. 3 quotes worth keeping, verbatim, with page.
+6. How it relates to: {{my thesis topic}}.
+Never fill gaps from memory; write "not stated".</pre>
+  </div>
+  <aside class="notes"><p>Point out the description wording: it lists trigger phrases. That's what makes it auto-load.</p></aside>
+</section>
+
+<section class="slide try" data-module="02 · Claude apps for research" data-timer="8">
+  <span class="try-badge">⌨ TRY IT · 8 MIN</span>
+  <h2>Build your first skill with skill-creator</h2>
+  <div class="cols w60">
+    <div class="prompt">Use the skill-creator skill to make a skill called "paper-litnote" for me.
+I'm a [PhD student in ___] working on [topic].
+When I share a paper, it should produce: a one-line takeaway, problem/method/data/result with page refs, limitations, 3 verbatim quotes, and how it relates to my topic.
+Ask me 3 questions first to tailor it, then give me the skill as a downloadable zip.</div>
+    <div class="card">
+      <h3>Then</h3>
+      <ul class="clean small">
+        <li>Upload the zip in Settings → Capabilities</li>
+        <li>New chat, drop in your PDF, just say "notes please"</li>
+        <li>Did it trigger without naming it? If not, fix the description.</li>
+      </ul>
+    </div>
+  </div>
+  <aside class="notes"><p>Press S to start the timer. Walk around. Common snag: skills toggle disabled at org level, or code execution off. Fallback: paste the SKILL.md text into project instructions.</p></aside>
+</section>
+
+<section class="slide" data-module="02 · Claude apps for research">
+  <div class="kicker">Artifacts, grown up</div>
+  <h2>Outputs you can share, not just read</h2>
+  <div class="cols c3">
+    <div class="card edge-blue"><h3>📄 Claude Docs</h3><p>Living documents others comment on. Export to Word or Google Docs.</p></div>
+    <div class="card edge-accent"><h3>🖼 Claude Slides</h3><p>Decks from a prompt or an outline. Download as PowerPoint or PDF.</p></div>
+    <div class="card edge-rose"><h3>🎨 Claude Design</h3><p>Posters, figures-as-design, UI mockups on a canvas.</p></div>
+    <div class="card edge-green"><h3>📊 Sheets <span class="tag beta">beta</span></h3><p>Spreadsheets with formulas Claude builds and edits.</p></div>
+    <div class="card edge-gold"><h3>🧠 Whiteboards <span class="tag beta">beta</span></h3><p>Shared brainstorming space for a group.</p></div>
+    <div class="card edge-teal"><h3>📈 Claude Data</h3><p>Dashboards from connected data, with live sharing.</p></div>
+  </div>
+  <p class="lead mt f">Fun fact: this deck is a plain HTML page I built with Claude Code and host on GitHub Pages. The source is on GitHub; fork it.</p>
+  <aside class="notes"><p>Docs/Slides/Design came 16 Sep 2026 (beta on Enterprise; Artifacts on all plans incl. Free). Sheets and Whiteboards beta + Claude Data GA around 10–12 Nov 2026.</p></aside>
+</section>
+
+<section class="slide" data-module="02 · Claude apps for research">
+  <div class="kicker">Built for scientists</div>
+  <h2>Claude Science <span class="tag beta">public beta</span></h2>
+  <div class="cols w60">
+    <div>
+      <p class="lead">A research workbench app (not a new model), launched 30 June 2026.</p>
+      <ul class="clean mt">
+        <li class="f">Literature analysis → code execution → figures, in one place</li>
+        <li class="f"><b>Auditable history</b> of how every output was produced</li>
+        <li class="f">A <b>reviewer agent</b> checks citations and calculations</li>
+        <li class="f">Runs on macOS/Linux, locally or on a remote machine, including an <b>HPC login node</b></li>
+      </ul>
+    </div>
+    <div class="card edge-gold f">
+      <h3>Access</h3>
+      <p>Pro, Max, Team, Enterprise. Team/Enterprise need admin approval.</p>
+      <h3 class="mt">Also worth knowing</h3>
+      <p>Anthropic expanded programs for scientists in Aug 2026 (free seats to start, PI team plans). Check eligibility for your group.</p>
+    </div>
+  </div>
+  <aside class="notes"><p>Early coverage (The Scientist) says scientists like the workflow but reasoning gaps remain, so the same verification rules apply.</p><p>Life Sciences Verification Program (17 Sep) gives expanded-safeguard model access for life-science work.</p></aside>
+</section>
+
+<section class="slide" data-module="02 · Claude apps for research">
+  <div class="kicker">A literature-review pipeline</div>
+  <h2>Six steps, each with a clear owner</h2>
+  <div class="flow">
+    <div class="step f"><span>1 · you</span><b>Criteria</b><span>scope, years, study types</span></div><div class="arrow f">→</div>
+    <div class="step f"><span>2 · Claude</span><b>Search</b><span>Research mode, keep a search log</span></div><div class="arrow f">→</div>
+    <div class="step f"><span>3 · skill</span><b>Lit notes</b><span>one per paper</span></div><div class="arrow f">→</div>
+    <div class="step f"><span>4 · Claude</span><b>Compare</b><span>table + gaps</span></div><div class="arrow f">→</div>
+    <div class="step f"><span>5 · you</span><b>Argue</b><span>your position</span></div><div class="arrow f">→</div>
+    <div class="step f"><span>6 · Claude</span><b>Check</b><span>every citation</span></div>
+  </div>
+  <div class="cols mt-l">
+    <div class="prompt f">Keep two separate sections: SEARCH LOG (queries, databases, dates, counts, what you excluded and why) and FINDINGS. Never mix interpretation into the log.</div>
+    <div class="prompt f">From these notes, build a table: paper · method · dataset · metric · result. Then list 3 questions none of them answers, and which paper comes closest to each.</div>
+  </div>
+  <aside class="notes"><p>Steps 1 and 5 are deliberately yours. Claude is a strong research assistant and a poor PI. The search log makes the review reproducible and is what a methods section needs.</p></aside>
+</section>
+
+<section class="slide try" data-module="02 · Claude apps for research" data-timer="10">
+  <span class="try-badge">⌨ TRY IT · 10 MIN</span>
+  <h2>Note it, then attack it</h2>
+  <div class="cols">
+    <div class="prompt">[attach your PDF]
+Make a lit note of this paper.</div>
+    <div class="prompt">Now act as a skeptical reviewer for [venue].
+List the 5 weakest points in this paper, ranked by severity, each with: the claim, why the evidence is insufficient, and what experiment or analysis would fix it.
+Then tell me which of your 5 points you are least sure about.</div>
+  </div>
+  <div class="card mt-l"><p><b>Look for:</b> does every claim in the note have a page reference? Can you find each quote in the PDF? The last line ("least sure about") is a cheap calibration check. Use it everywhere.</p></div>
+  <aside class="notes"><p>If people have the research-desk-style skills installed (paper-critique, citation-check), they can call those instead. Ask 2 people to share what the reviewer found.</p></aside>
+</section>
+
+<section class="slide" data-module="02 · Claude apps for research">
+  <div class="kicker">Writing</div>
+  <h2>Let Claude edit your thinking, not replace it</h2>
+  <div class="cols">
+    <div class="card edge-green"><h3>✅ Good uses</h3><ul class="clean small">
+      <li>"Here are my bullet points; draft the paragraph, keep every claim, add nothing."</li>
+      <li>Highlight one sentence and ask for a fix in place (no full rewrite).</li>
+      <li>"Where would a reader from [other field] get lost?"</li>
+      <li>"Shorten by 30% without losing any number."</li>
+    </ul></div>
+    <div class="card edge-rose"><h3>⚠️ Risky uses</h3><ul class="clean small">
+      <li>"Write my introduction" from nothing: generic and confidently wrong.</li>
+      <li>Asking it to add citations: it will try. Use [CITE?] instead.</li>
+      <li>Rewriting a whole draft at once: your voice disappears.</li>
+      <li>Pasting reviewers' confidential manuscripts: usually a policy breach.</li>
+    </ul></div>
+  </div>
+  <aside class="notes"><p>Edit-in-place: highlight a part of a draft and Claude edits only that spot (shipped 12 Jun 2026).</p></aside>
+</section>
+
+<section class="slide center" id="brk" data-module="☕ · Break" data-timer="10">
+  
+  <h1 style="font-size:130px">☕ Break</h1>
+  <p class="lead mt">Ten minutes. If you haven't installed Claude Code yet, now's the time:</p>
+  <pre style="margin-top:30px;font-size:24px" class="copy">curl -fsSL https://claude.ai/install.sh | bash</pre>
+  <p class="muted mt">Windows: <code>winget install Anthropic.ClaudeCode</code> · or use the Code tab in the Claude desktop app</p>
+  <aside class="notes"><p>Start the timer (S). Help anyone stuck on install. Desktop app Code tab is the zero-terminal fallback.</p></aside>
+</section>
+
+<!-- ================================================================== -->
+<!-- 03 · CLAUDE CODE                                                     -->
+<!-- ================================================================== -->
+
+<section class="slide section" id="m3" data-module="03 · Claude Code">
+  <div class="num">03</div>
+  <div class="kicker">Module 03</div>
+  <h1>Claude Code, in depth</h1>
+  <p class="lead">Not just for software engineers. It's Claude with a terminal, a file system, and the ability to check its own work.</p>
+  <div class="time">1:20 → 2:10</div>
+</section>
+
+<section class="slide" data-module="03 · Claude Code">
+  <div class="kicker">Same agent, many surfaces</div>
+  <h2>Pick where you work. The engine is the same.</h2>
+  <div class="cols c3">
+    <div class="card edge-accent"><h3>⌨️ Terminal CLI</h3><p>The full feature set. <code>claude</code> in any folder.</p></div>
+    <div class="card edge-blue"><h3>🖥 Desktop app</h3><p>Code tab: parallel sessions, visual diffs, browser preview, scheduled tasks.</p></div>
+    <div class="card edge-teal"><h3>☁️ Web</h3><p>claude.ai/code runs in the cloud. <code>claude --teleport</code> pulls it back locally.</p></div>
+    <div class="card edge-gold"><h3>🧩 IDE</h3><p>VS Code / Cursor extension and JetBrains plugin with inline diffs.</p></div>
+    <div class="card edge-rose"><h3>📱 Phone</h3><p><b>Remote Control</b>: steer a session on your lab machine from the Claude app.</p></div>
+    <div class="card edge-green"><h3>🤖 Headless</h3><p><code>claude -p</code> in scripts, cron jobs and GitHub Actions.</p></div>
+  </div>
+  <aside class="notes"><p>Remote Control needs a claude.ai login (not API key). Team/Enterprise need an admin toggle. Great for long experiments on a workstation.</p></aside>
+</section>
+
+<section class="slide" data-module="03 · Claude Code">
+  <div class="kicker">The loop</div>
+  <h2>Explore → plan → do → verify</h2>
+  <div class="cols w40">
+    <ul class="clean">
+      <li class="f"><b>Explore:</b> "Read the repo and explain how data flows from raw/ to figures/." No edits.</li>
+      <li class="f"><b>Plan:</b> <kbd>Shift</kbd>+<kbd>Tab</kbd> into plan mode. Review, edit with <kbd>Ctrl</kbd>+<kbd>G</kbd>.</li>
+      <li class="f"><b>Do:</b> approve and let it work.</li>
+      <li class="f"><b>Verify:</b> tests, a rerun, a plot it compares against the old one.</li>
+    </ul>
+    <div class="term"><div class="bar"><i></i><i></i><i></i><span>~/thesis-analysis</span></div>
+<pre data-type="12"><span class="c">$</span> claude
+<span class="k">›</span> The fit in fit_spectra.py gives negative widths
+  on ~3% of samples. Find out why. Don't fix yet.
+
+<span class="n">●</span> Reading fit_spectra.py, data/loader.py …
+<span class="n">●</span> Running on the 41 failing samples …
+
+<span class="s">Cause:</span> initial guess for σ comes from FWHM of the
+<span class="s">raw</span> trace; with baseline offset &gt; peak/2 the
+FWHM is undefined → σ₀ = -1. Bounds aren't set,
+so curve_fit walks into σ &lt; 0.
+<span class="y">Proposed fix:</span> subtract baseline first, set
+bounds=(0, inf). Want a plan?</pre></div>
+  </div>
+  <aside class="notes"><p>The "Don't fix yet" phrasing matters: separating diagnosis from change gives far better results and lets you check its reasoning.</p></aside>
+</section>
+
+<section class="slide" data-module="03 · Claude Code">
+  <div class="kicker">Permission modes</div>
+  <h2>How much should Claude ask before acting?</h2>
+  <table class="cmp">
+    <tr><th>Mode</th><th>Behaviour</th><th>Use when</th></tr>
+    <tr class="f"><td>Manual</td><td>Asks before every edit and command</td><td>Unfamiliar repo, shared data, learning</td></tr>
+    <tr class="f"><td>Accept edits</td><td>Edits files freely, asks for commands</td><td>You're watching the diff live</td></tr>
+    <tr class="f"><td>Plan</td><td>Read-only: researches and proposes a plan</td><td>Anything bigger than one file</td></tr>
+    <tr class="f"><td><b>Auto</b> <span class="tag new">default</span></td><td>A safety classifier reviews each action; risky ones are blocked or asked</td><td>Most day-to-day work</td></tr>
+    <tr class="f"><td>Bypass</td><td>No checks at all</td><td>Only inside a throwaway container</td></tr>
+  </table>
+  <p class="lead mt f"><kbd>Shift</kbd>+<kbd>Tab</kbd> cycles modes. Deny rules (e.g. never touch <code>data/raw/</code>) apply in every mode.</p>
+  <aside class="notes"><p>Auto mode is the default for interactive sessions since v2.1.283. It pauses after 3 consecutive blocks or 20 total. <code>claude -p</code> runs start in Manual since 2.1.302.</p></aside>
+</section>
+
+<section class="slide" data-module="03 · Claude Code">
+  <div class="kicker">CLAUDE.md</div>
+  <h2>The onboarding doc your repo never had</h2>
+  <div class="cols w40">
+    <div>
+      <ul class="clean small">
+        <li><code>~/.claude/CLAUDE.md</code>: you, everywhere</li>
+        <li><code>./CLAUDE.md</code>: this project, committed</li>
+        <li><code>./CLAUDE.local.md</code>: your private notes</li>
+        <li><code>.claude/rules/*.md</code>: rules scoped to paths</li>
+        <li><code>@docs/setup.md</code>: import other files</li>
+      </ul>
+      <p class="mt small muted">Start with <code>/init</code>. Keep it under ~200 lines; move details into skills.</p>
+    </div>
+    <pre class="copy"><span class="y"># Project: cryo-EM particle analysis</span>
+<span class="k">## Run</span>
+- env: `conda activate cryo` (env.yml)
+- tests: `pytest -q` (must pass before commit)
+- full pipeline: `make figures` (~20 min, GPU)
+<span class="k">## Rules</span>
+- data/raw/ is READ-ONLY. Never modify or move.
+- Every random op takes `seed` from config.yaml.
+- Plots: use style/lab.mplstyle, SI units.
+- New analysis = new script in analysis/, not a
+  notebook. Notebooks are for exploration only.
+<span class="k">## Gotchas</span>
+- loader.py assumes float32; MRC files are float16.
+- Cluster jobs: see @docs/slurm.md</pre>
+  </div>
+  <aside class="notes"><p>Also: Claude Code reads AGENTS.md when no CLAUDE.md exists. Auto memory lives in ~/.claude/projects/&lt;project&gt;/memory/MEMORY.md and is machine-local. It learns things like "user prefers pytest -q".</p></aside>
+</section>
+
+<section class="slide" data-module="03 · Claude Code">
+  <div class="kicker">Context hygiene</div>
+  <h2>Long sessions rot. Manage them.</h2>
+  <div class="cols c3">
+    <div class="card edge-teal f"><h3><code>/clear</code></h3><p>New task, new context. The most underused command.</p></div>
+    <div class="card edge-blue f"><h3><code>/compact</code></h3><p>Summarize and continue. Add a focus: <code>/compact keep the failing test names</code>.</p></div>
+    <div class="card edge-accent f"><h3><kbd>Esc</kbd><kbd>Esc</kbd> · <code>/rewind</code></h3><p>Go back to a checkpoint: code, conversation, or both.</p></div>
+    <div class="card edge-gold f"><h3><code>/branch</code> · <code>/fork</code></h3><p>Try an alternative without losing the main line.</p></div>
+    <div class="card edge-rose f"><h3><code>/resume</code></h3><p>Pick up yesterday's session where it stopped.</p></div>
+    <div class="card edge-green f"><h3><code>/usage</code> · <code>/status</code></h3><p>See what's loaded and what it's costing.</p></div>
+  </div>
+  <aside class="notes"><p>Checkpoints don't track changes made only through Bash (e.g. a script that writes files). Git is still your real safety net.</p></aside>
+</section>
+
+<section class="slide" data-module="03 · Claude Code">
+  <div class="kicker">Skills in Claude Code</div>
+  <h2>Your lab's procedures, as slash commands</h2>
+  <div class="cols">
+    <pre class="copy"><span class="c"># .claude/skills/run-experiment/SKILL.md</span>
+<span class="c">---</span>
+<span class="k">name</span>: run-experiment
+<span class="k">description</span>: <span class="s">Launch a training/simulation run on
+  the cluster with a logged config. Use when the
+  user asks to run, launch or sweep an experiment.</span>
+<span class="k">argument-hint</span>: <span class="s">"&lt;config.yaml&gt; [--sweep]"</span>
+<span class="k">allowed-tools</span>: <span class="s">Bash(sbatch:*) Bash(git:*)</span>
+<span class="c">---</span>
+Current branch: !`git branch --show-current`
+1. Refuse if `git status` is dirty: runs must map
+   to a commit.
+2. Copy $ARGUMENTS into runs/&lt;date&gt;-&lt;hash&gt;/.
+3. Fill templates/job.slurm, submit with sbatch.
+4. Append job id + commit to runs/LOG.md.</pre>
+    <div>
+      <ul class="clean small">
+        <li class="f"><b>Where:</b> <code>~/.claude/skills/</code> (personal), <code>.claude/skills/</code> (repo, shared via git), or inside a plugin.</li>
+        <li class="f"><b>Call it:</b> <code>/run-experiment cfg.yaml</code>, or just say "launch this config". The description makes it trigger.</li>
+        <li class="f"><b><code>!`cmd`</code></b> injects live output into the skill before Claude reads it.</li>
+        <li class="f"><b>Skills you make in claude.ai</b> can sync down to Claude Code.</li>
+        <li class="f"><b>Debug:</b> <code>/skills</code>, <code>/skill-doctor</code>, <code>/reload-skills</code>.</li>
+      </ul>
+    </div>
+  </div>
+  <aside class="notes"><p>Old <code>.claude/commands/*.md</code> files still work; custom commands have been merged into skills. Other frontmatter: model, effort, context: fork (run in a subagent), disable-model-invocation (manual only).</p></aside>
+</section>
+
+<section class="slide" data-module="03 · Claude Code">
+  <div class="kicker">Hooks</div>
+  <h2>Hooks are rules Claude can't forget</h2>
+  <div class="cols w40">
+    <div>
+      <p>CLAUDE.md is advice. A hook is <b>code that runs</b> on an event, every time.</p>
+      <ul class="clean small mt">
+        <li><code>PreToolUse</code>: block or allow an action</li>
+        <li><code>PostToolUse</code>: format, lint, test after edits</li>
+        <li><code>UserPromptSubmit</code>: add context to prompts</li>
+        <li><code>Stop</code>: check work before Claude finishes</li>
+        <li><code>SessionStart</code>, <code>PreCompact</code>, <code>Notification</code>… 33 events in all</li>
+      </ul>
+    </div>
+    <pre class="copy"><span class="c">// .claude/settings.json</span>
+{
+  <span class="k">"hooks"</span>: {
+    <span class="k">"PostToolUse"</span>: [{
+      <span class="k">"matcher"</span>: <span class="s">"Edit|Write"</span>,
+      <span class="k">"hooks"</span>: [{ <span class="k">"type"</span>: <span class="s">"command"</span>,
+        <span class="k">"command"</span>: <span class="s">"ruff format $FILE &amp;&amp; pytest -q -x"</span> }]
+    }],
+    <span class="k">"PreToolUse"</span>: [{
+      <span class="k">"matcher"</span>: <span class="s">"Bash"</span>,
+      <span class="k">"hooks"</span>: [{ <span class="k">"type"</span>: <span class="s">"command"</span>,
+        <span class="k">"command"</span>: <span class="s">"scripts/guard_raw_data.sh"</span> }]
+    }]
+  }
+}</pre>
+  </div>
+  <p class="lead mt f">Easiest way to write one: <i>"Add a hook so that after every edit, tests run."</i> Claude edits the settings for you.</p>
+  <aside class="notes"><p>Handler types: command, http, mcp_tool, prompt, agent. A "prompt" or "agent" hook lets a model judge, e.g. "did the plot change?" Exit code 2 from a PreToolUse command blocks the action and tells Claude why. Simplified example; in real hooks, the file path arrives as JSON on stdin.</p></aside>
+</section>
+
+<section class="slide" data-module="03 · Claude Code">
+  <div class="kicker">MCP in Claude Code</div>
+  <h2>Connect tools from the terminal</h2>
+  <div class="cols">
+    <div>
+<pre class="copy"><span class="c"># a remote server (HTTP)</span>
+claude mcp add --transport http github \
+  https://api.githubcopilot.com/mcp/
+
+<span class="c"># a local one (stdio), shared with the team</span>
+claude mcp add --scope project zotero \
+  -- uvx zotero-mcp
+
+<span class="c"># inside a session</span>
+/mcp</pre>
+    </div>
+    <div>
+      <ul class="clean small">
+        <li class="f"><b>Scopes:</b> <code>local</code> (just you, this repo), <code>project</code> (written to <code>.mcp.json</code>, committed), <code>user</code> (all your projects).</li>
+        <li class="f"><b>Your claude.ai connectors</b> also show up here automatically.</li>
+        <li class="f"><b>Tool search</b> is on by default: many servers don't flood the context.</li>
+        <li class="f"><b>Browser:</b> <code>claude --chrome</code> lets it drive Chrome to test a web app or read a portal.</li>
+      </ul>
+    </div>
+  </div>
+  <aside class="notes"><p>The Zotero server name is illustrative; check the MCP registry for the current one. Precedence: local &gt; project &gt; user &gt; plugin &gt; claude.ai connectors.</p></aside>
+</section>
+
+<section class="slide" data-module="03 · Claude Code">
+  <div class="kicker">Plugins</div>
+  <h2>Ship your setup as one install</h2>
+  <div class="cols">
+    <pre><span class="y">lab-toolkit/</span>
+├── .claude-plugin/
+│   └── <span class="k">plugin.json</span>      <span class="c"># name, version</span>
+├── skills/
+│   ├── run-experiment/
+│   └── lab-figures/
+├── agents/
+│   └── <span class="n">stats-reviewer.md</span>
+├── hooks/hooks.json
+└── <span class="k">.mcp.json</span>            <span class="c"># lab DB connector</span></pre>
+    <div>
+      <ul class="clean small">
+        <li class="f"><code>/plugin</code> → Discover · Installed · Marketplaces</li>
+        <li class="f">Anthropic's official marketplace is added on first run</li>
+        <li class="f">A <b>marketplace</b> is just a git repo with <code>marketplace.json</code>. Your lab can have one.</li>
+        <li class="f">Skills inside are namespaced: <code>/lab-toolkit:run-experiment</code></li>
+        <li class="f"><code>claude plugin eval</code> scores a plugin against a no-plugin baseline</li>
+      </ul>
+    </div>
+  </div>
+  <p class="lead mt f">The same plugin works in Claude Code <i>and</i> in the Claude app.</p>
+  <aside class="notes"><p>Plugins can also ship output styles and workflows. Enterprise orgs get security scanning of uploaded skills/plugins (Aug 2026).</p></aside>
+</section>
+
+<section class="slide" data-module="03 · Claude Code">
+  <div class="kicker">Subagents</div>
+  <h2>Delegate to keep your main context clean</h2>
+  <div class="cols w40">
+    <div>
+      <ul class="clean small">
+        <li class="f"><b>Built-in:</b> <code>Explore</code> (fast read-only search), <code>Plan</code>, general-purpose.</li>
+        <li class="f"><b>Fork:</b> a copy of the current conversation runs a side quest.</li>
+        <li class="f"><b>Background by default:</b> you keep working; they report back.</li>
+        <li class="f"><b>Custom:</b> a markdown file with its own tools, model and instructions. Manage with <code>/agents</code>.</li>
+      </ul>
+    </div>
+    <pre class="copy"><span class="c"># .claude/agents/stats-reviewer.md</span>
+<span class="c">---</span>
+<span class="k">name</span>: stats-reviewer
+<span class="k">description</span>: <span class="s">Reviews analysis code and results for
+  statistical errors. Use after any change to
+  analysis/ or before writing up results.</span>
+<span class="k">tools</span>: Read, Grep, Bash
+<span class="k">model</span>: opus
+<span class="c">---</span>
+You are a methods reviewer. Check: multiple
+comparisons, leakage between train/test, wrong
+error bars (SD vs SEM vs CI), pseudo-replication,
+seeds, and whether figures match the numbers.
+Report issues by severity with file:line.
+Never edit files.</pre>
+  </div>
+  <aside class="notes"><p>Subagents get a fresh context; only their summary comes back. That's the point: 50 files of searching become 10 lines in your session. Max spawn depth and concurrency are configurable.</p></aside>
+</section>
+
+<section class="slide" data-module="03 · Claude Code">
+  <div class="kicker">Parallel work</div>
+  <h2>From one assistant to a small team</h2>
+  <div class="cols c4">
+    <div class="card edge-teal"><h3>Worktrees</h3><p><code>claude -w fix-loader</code> gives each session its own branch and folder. No collisions.</p></div>
+    <div class="card edge-blue"><h3>Many sessions</h3><p>Desktop app: run several side by side, each with a task.</p></div>
+    <div class="card edge-rose"><h3>Agent teams <span class="tag exp">exp</span></h3><p>A lead agent with teammates, a shared task list and messaging.</p></div>
+    <div class="card edge-gold"><h3>Workflows</h3><p>Say <b>ultracode</b> and Claude writes a script that orchestrates many subagents. Try <code>/deep-research</code>.</p></div>
+  </div>
+  <div class="card mt-l f"><p><b>When it's worth it:</b> independent pieces (5 baselines to reimplement, 30 configs to sweep, 12 papers to reproduce a table from). <b>When it isn't:</b> one tangled bug, where parallel agents just step on each other. Watch the token bill: many agents = many tokens.</p></div>
+  <aside class="notes"><p>Agent teams need CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1. Workflows: monitor with /workflows; up to 16 concurrent agents by default.</p></aside>
+</section>
+
+<section class="slide" data-module="03 · Claude Code">
+  <div class="kicker">Automation</div>
+  <h2>Claude that runs while you sleep</h2>
+  <div class="cols">
+    <div>
+      <div class="card edge-accent f"><h3>Scheduled tasks · <code>/schedule</code></h3><p>Cloud runs on a timer, an API call, or a GitHub event. "Every Monday 8am, check arXiv for new papers on X and open an issue with summaries."</p></div>
+      <div class="card edge-teal mt f"><h3><code>/loop</code></h3><p>Repeat in this session: "every 10 min, check the SLURM queue and tell me when job 4412 finishes."</p></div>
+    </div>
+    <div>
+      <pre class="f copy"><span class="c"># headless: one shot, JSON out</span>
+claude -p <span class="s">"Summarise failures in logs/today.txt"</span> \
+  --output-format json \
+  --allowedTools <span class="s">"Read,Grep"</span>
+
+<span class="c"># structured output for pipelines</span>
+claude -p <span class="s">"Extract dataset, n, metric"</span> \
+  --json-schema schema.json &lt; paper.txt</pre>
+      <p class="small muted mt f">Also: GitHub Actions / GitLab CI integration, and <code>/code-review</code> on pull requests.</p>
+    </div>
+  </div>
+  <aside class="notes"><p>Scheduled tasks (formerly "routines") are a research preview. Desktop scheduled tasks run locally instead of in the cloud.</p></aside>
+</section>
+
+<section class="slide" data-module="03 · Claude Code">
+  <div class="kicker">Research coding patterns</div>
+  <h2>What actually works for scientific code</h2>
+  <div class="cols">
+    <ul class="clean">
+      <li class="f"><b>Tests before trust.</b> "Write a test that reproduces Table 2 to 3 decimals, then refactor."</li>
+      <li class="f"><b>Notebook → pipeline.</b> "Turn explore.ipynb into a script with a CLI and a config file."</li>
+      <li class="f"><b>Seeds &amp; env.</b> Ask it to pin versions and log the commit with every result.</li>
+    </ul>
+    <ul class="clean">
+      <li class="f"><b>Cluster jobs.</b> SLURM/PBS scripts, array jobs, resubmit-on-fail.</li>
+      <li class="f"><b>Read a codebase fast.</b> "Explain this simulation package as if onboarding a new student."</li>
+      <li class="f"><b>Figures.</b> One skill holding the lab style. Every plot looks the same.</li>
+    </ul>
+  </div>
+  <div class="prompt mt f">Before changing anything: run the current pipeline on data/sample and save outputs to /tmp/before. After your change, run it again and diff every number. Report any difference above 1e-6.</div>
+  <aside class="notes"><p>That last prompt is the golden pattern for refactoring science code: regression on numbers, not just "it runs".</p></aside>
+</section>
+
+<section class="slide try" data-module="03 · Claude Code" data-timer="15">
+  <span class="try-badge">⌨ TRY IT · 15 MIN</span>
+  <h2>Set up a repo properly in 15 minutes</h2>
+  <div class="cols">
+    <div>
+      <ol class="clean" style="list-style:none">
+        <li>1. <code>cd</code> into a repo of yours (or <code>git clone</code> any small one)</li>
+        <li>2. <code>claude</code> → <code>/init</code>, then edit CLAUDE.md by hand</li>
+        <li>3. <kbd>Shift</kbd>+<kbd>Tab</kbd> to plan mode, paste the prompt →</li>
+        <li>4. Ask for a hook that runs your tests after edits</li>
+        <li>5. Bonus: create the <code>stats-reviewer</code> agent and run it</li>
+      </ol>
+    </div>
+    <div class="prompt">Explore this repo and tell me:
+1) how to run it end to end,
+2) the 3 riskiest places for a silent numerical bug,
+3) what's untested.
+Then propose a plan to add one regression test for the most important result. Don't write code yet.</div>
+  </div>
+  <aside class="notes"><p>No repo? Use any public small Python analysis repo. Desktop users: open the folder in the Code tab.</p></aside>
+</section>
+
+<section class="slide" data-module="03 · Claude Code">
+  <div class="kicker">Odds and ends worth knowing</div>
+  <h2>Small things that change your day</h2>
+  <div class="cols c3">
+    <div class="card f"><h3>🧾 <code>/code-review</code></h3><p>Reviews your diff or a PR for bugs. <code>--fix</code> applies the fixes.</p></div>
+    <div class="card f"><h3>🔒 <code>/security-review</code></h3><p>Before you publish a tool or web app.</p></div>
+    <div class="card f"><h3>🎓 Output style "Learning"</h3><p><code>/output-style Learning</code>: Claude leaves TODOs for <i>you</i> to write. Great for students.</p></div>
+    <div class="card f"><h3>🖼 Artifacts</h3><p>Claude Code can publish a private web page (report, dashboard) to claude.ai. <code>/artifacts</code></p></div>
+    <div class="card f"><h3>⚡ Code Mode <span class="tag exp">exp</span></h3><p>Claude writes JS that makes many tool calls in one step. Faster on big refactors.</p></div>
+    <div class="card f"><h3>📱 <code>/remote-control</code></h3><p>Start on the workstation, approve from your phone at the canteen.</p></div>
+  </div>
+  <aside class="notes"><p>Code Mode: CLAUDE_CODE_EXPERIMENTAL_CODE_MODE=1, v2.1.323+, interactive terminal only.</p></aside>
+</section>
+
+<!-- ================================================================== -->
+<!-- 04 · CHROME & OFFICE                                                 -->
+<!-- ================================================================== -->
+
+<section class="slide section" id="m4" data-module="04 · Chrome & Office">
+  <div class="num">04</div>
+  <div class="kicker">Module 04</div>
+  <h1>Claude in Chrome &amp; Office</h1>
+  <p class="lead">Claude where your work already is: the browser, Excel, PowerPoint.</p>
+  <div class="time">2:10 → 2:20</div>
+</section>
+
+<section class="slide" data-module="04 · Chrome & Office">
+  <div class="kicker">Browser agent</div>
+  <h2>Claude in Chrome</h2>
+  <div class="cols w60">
+    <div>
+      <p class="lead">A side panel that runs a full Claude session (skills, plugins, connectors) and can read and act on web pages.</p>
+      <ul class="clean mt">
+        <li class="f">Pull tables from portals that have no export button</li>
+        <li class="f">Walk through a journal's submission form with you</li>
+        <li class="f">Compare 10 open tabs of papers or product specs</li>
+        <li class="f">Hand results to a Doc, Sheet or slide deck</li>
+      </ul>
+    </div>
+    <div class="card edge-rose f">
+      <h3>⚠️ Prompt injection is real</h3>
+      <p>Web pages can contain hidden text addressed to the AI. Claude treats page content as data and asks before submitting, paying or sending.</p>
+      <p class="mt"><b>Your job:</b> keep it off banking and admin pages, and read every confirmation.</p>
+    </div>
+  </div>
+  <aside class="notes"><p>Beta for all paid plans since Jan 2026; the side panel became a full Cowork session later in 2026.</p></aside>
+</section>
+
+<section class="slide" data-module="04 · Chrome & Office">
+  <div class="kicker">Office add-ins</div>
+  <h2>Excel and PowerPoint, with shared context</h2>
+  <div class="cols">
+    <div class="card edge-green"><h3>📊 Claude for Excel</h3><p>Understands the whole workbook: formulas, pivot tables, conditional formatting. Explains a colleague's 40-tab sheet cell by cell.</p></div>
+    <div class="card edge-accent"><h3>📽 Claude for PowerPoint</h3><p>Builds and edits slides in your template. Uses your skills.</p></div>
+  </div>
+  <div class="flow mt-l">
+    <div class="step f"><b>Excel</b><span>clean the instrument export</span></div><div class="arrow f">→</div>
+    <div class="step f"><b>Excel</b><span>summary table + chart</span></div><div class="arrow f">→</div>
+    <div class="step f"><b>PowerPoint</b><span>group-meeting slide, same context</span></div>
+  </div>
+  <aside class="notes"><p>Since Mar 2026 the Excel and PowerPoint add-ins share conversation context, so the slide knows how the numbers were made.</p></aside>
+</section>
+
+<!-- ================================================================== -->
+<!-- 05 · API & SDK                                                        -->
+<!-- ================================================================== -->
+
+<section class="slide section" id="m5" data-module="05 · API & Agent SDK">
+  <div class="num">05</div>
+  <div class="kicker">Module 05</div>
+  <h1>API &amp; Agent SDK</h1>
+  <p class="lead">When the chat window is the bottleneck: thousands of items, reproducible pipelines, your own tools.</p>
+  <div class="time">2:20 → 2:40</div>
+</section>
+
+<section class="slide" data-module="05 · API & Agent SDK">
+  <div class="kicker">When to leave the chat</div>
+  <h2>Signs you need the API</h2>
+  <div class="cols c3">
+    <div class="card edge-blue f"><span class="icon">🔁</span><h3>Scale</h3><p>The same prompt over 5,000 abstracts, images or survey answers.</p></div>
+    <div class="card edge-teal f"><span class="icon">🧪</span><h3>Reproducibility</h3><p>Pinned model ID, saved prompts, logged outputs for the methods section.</p></div>
+    <div class="card edge-accent f"><span class="icon">🛠</span><h3>Your own tools</h3><p>A Claude that queries your simulation, instrument or database.</p></div>
+  </div>
+  <div class="card mt-l f"><p>💳 <b>Since Oct 2026, Max and Team plans include monthly API credits</b>: link a Console org to claim them. Many of you already have budget to try this.</p></div>
+  <aside class="notes"><p>Monthly API credits for Max and Team plans: release note dated 7 Oct 2026.</p></aside>
+</section>
+
+<section class="slide" data-module="05 · API & Agent SDK">
+  <div class="kicker">The 10-line version</div>
+  <h2>Messages API with structured output</h2>
+  <pre class="copy"><span class="k">import</span> anthropic, json
+client = anthropic.Anthropic()   <span class="c"># reads ANTHROPIC_API_KEY</span>
+
+schema = {<span class="s">"type"</span>: <span class="s">"object"</span>, <span class="s">"additionalProperties"</span>: <span class="k">False</span>, <span class="s">"properties"</span>: {
+    <span class="s">"organism"</span>: {<span class="s">"type"</span>: [<span class="s">"string"</span>, <span class="s">"null"</span>]}, <span class="s">"sample_size"</span>: {<span class="s">"type"</span>: [<span class="s">"integer"</span>, <span class="s">"null"</span>]},
+    <span class="s">"method"</span>: {<span class="s">"type"</span>: <span class="s">"string"</span>, <span class="s">"enum"</span>: [<span class="s">"in vivo"</span>, <span class="s">"in vitro"</span>, <span class="s">"in silico"</span>]}},
+    <span class="s">"required"</span>: [<span class="s">"organism"</span>, <span class="s">"sample_size"</span>, <span class="s">"method"</span>]}
+
+msg = client.messages.create(
+    model=<span class="s">"claude-haiku-5-5"</span>, max_tokens=<span class="n">1024</span>,
+    system=<span class="s">"Extract study facts. Use null if not stated."</span>,
+    messages=[{<span class="s">"role"</span>: <span class="s">"user"</span>, <span class="s">"content"</span>: abstract}],
+    output_config={<span class="s">"format"</span>: {<span class="s">"type"</span>: <span class="s">"json_schema"</span>, <span class="s">"schema"</span>: schema}},
+)
+row = json.loads(next(b.text <span class="k">for</span> b <span class="k">in</span> msg.content <span class="k">if</span> b.type == <span class="s">"text"</span>))</pre>
+  <p class="small muted mt"><code>output_config.format</code> guarantees valid JSON matching the schema (the older <code>output_format</code> parameter is deprecated). In Claude Code, the built-in <code>/claude-api</code> skill writes this kind of code for you.</p>
+  <aside class="notes"><p>Demo tip: run this live on 3 abstracts. Then show the cost: a Haiku call like this is a fraction of a cent.</p></aside>
+</section>
+
+<section class="slide" data-module="05 · API & Agent SDK">
+  <div class="kicker">Cost levers</div>
+  <h2>Same results, a fraction of the bill</h2>
+  <div class="cols c3">
+    <div class="card edge-green"><h3>🗂 Prompt caching</h3><p>Reuse a long shared prefix (instructions, a codebook, a paper) across calls. Cached reads are much cheaper and faster.</p></div>
+    <div class="card edge-gold"><h3>📦 Batch API</h3><p>Submit thousands of requests and get results within 24 h at 50% off. Ideal for coding survey data or screening abstracts.</p></div>
+    <div class="card edge-blue"><h3>🪶 Smallest model that works</h3><p>Validate on 50 hand-labelled items. If Haiku agrees with Opus 95% of the time, use Haiku.</p></div>
+  </div>
+  <div class="card mt-l f"><h3>Pattern: screen 5,000 abstracts</h3><p>Codebook in a cached system prompt → Batch API → Haiku 5.5 with a JSON schema → hand-check a random 5% → report agreement (Cohen's κ) in your methods.</p></div>
+  <aside class="notes"><p>Back-of-envelope: Haiku 5.5 lists at $0.10 / $0.50 per million input/output tokens (Nov 2026). 5,000 abstracts × ~400 tokens ≈ 2M input tokens ≈ $0.20, halved again by Batch. Cost is no longer the barrier; validation is.</p><p>The validation step is what makes this publishable. Reviewers increasingly ask for agreement with human coders.</p></aside>
+</section>
+
+<section class="slide" data-module="05 · API & Agent SDK">
+  <div class="kicker">Agents you build</div>
+  <h2>Agent SDK and Managed Agents</h2>
+  <div class="cols">
+    <div>
+      <div class="card edge-accent"><h3>Claude Agent SDK</h3><p>The same loop, tools and context management as Claude Code, in Python or TypeScript. You run it.</p></div>
+<pre class="mt copy"><span class="k">from</span> claude_agent_sdk <span class="k">import</span> query, ClaudeAgentOptions
+
+opts = ClaudeAgentOptions(
+    allowed_tools=[<span class="s">"Read"</span>, <span class="s">"Grep"</span>, <span class="s">"Bash"</span>],
+    cwd=<span class="s">"./runs"</span>)
+<span class="k">async for</span> m <span class="k">in</span> query(prompt=<span class="s">"Which runs diverged? Why?"</span>,
+                     options=opts):
+    print(m)</pre>
+    </div>
+    <div>
+      <div class="card edge-teal f"><h3>Managed Agents <span class="tag beta">beta</span></h3><p>Anthropic hosts the agent loop and a sandbox for you. Caching and compaction are built in. Good when you don't want to run infrastructure.</p></div>
+      <div class="card edge-gold mt f"><h3>Build an MCP server</h3><p>Wrap your instrument, simulator or database in ~30 lines (Python <code>FastMCP</code>). It then works in Claude Code, the apps (as a custom connector) <i>and</i> your agents.</p></div>
+    </div>
+  </div>
+  <aside class="notes"><p>Managed Agents launched in public beta in April 2026. Outcomes, multiagent and memory features are in research preview. The SDK example is the async iterator pattern; wrap in asyncio.run.</p></aside>
+</section>
+
+<!-- ================================================================== -->
+<!-- 06 · INTEGRITY                                                        -->
+<!-- ================================================================== -->
+
+<section class="slide section" id="m6" data-module="06 · Research integrity">
+  <div class="num">06</div>
+  <div class="kicker">Module 06</div>
+  <h1>Research integrity</h1>
+  <p class="lead">Claude makes you faster. Make sure it doesn't make you wrong faster.</p>
+  <div class="time">2:40 → 2:48</div>
+</section>
+
+<section class="slide" data-module="06 · Research integrity">
+  <div class="kicker">Known failure modes → guardrails</div>
+  <h2>What goes wrong, and the habit that catches it</h2>
+  <table class="cmp">
+    <tr><th>Failure</th><th>Guardrail</th></tr>
+    <tr class="f"><td>Plausible but fake citations</td><td>[CITE?] placeholders; verify every reference against DOI/arXiv (a citation-check skill helps)</td></tr>
+    <tr class="f"><td>Confident wrong math or stats</td><td>Make it compute in code, not in prose; reviewer subagent; "what are you least sure of?"</td></tr>
+    <tr class="f"><td>Silent data changes</td><td>Raw data read-only via deny rules or hooks; git everything; diff numbers before/after</td></tr>
+    <tr class="f"><td>Agreeing with you (sycophancy)</td><td>Ask it to argue the other side; don't reveal your preferred answer first</td></tr>
+    <tr class="f"><td>Instructions hidden in PDFs/web pages</td><td>Treat outputs from untrusted docs with care; review actions before approving</td></tr>
+    <tr class="f"><td>Confidentiality and policy</td><td>No unpublished third-party data or manuscripts under review; follow IISc and venue AI-disclosure rules</td></tr>
+  </table>
+  <aside class="notes"><p>Encourage everyone to write a short "How AI was used" note per project as they go; it's far easier than reconstructing it at submission time.</p></aside>
+</section>
+
+<!-- ================================================================== -->
+<!-- 07 · CAPSTONE                                                        -->
+<!-- ================================================================== -->
+
+<section class="slide section" id="m7" data-module="07 · Capstone & Q&A">
+  <div class="num">07</div>
+  <div class="kicker">Module 07</div>
+  <h1>Capstone &amp; Q&amp;A</h1>
+  <p class="lead">Leave with one thing you'll use tomorrow.</p>
+  <div class="time">2:48 → 3:00</div>
+</section>
+
+<section class="slide try" data-module="07 · Capstone & Q&A" data-timer="8">
+  <span class="try-badge">⌨ CAPSTONE · PICK ONE · 8 MIN</span>
+  <h2>Build the piece you'll actually keep</h2>
+  <div class="cols c3">
+    <div class="card edge-green"><h3>🅰 A skill</h3><p>Your lab's figure style, your thesis notation, or your paper-review checklist. Use skill-creator.</p></div>
+    <div class="card edge-accent"><h3>🅱 A repo setup</h3><p>CLAUDE.md + one hook + one custom subagent for the repo you'll open tomorrow.</p></div>
+    <div class="card edge-blue"><h3>🅲 A pipeline</h3><p>Extract 3 fields from 20 abstracts via the API, hand-check 5, compute agreement.</p></div>
+  </div>
+  <p class="lead mt-l">Share in the group chat: what you built + one thing that surprised you.</p>
+  <aside class="notes"><p>Keep ~4 minutes after the timer for Q&amp;A on the next slide.</p></aside>
+</section>
+
+<section class="slide" data-module="07 · Capstone & Q&A">
+  <div class="kicker">Cheat sheet</div>
+  <h2>Keep this one</h2>
+  <div class="cols c3">
+    <div class="card"><h3>In the app</h3><ul class="clean small">
+      <li>One Project per piece of work</li>
+      <li>Review Settings → Memory monthly</li>
+      <li>Connectors on only where needed</li>
+      <li>Repeated instructions → skill</li>
+      <li>[CITE?], never invented refs</li>
+    </ul></div>
+    <div class="card"><h3>In Claude Code</h3><ul class="clean small">
+      <li><kbd>Shift</kbd>+<kbd>Tab</kbd> plan mode first</li>
+      <li><code>/init</code> → short CLAUDE.md</li>
+      <li><code>/clear</code> between tasks</li>
+      <li><kbd>Esc</kbd><kbd>Esc</kbd> to rewind</li>
+      <li>Hooks for rules that must hold</li>
+      <li>Subagents for searches and reviews</li>
+    </ul></div>
+    <div class="card"><h3>With the API</h3><ul class="clean small">
+      <li>Pin the model ID</li>
+      <li>JSON schema for outputs</li>
+      <li>Cache the shared prefix</li>
+      <li>Batch for bulk, ~½ price</li>
+      <li>Validate vs. humans, report it</li>
+    </ul></div>
+  </div>
+</section>
+
+<section class="slide" data-module="07 · Capstone & Q&A">
+  <div class="kicker">Go further</div>
+  <h2>Resources</h2>
+  <div class="cols">
+    <ul class="clean small">
+      <li><a href="https://support.claude.com/en/articles/12138966-release-notes" target="_blank">Claude app release notes</a></li>
+      <li><a href="https://code.claude.com/docs/en/overview" target="_blank">Claude Code docs</a> · <a href="https://code.claude.com/docs/en/changelog" target="_blank">changelog</a></li>
+      <li><a href="https://platform.claude.com/docs/en/release-notes/overview" target="_blank">Claude Platform (API) docs</a></li>
+      <li><a href="https://platform.claude.com/docs/en/managed-agents/overview" target="_blank">Managed Agents overview</a></li>
+      <li><a href="https://www.anthropic.com/news/announcements" target="_blank">Anthropic announcements</a></li>
+    </ul>
+    <ul class="clean small">
+      <li>claude.ai/directory: connectors, skills, plugins</li>
+      <li>Inside Claude Code: ask the built-in <b>claude-code-guide</b> agent "how do I…"</li>
+      <li>This deck: the GitHub repo has the source. Fork it, reuse it.</li>
+      <li>Press <kbd>O</kbd> for overview, <kbd>N</kbd> for speaker notes</li>
+    </ul>
+  </div>
+  <p class="small muted mt-l">Feature details checked against the sources above on 19 Nov 2026. Beta features change often.</p>
+</section>
+
+<section class="slide title center" data-module="07 · Capstone & Q&A">
+  
+  <div class="kicker" style="justify-content:center">Thank you</div>
+  <h1 style="font-size:150px">Questions<span class="accent">?</span></h1>
+  <p class="sub">Stop asking Claude for answers. Start giving it <span class="accent">context, access and checks</span>.</p>
+  <div class="meta" style="justify-content:center"><span>Chayan Kumar Paul</span><span>·</span><span>IISc Bengaluru</span></div>
+</section>
+
+</div></div>
+
+<!-- UI chrome -->
+<div id="progress"></div>
+<div id="hud">
+  <div class="left"><span id="modname"></span></div>
+  <div class="right">
+    <span id="clock">00:00</span>
+    <span id="counter"></span>
+    <button id="btn-overview" title="Overview (O)">▦</button>
+    <button id="btn-notes" title="Notes (N)">✎</button>
+    <button id="btn-presenter" title="Presenter window (P)">⧉</button>
+    <button id="btn-help" title="Help (?)">?</button>
+  </div>
+</div>
+<div id="notes-panel"><h4>Speaker notes</h4><div class="ttl" style="font-weight:600;margin-bottom:12px"></div><div class="body"></div></div>
+<div id="overview"><div class="grid"></div></div>
+<div id="help"><div class="box">
+  <h4>CONTROLS</h4>
+  <table>
+    <tr><td><kbd>→</kbd> <kbd>Space</kbd> / click</td><td>next step</td></tr>
+    <tr><td><kbd>←</kbd></td><td>previous step</td></tr>
+    <tr><td><kbd>↓</kbd> <kbd>↑</kbd></td><td>skip whole slide</td></tr>
+    <tr><td><kbd>O</kbd> / <kbd>Esc</kbd></td><td>overview</td></tr>
+    <tr><td><kbd>N</kbd></td><td>speaker notes</td></tr>
+    <tr><td><kbd>P</kbd></td><td>presenter window</td></tr>
+    <tr><td><kbd>S</kbd></td><td>start/pause exercise timer</td></tr>
+    <tr><td><kbd>F</kbd></td><td>fullscreen</td></tr>
+    <tr><td><kbd>T</kbd></td><td>light / dark theme</td></tr>
+    <tr><td><kbd>H</kbd></td><td>hide bottom bar</td></tr>
+    <tr><td><kbd>L</kbd></td><td>lite mode (fewer effects, for slow laptops)</td></tr>
+  </table>
+</div></div>
+<div class="toast"></div>
+<script src="assets/deck.js"></script>
+</body>
+</html>

@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Working With Claude · Handout</title>
+<meta name="description" content="Every prompt, command and snippet from the 3-hour Claude session at IISc, November 2026.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;1,9..144,600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #fbf9f5; --panel: #ffffff; --ink: #1b1922; --ink-2: #4a4756; --ink-3: #807d8c; --line: #e7e2d9;
+    --accent: #c4552c; --code: #14151d; --code-ink: #e9e6f0; --ok: #1f9a4b;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) { --bg: #0b0c12; --panel: #13141d; --ink: #f2efe9; --ink-2: #c4c1cf; --ink-3: #8b8999; --line: #262736; --accent: #ff8a65; --ok: #4ade80; }
+  }
+  :root[data-theme="dark"] { --bg: #0b0c12; --panel: #13141d; --ink: #f2efe9; --ink-2: #c4c1cf; --ink-3: #8b8999; --line: #262736; --accent: #ff8a65; --ok: #4ade80; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 17px/1.65 Inter, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 860px; margin: 0 auto; padding: 56px 20px 100px; }
+  header .k { font: 600 13px "JetBrains Mono", monospace; letter-spacing: .18em; text-transform: uppercase; color: var(--accent); }
+  h1 { font: 600 clamp(36px, 7vw, 56px)/1.05 Fraunces, Georgia, serif; letter-spacing: -.02em; margin: 14px 0 12px; }
+  h1 em { color: var(--accent); }
+  header p { color: var(--ink-2); margin: 0; }
+  nav { margin: 30px 0 10px; display: flex; flex-wrap: wrap; gap: 8px; }
+  nav a { font: 600 13px "JetBrains Mono", monospace; color: var(--ink-2); text-decoration: none; padding: 6px 10px; border: 1px solid var(--line); border-radius: 999px; background: var(--panel); }
+  nav a:hover { color: var(--accent); border-color: var(--accent); }
+  h2 { font: 600 30px/1.15 Fraunces, Georgia, serif; margin: 64px 0 6px; padding-top: 10px; border-top: 1px solid var(--line); }
+  h2 small { display: block; font: 600 12px "JetBrains Mono", monospace; letter-spacing: .16em; color: var(--accent); text-transform: uppercase; margin-bottom: 6px; }
+  h3 { font-size: 18px; margin: 30px 0 8px; }
+  p, li { color: var(--ink-2); }
+  ul { padding-left: 20px; }
+  a { color: var(--accent); }
+  code { font: 14.5px "JetBrains Mono", monospace; background: color-mix(in srgb, var(--accent) 10%, transparent); padding: 1px 6px; border-radius: 5px; color: var(--ink); }
+  .box { position: relative; margin: 12px 0 18px; border-radius: 12px; overflow: hidden; border: 1px solid var(--line); }
+  .box .lab { font: 600 11px "JetBrains Mono", monospace; letter-spacing: .14em; text-transform: uppercase; padding: 8px 14px; background: var(--panel); color: var(--ink-3); border-bottom: 1px solid var(--line); }
+  .box pre { margin: 0; padding: 16px 18px; background: var(--code); color: var(--code-ink); font: 14px/1.6 "JetBrains Mono", monospace; overflow-x: auto; white-space: pre-wrap; word-break: break-word; }
+  .box.prompt pre { background: var(--panel); color: var(--ink); white-space: pre-wrap; }
+  .box.prompt { border-color: color-mix(in srgb, var(--accent) 40%, var(--line)); }
+  .copy { position: absolute; top: 5px; right: 6px; font: 600 12px "JetBrains Mono", monospace; border: 1px solid var(--line); background: var(--bg); color: var(--ink-2); border-radius: 6px; padding: 3px 9px; cursor: pointer; }
+  .copy:hover { color: var(--accent); border-color: var(--accent); }
+  table { width: 100%; border-collapse: collapse; font-size: 15px; margin: 10px 0 20px; }
+  th, td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--line); vertical-align: top; color: var(--ink-2); }
+  th { font: 600 12px "JetBrains Mono", monospace; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); }
+  td:first-child { color: var(--ink); font-weight: 600; white-space: nowrap; }
+  .note { font-size: 14px; color: var(--ink-3); }
+  .theme { position: fixed; top: 14px; right: 14px; font: 600 12px "JetBrains Mono", monospace; border: 1px solid var(--line); background: var(--panel); color: var(--ink-2); border-radius: 8px; padding: 6px 10px; cursor: pointer; }
+  footer { margin-top: 70px; padding-top: 20px; border-top: 1px solid var(--line); font-size: 14px; color: var(--ink-3); }
+  @media (max-width: 600px) { body { font-size: 16px; } td:first-child { white-space: normal; } }
+</style>
+</head>
+<body>
+<button class="theme" id="theme">◐ theme</button>
+<div class="wrap">
+<header>
+  <div class="k">IISc · 3-hour session · November 2026</div>
+  <h1>Working with Claude, <em>the handout</em></h1>
+  <p>Every prompt, command and snippet from the session, ready to copy. Feature details checked on 19 Nov 2026; beta features change often.</p>
+  <nav>
+    <a href="#models">Models</a><a href="#apps">Claude apps</a><a href="#litreview">Lit review</a><a href="#code">Claude Code</a>
+    <a href="#hooks">Hooks</a><a href="#agents">Subagents</a><a href="#api">API</a><a href="#integrity">Integrity</a><a href="#links">Links</a>
+  </nav>
+</header>
+
+<h2 id="models"><small>00 · Opening</small>Models and effort</h2>
+<table>
+  <tr><th>Model</th><th>ID</th><th>Use for</th><th>$ / M tokens (in · out)</th></tr>
+  <tr><td>Haiku 5.5</td><td><code>claude-haiku-5-5</code></td><td>bulk tagging, extraction, classification</td><td>0.10 · 0.50</td></tr>
+  <tr><td>Sonnet 5.5</td><td><code>claude-sonnet-5-5</code></td><td>daily driver: writing, analysis, most coding</td><td>2 · 10</td></tr>
+  <tr><td>Opus 5.5</td><td><code>claude-opus-5-5</code></td><td>long agentic work, hard reasoning, 1M context</td><td>4 · 20</td></tr>
+  <tr><td>Fable 5.2</td><td><code>claude-fable-5-2</code></td><td>proofs, research design, deepest debugging</td><td>8 · 40</td></tr>
+</table>
+<p>Effort is a second dial: same model, more or less thinking. Use low for edits and lookups, high for maths, debugging and plans. In Claude Code: <code>/effort</code>. Habit: prototype with a big model, then check whether a smaller one gives the same answers on 20 examples.</p>
+
+<h2 id="mental"><small>01 · Mental model</small>Instructions, access, delegation</h2>
+<table>
+  <tr><th></th><th>Gives Claude</th><th>Made of</th><th>Example</th></tr>
+  <tr><td>Skill</td><td>know-how, loaded on demand</td><td>folder with <code>SKILL.md</code> + files</td><td>"format figures our lab's way"</td></tr>
+  <tr><td>Connector</td><td>access to tools and live data</td><td>an MCP server (local or URL)</td><td>Drive, GitHub, your instrument DB</td></tr>
+  <tr><td>Plugin</td><td>a bundle to share</td><td><code>plugin.json</code> + skills, agents, hooks, MCP</td><td>"lab-toolkit"</td></tr>
+</table>
+<p><b>Rule of thumb:</b> explained it twice → skill. Pasted the same data twice → connector. Sharing with your lab → plugin. All three are listed at <a href="https://claude.ai/directory">claude.ai/directory</a>.</p>
+
+<h2 id="apps"><small>02 · Claude apps</small>Projects, memory, skills</h2>
+<h3>Project instructions template</h3>
+<div class="box prompt"><div class="lab">Prompt</div><pre>You're helping me write a paper on [topic] for [venue].
+Audience: [who reads it].
+Notation: follow notation.md exactly.
+Style: plain, precise, no hype words ("novel", "groundbreaking").
+Never invent citations. If a claim needs one, write [CITE?].
+When you're unsure about the science, say so and ask me.</pre></div>
+<h3>Teach memory a fact</h3>
+<div class="box prompt"><div class="lab">Prompt</div><pre>Remember: my thesis uses SI units, British spelling, and the symbol κ for thermal conductivity. My advisor prefers short paragraphs.</pre></div>
+<p class="note">Review Settings → Memory monthly and delete stale entries. Use an incognito chat for anything you don't want remembered.</p>
+<h3>Try it · build your first skill (8 min)</h3>
+<div class="box prompt"><div class="lab">Prompt</div><pre>Use the skill-creator skill to make a skill called "paper-litnote" for me.
+I'm a [PhD student in ___] working on [topic].
+When I share a paper, it should produce: a one-line takeaway, problem/method/data/result with page refs, limitations, 3 verbatim quotes, and how it relates to my topic.
+Ask me 3 questions first to tailor it, then give me the skill as a downloadable zip.</pre></div>
+<p class="note">Then upload the zip in Settings → Capabilities → Skills, open a new chat, drop in a PDF and say "notes please". If it doesn't trigger, sharpen the description.</p>
+<h3>Example SKILL.md</h3>
+<div class="box"><div class="lab">paper-litnote/SKILL.md</div><pre>---
+name: paper-litnote
+description: Turn a research paper (PDF, arXiv link) into a structured
+  literature note. Use when the user shares a paper and says summarise,
+  notes, lit note, or "what does this paper do".
+---
+# Literature note
+1. One-line takeaway (≤ 25 words).
+2. Problem · Method · Data · Key result (with section/page refs).
+3. Assumptions and limits the authors admit.
+4. Limits they don't admit (mark as MY READING).
+5. 3 quotes worth keeping, verbatim, with page.
+6. How it relates to: {{my thesis topic}}.
+Never fill gaps from memory; write "not stated".</pre></div>
+
+<h2 id="litreview"><small>02 · Claude apps</small>A literature-review pipeline</h2>
+<p><b>1 · You:</b> criteria (scope, years, study types). <b>2 · Claude:</b> search with a log. <b>3 · Skill:</b> one lit note per paper. <b>4 · Claude:</b> compare and find gaps. <b>5 · You:</b> argue your position. <b>6 · Claude:</b> check every citation.</p>
+<div class="box prompt"><div class="lab">Prompt · search log</div><pre>Keep two separate sections: SEARCH LOG (queries, databases, dates, counts, what you excluded and why) and FINDINGS. Never mix interpretation into the log.</pre></div>
+<div class="box prompt"><div class="lab">Prompt · compare</div><pre>From these notes, build a table: paper · method · dataset · metric · result. Then list 3 questions none of them answers, and which paper comes closest to each.</pre></div>
+<h3>Try it · note it, then attack it (10 min)</h3>
+<div class="box prompt"><div class="lab">Prompt 1</div><pre>[attach your PDF]
+Make a lit note of this paper.</pre></div>
+<div class="box prompt"><div class="lab">Prompt 2</div><pre>Now act as a skeptical reviewer for [venue].
+List the 5 weakest points in this paper, ranked by severity, each with: the claim, why the evidence is insufficient, and what experiment or analysis would fix it.
+Then tell me which of your 5 points you are least sure about.</pre></div>
+<h3>Writing: edit, don't replace</h3>
+<ul>
+  <li>"Here are my bullet points; draft the paragraph, keep every claim, add nothing."</li>
+  <li>Highlight one sentence and ask for a fix in place.</li>
+  <li>"Where would a reader from [other field] get lost?"</li>
+  <li>"Shorten by 30% without losing any number."</li>
+</ul>
+
+<h2 id="code"><small>03 · Claude Code</small>Setup and daily habits</h2>
+<div class="box"><div class="lab">Install</div><pre>curl -fsSL https://claude.ai/install.sh | bash
+# Windows: winget install Anthropic.ClaudeCode
+# or use the Code tab in the Claude desktop app</pre></div>
+<table>
+  <tr><th>Key / command</th><th>What it does</th></tr>
+  <tr><td>Shift+Tab</td><td>cycle permission modes (Manual · Accept edits · Plan · Auto)</td></tr>
+  <tr><td>/init</td><td>draft a CLAUDE.md for this repo</td></tr>
+  <tr><td>/clear · /compact</td><td>start fresh · summarise and continue</td></tr>
+  <tr><td>Esc Esc · /rewind</td><td>go back to a checkpoint (code, conversation or both)</td></tr>
+  <tr><td>/agents · /skills · /plugin · /mcp</td><td>manage subagents, skills, plugins, MCP servers</td></tr>
+  <tr><td>/code-review · /security-review</td><td>review your diff for bugs / security issues</td></tr>
+  <tr><td>/schedule · /loop</td><td>scheduled cloud tasks · repeat in this session</td></tr>
+  <tr><td>/output-style Learning</td><td>Claude leaves TODOs for you to write</td></tr>
+  <tr><td>claude -w name</td><td>work in an isolated git worktree</td></tr>
+  <tr><td>claude -p "…" --output-format json</td><td>headless runs for scripts and CI</td></tr>
+</table>
+<h3>Example CLAUDE.md</h3>
+<div class="box"><div class="lab">CLAUDE.md</div><pre># Project: cryo-EM particle analysis
+## Run
+- env: `conda activate cryo` (env.yml)
+- tests: `pytest -q` (must pass before commit)
+- full pipeline: `make figures` (~20 min, GPU)
+## Rules
+- data/raw/ is READ-ONLY. Never modify or move.
+- Every random op takes `seed` from config.yaml.
+- Plots: use style/lab.mplstyle, SI units.
+- New analysis = new script in analysis/, not a notebook.
+## Gotchas
+- loader.py assumes float32; MRC files are float16.
+- Cluster jobs: see @docs/slurm.md</pre></div>
+<h3>Diagnose before you change</h3>
+<div class="box prompt"><div class="lab">Prompt</div><pre>The fit in fit_spectra.py gives negative widths on ~3% of samples. Find out why. Don't fix yet.</pre></div>
+<h3>Refactoring science code: diff every number</h3>
+<div class="box prompt"><div class="lab">Prompt</div><pre>Before changing anything: run the current pipeline on data/sample and save outputs to /tmp/before. After your change, run it again and diff every number. Report any difference above 1e-6.</pre></div>
+<h3>Try it · set up a repo properly (15 min)</h3>
+<div class="box prompt"><div class="lab">Prompt (in plan mode)</div><pre>Explore this repo and tell me:
+1) how to run it end to end,
+2) the 3 riskiest places for a silent numerical bug,
+3) what's untested.
+Then propose a plan to add one regression test for the most important result. Don't write code yet.</pre></div>
+
+<h2 id="hooks"><small>03 · Claude Code</small>Hooks, MCP and plugins</h2>
+<p>A hook is code that runs on an event, every time. Easiest way to add one: ask Claude, e.g. "Add a hook that runs the tests after every edit."</p>
+<div class="box"><div class="lab">.claude/settings.json (simplified)</div><pre>{
+  "hooks": {
+    "PostToolUse": [{
+      "matcher": "Edit|Write",
+      "hooks": [{ "type": "command", "command": "pytest -q -x" }]
+    }],
+    "PreToolUse": [{
+      "matcher": "Bash",
+      "hooks": [{ "type": "command", "command": "scripts/guard_raw_data.sh" }]
+    }]
+  }
+}</pre></div>
+<p class="note">The tool call arrives as JSON on stdin; exit code 2 from a PreToolUse hook blocks the action and tells Claude why.</p>
+<div class="box"><div class="lab">MCP servers</div><pre># a remote server (HTTP)
+claude mcp add --transport http github https://api.githubcopilot.com/mcp/
+
+# a local one, shared with the team via .mcp.json
+claude mcp add --scope project &lt;name&gt; -- &lt;command&gt;
+
+# inside a session
+/mcp</pre></div>
+<p class="note">Scopes: <code>local</code> (just you, this repo), <code>project</code> (.mcp.json, committed), <code>user</code> (all your projects). Your claude.ai connectors also appear in Claude Code.</p>
+<div class="box"><div class="lab">Plugin layout</div><pre>lab-toolkit/
+├── .claude-plugin/plugin.json
+├── skills/run-experiment/SKILL.md
+├── agents/stats-reviewer.md
+├── hooks/hooks.json
+└── .mcp.json</pre></div>
+
+<h2 id="agents"><small>03 · Claude Code</small>A custom subagent</h2>
+<div class="box"><div class="lab">.claude/agents/stats-reviewer.md</div><pre>---
+name: stats-reviewer
+description: Reviews analysis code and results for statistical errors.
+  Use after any change to analysis/ or before writing up results.
+tools: Read, Grep, Bash
+model: opus
+---
+You are a methods reviewer. Check: multiple comparisons, leakage
+between train/test, wrong error bars (SD vs SEM vs CI),
+pseudo-replication, seeds, and whether figures match the numbers.
+Report issues by severity with file:line. Never edit files.</pre></div>
+<div class="box"><div class="lab">A skill as a slash command</div><pre>---
+name: run-experiment
+description: Launch a training/simulation run on the cluster with a
+  logged config. Use when the user asks to run, launch or sweep.
+argument-hint: "&lt;config.yaml&gt; [--sweep]"
+allowed-tools: Bash(sbatch:*) Bash(git:*)
+---
+Current branch: !`git branch --show-current`
+1. Refuse if `git status` is dirty: runs must map to a commit.
+2. Copy $ARGUMENTS into runs/&lt;date&gt;-&lt;hash&gt;/.
+3. Fill templates/job.slurm, submit with sbatch.
+4. Append job id + commit to runs/LOG.md.</pre></div>
+
+<h2 id="api"><small>05 · API &amp; Agent SDK</small>Structured extraction at scale</h2>
+<div class="box"><div class="lab">extract.py</div><pre>import anthropic, json
+client = anthropic.Anthropic()  # reads ANTHROPIC_API_KEY
+
+schema = {"type": "object", "additionalProperties": False,
+  "properties": {"organism": {"type": ["string", "null"]},
+                 "sample_size": {"type": ["integer", "null"]},
+                 "method": {"type": "string", "enum": ["in vivo", "in vitro", "in silico"]}},
+  "required": ["organism", "sample_size", "method"]}
+
+msg = client.messages.create(
+    model="claude-haiku-5-5", max_tokens=1024,
+    system="Extract study facts. Use null if not stated.",
+    messages=[{"role": "user", "content": abstract}],
+    output_config={"format": {"type": "json_schema", "schema": schema}},
+)
+row = json.loads(next(b.text for b in msg.content if b.type == "text"))</pre></div>
+<p><b>Cost levers:</b> cache the shared prefix (instructions, codebook) · Batch API for bulk (50% off, results within 24 h) · the smallest model that agrees with a bigger one on 50 hand-labelled items.</p>
+<p><b>Pattern:</b> codebook → cache → batch → Haiku + JSON schema → hand-check a random 5% → report agreement (e.g. Cohen's κ) in your methods.</p>
+<div class="box"><div class="lab">Agent SDK (Python)</div><pre>from claude_agent_sdk import query, ClaudeAgentOptions
+
+opts = ClaudeAgentOptions(allowed_tools=["Read", "Grep", "Bash"], cwd="./runs")
+async for m in query(prompt="Which runs diverged? Why?", options=opts):
+    print(m)</pre></div>
+<p class="note">Managed Agents (public beta) host the loop and a sandbox for you. Max and Team plans include monthly API credits (link a Console org).</p>
+
+<h2 id="integrity"><small>06 · Research integrity</small>Failure → habit</h2>
+<table>
+  <tr><th>Failure</th><th>Habit</th></tr>
+  <tr><td>Invented references</td><td>[CITE?] placeholders; verify every reference against its DOI</td></tr>
+  <tr><td>Confident wrong maths</td><td>make it compute in code, not prose; ask what it's least sure of</td></tr>
+  <tr><td>Silent edits to data</td><td>raw data read-only via deny rules or hooks; git everything</td></tr>
+  <tr><td>It agrees with you</td><td>don't reveal your answer first; ask it to argue the other side</td></tr>
+  <tr><td>Hidden instructions in PDFs/pages</td><td>review actions before approving them</td></tr>
+  <tr><td>Confidential material</td><td>no unpublished third-party data or manuscripts under review</td></tr>
+</table>
+<p>Follow IISc and venue rules on AI disclosure, and keep a short "how AI was used" note per project as you go.</p>
+
+<h2 id="capstone"><small>07 · Capstone</small>Pick one, build it</h2>
+<ul>
+  <li><b>A · A skill:</b> your lab's figure style, your thesis notation, or your paper-review checklist (use skill-creator).</li>
+  <li><b>B · A repo setup:</b> CLAUDE.md + one hook + one custom subagent for the repo you'll open tomorrow.</li>
+  <li><b>C · A pipeline:</b> extract 3 fields from 20 abstracts via the API, hand-check 5, compute agreement.</li>
+</ul>
+
+<h2 id="links"><small>Go further</small>Links</h2>
+<ul>
+  <li><a href="https://support.claude.com/en/articles/12138966-release-notes">Claude app release notes</a></li>
+  <li><a href="https://code.claude.com/docs/en/overview">Claude Code docs</a> · <a href="https://code.claude.com/docs/en/changelog">changelog</a></li>
+  <li><a href="https://platform.claude.com/docs/en/release-notes/overview">Claude Platform (API) docs</a> · <a href="https://platform.claude.com/docs/en/managed-agents/overview">Managed Agents</a></li>
+  <li><a href="https://www.anthropic.com/news/announcements">Anthropic announcements</a></li>
+  <li>Inside Claude Code, ask the built-in claude-code-guide agent "how do I…"</li>
+</ul>
+<footer>Slides: <a href="index.html">the keynote</a> · source on GitHub · Chayan Kumar Paul, IISc Bengaluru</footer>
+</div>
+<script>
+  document.querySelectorAll('.box').forEach(b => {
+    const btn = document.createElement('button'); btn.className = 'copy'; btn.textContent = 'copy';
+    btn.onclick = () => navigator.clipboard?.writeText(b.querySelector('pre').textContent).then(() => { btn.textContent = 'copied'; setTimeout(() => btn.textContent = 'copy', 1200); });
+    b.appendChild(btn);
+  });
+  const root = document.documentElement;
+  try { const t = localStorage.getItem('handout-theme'); if (t) root.dataset.theme = t; } catch (_) {}
+  document.getElementById('theme').onclick = () => {
+    const dark = root.dataset.theme ? root.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+    root.dataset.theme = dark ? 'light' : 'dark';
+    try { localStorage.setItem('handout-theme', root.dataset.theme); } catch (_) {}
+  };
+</script>
+</body>
+</html>

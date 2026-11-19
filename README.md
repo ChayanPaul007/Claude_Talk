@@ -1,42 +1,51 @@
 # Working with Claude — beyond the chat box
 
-Slides for a 3-hour interactive session on using Claude for research, coding and everything in
-between (IISc, November 2026). Plain HTML/CSS/JS, no build step, hosted on GitHub Pages.
+A cinematic, interactive web keynote for a 3-hour session on using Claude for research, coding
+and everything in between (IISc, November 2026). Plain HTML/CSS/JS, no build step, hosted on
+GitHub Pages.
+
+| Page | What it is |
+| --- | --- |
+| `index.html` | **The keynote**: 56 scenes, one idea per screen, step-by-step "beats" |
+| `handout.html` | Attendee handout: every prompt, command and snippet, with copy buttons |
+| `presenter.html` | Presenter window: notes, next scene, beats, clock, time plan (press **P**) |
+| `classic.html` | The earlier text-heavy slide version, kept for reference |
+| `research/notes.md` | Fact sheet + sources behind the content (checked 19 Nov 2026) |
 
 ## Run it
 
-- **Online:** GitHub Pages (Settings → Pages → Deploy from branch `main`, folder `/`).
-- **Locally:** any static server from this folder, e.g. `python3 -m http.server 8000`, then open
-  http://localhost:8000. Opening `index.html` directly works too, but the presenter window needs a server.
+- **Online:** GitHub Pages from `main` / root.
+- **Locally:** open `index.html` directly, or run `python3 -m http.server 8000` in this folder
+  (the presenter window needs a server).
 
-## Controls
+## Controls (keynote)
 
 | Key | Action |
 | --- | --- |
-| → / Space / click | next build step |
-| ← | previous step |
-| ↓ / ↑ | skip a whole slide |
-| O or Esc | slide overview |
-| N | speaker notes panel |
-| P | presenter window (notes, next slide, clock, time plan) — put it on your laptop screen |
-| S | start/pause the exercise timer on "Try it" slides |
-| F | fullscreen · T theme · H hide bottom bar · ? help |
+| → / Space / click | next beat |
+| ← | previous beat |
+| ↓ / ↑ | next / previous scene |
+| O | overview of all scenes |
+| N | speaker notes |
+| P | presenter window — put it on your laptop screen |
+| S | start/pause the countdown on hands-on scenes (or click the ring) |
+| F · H · L | fullscreen · hide HUD · lite mode for slow projector laptops |
 
-## Structure
+Interactive scenes: the model picker (click a task) and permission modes (click a mode).
 
+## How scenes work
+
+Each `<section class="scene">` is one idea. Elements appear on beats:
+
+```html
+<div data-in="2" data-fx="slam">appears on beat 2 with a slam</div>
+<div data-in="1" data-out="3">visible on beats 1–2 only</div>
 ```
-index.html        all slides (<section class="slide">), notes in <aside class="notes">
-presenter.html    presenter view, synced via BroadcastChannel
-assets/style.css  design tokens, layouts, animations
-assets/deck.js    slide engine: fragments (.f), timers (data-timer), copy buttons, overview
-research/notes.md fact sheet + sources used for the content (checked 19 Nov 2026)
-```
 
-### Editing
-
-- Add a slide: copy any `<section class="slide" data-module="…">` block.
-- Step-by-step reveal: add class `f` to an element (`f zoom`, `f left` for variants).
-- Exercise timer: `data-timer="10"` on the section (minutes) and class `try` for the striped style.
-- Copy button: automatic on `.prompt` blocks and on `<pre class="copy">`.
+- Effects (`data-fx`): `rise`, `zoom`, `slam` (with screen shake), `pop`, `drop`, `left`, `right`, `flip`.
+- The scene also gets cumulative classes `s1`, `s2`, … so CSS can choreograph bigger moves.
+- `.kin` headlines rise word by word; `.grad` gives the shimmering italic accent.
+- Each module has its own color grade (set in `PALETTE` in `assets/keynote.js`); hands-on scenes turn amber.
+- Speaker notes live in `<aside class="notes">` inside each scene.
 
 Beta features change often: re-check `research/notes.md` sources the day before presenting.

@@ -351,7 +351,7 @@
   document.getElementById('btn-presenter').onclick = () => openPresenter();
 
   /* ---------- presenter window ---------- */
-  function openPresenter() { window.open('presenter.html', 'claude-talk-presenter', 'width=1100,height=760'); }
+  function openPresenter() { window.open('presenter.html?deck=classic.html', 'claude-talk-presenter', 'width=1100,height=760'); }
   if (chan) chan.onmessage = ({ data }) => {
     if (data.type === 'cmd') ({ next, prev })[data.cmd]?.();
     if (data.type === 'goto') go(data.idx);
