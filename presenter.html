@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Presenter View</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root { --bg:#14110f; --panel:#231e1a; --line:#3a322b; --ink:#f3ece4; --ink2:#c9bfb4; --ink3:#8f857a; --accent:#e07a52; --gold:#e3c06b; }
+  * { box-sizing: border-box; margin: 0; }
+  body { background: var(--bg); color: var(--ink); font-family: Inter, system-ui, sans-serif; padding: 22px; display: grid; grid-template-rows: auto 1fr auto; gap: 18px; height: 100vh; }
+  header { display: flex; justify-content: space-between; align-items: center; font-family: "JetBrains Mono", monospace; }
+  .big { font-size: 46px; font-weight: 600; color: var(--gold); font-variant-numeric: tabular-nums; }
+  .mod { color: var(--accent); font-size: 15px; letter-spacing: .1em; text-transform: uppercase; }
+  main { display: grid; grid-template-columns: 1.3fr 1fr; gap: 18px; min-height: 0; }
+  .box { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 20px 22px; overflow: auto; }
+  .box h4 { font: 600 13px "JetBrains Mono", monospace; letter-spacing: .12em; color: var(--accent); margin-bottom: 10px; text-transform: uppercase; }
+  .ttl { font-size: 28px; font-weight: 600; margin-bottom: 14px; }
+  .notes { font-size: 21px; line-height: 1.6; color: var(--ink2); }
+  .notes ul { padding-left: 22px; } .notes li, .notes p { margin-bottom: 8px; }
+  .next { font-size: 22px; color: var(--ink2); }
+  .frag { font: 14px "JetBrains Mono", monospace; color: var(--ink3); margin-top: 6px; }
+  footer { display: flex; gap: 12px; }
+  button { background: var(--panel); color: var(--ink); border: 1px solid var(--line); border-radius: 10px; padding: 14px 22px; font: 600 16px "JetBrains Mono", monospace; cursor: pointer; }
+  button:hover { border-color: var(--accent); color: var(--accent); }
+  .plan { font: 14px/1.7 "JetBrains Mono", monospace; color: var(--ink3); }
+  .plan .on { color: var(--accent); }
+</style>
+</head>
+<body>
+<header>
+  <div><div class="mod" id="mod">Waiting for the deck…</div><div id="count" class="frag"></div></div>
+  <div style="text-align:right"><div class="big" id="elapsed">00:00:00</div><div class="frag">session time · <span id="now"></span></div></div>
+</header>
+<main>
+  <div class="box"><h4>Now</h4><div class="ttl" id="ttl"></div><div class="notes" id="notes"></div></div>
+  <div style="display:grid;grid-template-rows:auto 1fr;gap:18px;min-height:0">
+    <div class="box"><h4>Up next</h4><div class="next" id="next"></div></div>
+    <div class="box"><h4>Time plan</h4><div class="plan" id="plan"></div></div>
+  </div>
+</main>
+<footer>
+  <button onclick="send('prev')">◀ prev</button>
+  <button onclick="send('next')">next ▶</button>
+  <button onclick="startClock()">start / reset clock</button>
+</footer>
+<script>
+  const chan = new BroadcastChannel('claude-talk');
+  let slides = [], t0 = null;
+  const $ = id => document.getElementById(id);
+  const send = cmd => chan.postMessage({ type: 'cmd', cmd });
+  function startClock() { t0 = Date.now(); }
+  document.addEventListener('keydown', e => {
+    if (['ArrowRight',' ','PageDown'].includes(e.key)) { e.preventDefault(); send('next'); }
+    if (['ArrowLeft','PageUp'].includes(e.key)) { e.preventDefault(); send('prev'); }
+  });
+  setInterval(() => {
+    $('now').textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    if (!t0) return;
+    const s = Math.floor((Date.now() - t0) / 1000);
+    $('elapsed').textContent = [s / 3600, (s % 3600) / 60, s % 60].map(v => String(Math.floor(v)).padStart(2, '0')).join(':');
+  }, 1000);
+
+  fetch('index.html').then(r => r.text()).then(html => {
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+    slides = [...doc.querySelectorAll('.slide')].map(s => ({
+      title: (s.querySelector('h1,h2')?.textContent || 'Slide').trim().replace(/\s+/g, ' '),
+      notes: s.querySelector('.notes')?.innerHTML || '<p>—</p>',
+      module: s.dataset.module || '',
+      frags: s.querySelectorAll('.f').length,
+    }));
+    const mods = [...doc.querySelectorAll('[data-plan]')].map(a => a.dataset.plan);
+    $('plan').innerHTML = mods.map(m => `<div data-m="${m.split('|')[0]}">${m.replace('|', ' — ')}</div>`).join('');
+    chan.postMessage({ type: 'hello' });
+  });
+
+  chan.onmessage = ({ data }) => {
+    if (data.type !== 'state' || !slides.length) return;
+    const s = slides[data.idx], n = slides[data.idx + 1];
+    $('mod').textContent = s.module;
+    $('count').textContent = `slide ${data.idx + 1} / ${data.total}`;
+    $('ttl').textContent = s.title;
+    $('notes').innerHTML = s.notes + (s.frags ? `<div class="frag">build step ${data.frag} / ${s.frags}</div>` : '');
+    $('next').textContent = n ? n.title : 'End of deck';
+    document.querySelectorAll('#plan div').forEach(d => d.classList.toggle('on', s.module.startsWith(d.dataset.m)));
+  };
+</script>
+</body>
+</html>
