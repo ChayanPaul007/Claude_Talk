@@ -7,10 +7,12 @@
 <meta name="description" content="A 3-hour interactive session on using Claude for research, coding and everything in between — November 2026.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500;1,9..144,600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
+<div id="bg"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div><div class="grid"></div></div>
+<canvas id="net"></canvas>
 <div id="viewport"><div id="deck">
 
 <!-- ================================================================== -->
@@ -18,11 +20,11 @@
 <!-- ================================================================== -->
 
 <section class="slide title" data-module="00 · Opening">
-  <div class="orb o1"></div><div class="orb o2"></div>
-  <div class="kicker rise">3-hour interactive session · November 2026</div>
-  <h1 class="rise d1">Working with Claude, <span class="accent">beyond the chat box</span></h1>
-  <p class="sub rise d2">Research, code and everything in between: skills, connectors, plugins, agents, and the habits that make them useful.</p>
-  <div class="meta rise d3"><span>Chayan Kumar Paul</span><span>·</span><span>IISc Bengaluru</span><span>·</span><span>press <kbd>?</kbd> for controls</span></div>
+  
+  <div class="kicker">3-hour interactive session · November 2026</div>
+  <h1>Working with Claude, <span class="accent">beyond the chat box</span></h1>
+  <p class="sub">Research, code and everything in between: skills, connectors, plugins, agents, and the habits that make them useful.</p>
+  <div class="meta"><span>Chayan Kumar Paul</span><span>·</span><span>IISc Bengaluru</span><span>·</span><span>press <kbd>?</kbd> for controls</span></div>
   <aside class="notes">
     <p>Welcome. Set expectations: this is not "what is an LLM". Everyone here has used Claude. The aim is to move from <b>asking questions</b> to <b>building a working setup</b>.</p>
     <p>Ask everyone to open claude.ai in a browser and, if they have it, a terminal with Claude Code.</p>
@@ -33,11 +35,11 @@
   <div class="kicker">How today works</div>
   <h2>Three hours, nine stops, lots of <span class="hl">hands-on</span></h2>
   <div class="cols c3 mt">
-    <div class="card edge-gold rise d1"><span class="icon">⌨️</span><h3>"Try it" slides</h3><p>Yellow-striped slides are exercises with a timer. Prompts have a <b>copy</b> button.</p></div>
-    <div class="card edge-teal rise d2"><span class="icon">🧭</span><h3>Bring your own work</h3><p>A paper you're reading, a repo you're stuck on, a dataset. Real tasks teach more than toy ones.</p></div>
-    <div class="card edge-accent rise d3"><span class="icon">🙋</span><h3>Interrupt me</h3><p>Questions mid-slide are welcome. We have buffer time in every module.</p></div>
+    <div class="card edge-gold"><span class="icon">⌨️</span><h3>"Try it" slides</h3><p>Yellow-striped slides are exercises with a timer. Prompts have a <b>copy</b> button.</p></div>
+    <div class="card edge-teal"><span class="icon">🧭</span><h3>Bring your own work</h3><p>A paper you're reading, a repo you're stuck on, a dataset. Real tasks teach more than toy ones.</p></div>
+    <div class="card edge-accent"><span class="icon">🙋</span><h3>Interrupt me</h3><p>Questions mid-slide are welcome. We have buffer time in every module.</p></div>
   </div>
-  <div class="card mt-l rise d4" style="padding:22px 30px">
+  <div class="card mt-l" style="padding:22px 30px">
     <p><b>Have open:</b> claude.ai (web or desktop) · a terminal with <code>claude</code> installed (optional for part 1) · one PDF of a paper from your field</p>
   </div>
   <aside class="notes"><p>Check how many people have Claude Code installed. If many don't, point them to the install slide in Module 3 now so it installs during Module 2.</p>
@@ -101,10 +103,10 @@
   <div class="kicker">Models · November 2026</div>
   <h2>Pick the model for the task, not out of habit</h2>
   <div class="cols c4">
-    <div class="card edge-green rise d1"><h3>Haiku 5.5</h3><p class="small muted">claude-haiku-5-5</p><p class="mt">Fast and cheap. Bulk classification, extraction, tagging 10,000 abstracts.</p></div>
-    <div class="card edge-blue rise d2"><h3>Sonnet 5.5</h3><p class="small muted">claude-sonnet-5-5</p><p class="mt">Daily driver. Writing, analysis, most coding. Faster and cheaper than Sonnet 5.</p></div>
-    <div class="card edge-accent rise d3"><h3>Opus 5.5</h3><p class="small muted">claude-opus-5-5</p><p class="mt">Hard reasoning and long agentic work. 1M-token context in Claude Code.</p></div>
-    <div class="card edge-gold rise d4"><h3>Fable 5.2</h3><p class="small muted">claude-fable-5-2</p><p class="mt">The top tier. Proofs, deep debugging, research design. 1M context.</p></div>
+    <div class="card edge-green"><h3>Haiku 5.5</h3><p class="small muted">claude-haiku-5-5</p><p class="mt">Fast and cheap. Bulk classification, extraction, tagging 10,000 abstracts.</p></div>
+    <div class="card edge-blue"><h3>Sonnet 5.5</h3><p class="small muted">claude-sonnet-5-5</p><p class="mt">Daily driver. Writing, analysis, most coding. Faster and cheaper than Sonnet 5.</p></div>
+    <div class="card edge-accent"><h3>Opus 5.5</h3><p class="small muted">claude-opus-5-5</p><p class="mt">Hard reasoning and long agentic work. 1M-token context in Claude Code.</p></div>
+    <div class="card edge-gold"><h3>Fable 5.2</h3><p class="small muted">claude-fable-5-2</p><p class="mt">The top tier. Proofs, deep debugging, research design. 1M context.</p></div>
   </div>
   <div class="cols mt-l">
     <div class="card f"><h3>🎚 Effort is a second dial</h3><p>Same model, more or less thinking. Low for edits and lookups; high for math, debugging and planning. In Claude Code: <code>/effort</code>.</p></div>
@@ -246,9 +248,9 @@ When you're unsure about the physics/biology, say so and ask me.</div>
   <div class="kicker">Memory</div>
   <h2>Memory is now a list you can read and edit</h2>
   <div class="cols c3">
-    <div class="card edge-teal rise d1"><h3>Entries, not a summary</h3><p>Since July: separate, categorized items Claude reads and updates. Find them in <b>Settings → Memory</b>.</p></div>
-    <div class="card edge-blue rise d2"><h3>Shared across work</h3><p>Since August: the same memory spans chats and agent tasks. Topics are editable.</p></div>
-    <div class="card edge-rose rise d3"><h3>Sensitive stays out</h3><p>Health and beliefs are excluded unless you turn on "Include sensitive topics".</p></div>
+    <div class="card edge-teal"><h3>Entries, not a summary</h3><p>Since July: separate, categorized items Claude reads and updates. Find them in <b>Settings → Memory</b>.</p></div>
+    <div class="card edge-blue"><h3>Shared across work</h3><p>Since August: the same memory spans chats and agent tasks. Topics are editable.</p></div>
+    <div class="card edge-rose"><h3>Sensitive stays out</h3><p>Health and beliefs are excluded unless you turn on "Include sensitive topics".</p></div>
   </div>
   <div class="cols mt-l">
     <div class="prompt f">Remember: my thesis uses SI units, British spelling, and the symbol κ for thermal conductivity. My advisor prefers short paragraphs.</div>
@@ -329,12 +331,12 @@ Ask me 3 questions first to tailor it, then give me the skill as a downloadable 
   <div class="kicker">Artifacts, grown up</div>
   <h2>Outputs you can share, not just read</h2>
   <div class="cols c3">
-    <div class="card edge-blue rise d1"><h3>📄 Claude Docs</h3><p>Living documents others comment on. Export to Word or Google Docs.</p></div>
-    <div class="card edge-accent rise d2"><h3>🖼 Claude Slides</h3><p>Decks from a prompt or an outline. Download as PowerPoint or PDF.</p></div>
-    <div class="card edge-rose rise d3"><h3>🎨 Claude Design</h3><p>Posters, figures-as-design, UI mockups on a canvas.</p></div>
-    <div class="card edge-green rise d3"><h3>📊 Sheets <span class="tag beta">beta</span></h3><p>Spreadsheets with formulas Claude builds and edits.</p></div>
-    <div class="card edge-gold rise d4"><h3>🧠 Whiteboards <span class="tag beta">beta</span></h3><p>Shared brainstorming space for a group.</p></div>
-    <div class="card edge-teal rise d5"><h3>📈 Claude Data</h3><p>Dashboards from connected data, with live sharing.</p></div>
+    <div class="card edge-blue"><h3>📄 Claude Docs</h3><p>Living documents others comment on. Export to Word or Google Docs.</p></div>
+    <div class="card edge-accent"><h3>🖼 Claude Slides</h3><p>Decks from a prompt or an outline. Download as PowerPoint or PDF.</p></div>
+    <div class="card edge-rose"><h3>🎨 Claude Design</h3><p>Posters, figures-as-design, UI mockups on a canvas.</p></div>
+    <div class="card edge-green"><h3>📊 Sheets <span class="tag beta">beta</span></h3><p>Spreadsheets with formulas Claude builds and edits.</p></div>
+    <div class="card edge-gold"><h3>🧠 Whiteboards <span class="tag beta">beta</span></h3><p>Shared brainstorming space for a group.</p></div>
+    <div class="card edge-teal"><h3>📈 Claude Data</h3><p>Dashboards from connected data, with live sharing.</p></div>
   </div>
   <p class="lead mt f">Fun fact: this deck is a plain HTML page I built with Claude Code and host on GitHub Pages. The source is on GitHub; fork it.</p>
   <aside class="notes"><p>Docs/Slides/Design came 16 Sep 2026 (beta on Enterprise; Artifacts on all plans incl. Free). Sheets and Whiteboards beta + Claude Data GA around 10–12 Nov 2026.</p></aside>
@@ -416,7 +418,7 @@ Then tell me which of your 5 points you are least sure about.</div>
 </section>
 
 <section class="slide center" id="brk" data-module="☕ · Break" data-timer="10">
-  <div class="orb o1"></div>
+  
   <h1 style="font-size:130px">☕ Break</h1>
   <p class="lead mt">Ten minutes. If you haven't installed Claude Code yet, now's the time:</p>
   <pre style="margin-top:30px;font-size:24px" class="copy">curl -fsSL https://claude.ai/install.sh | bash</pre>
@@ -440,12 +442,12 @@ Then tell me which of your 5 points you are least sure about.</div>
   <div class="kicker">Same agent, many surfaces</div>
   <h2>Pick where you work. The engine is the same.</h2>
   <div class="cols c3">
-    <div class="card edge-accent rise d1"><h3>⌨️ Terminal CLI</h3><p>The full feature set. <code>claude</code> in any folder.</p></div>
-    <div class="card edge-blue rise d2"><h3>🖥 Desktop app</h3><p>Code tab: parallel sessions, visual diffs, browser preview, scheduled tasks.</p></div>
-    <div class="card edge-teal rise d3"><h3>☁️ Web</h3><p>claude.ai/code runs in the cloud. <code>claude --teleport</code> pulls it back locally.</p></div>
-    <div class="card edge-gold rise d3"><h3>🧩 IDE</h3><p>VS Code / Cursor extension and JetBrains plugin with inline diffs.</p></div>
-    <div class="card edge-rose rise d4"><h3>📱 Phone</h3><p><b>Remote Control</b>: steer a session on your lab machine from the Claude app.</p></div>
-    <div class="card edge-green rise d5"><h3>🤖 Headless</h3><p><code>claude -p</code> in scripts, cron jobs and GitHub Actions.</p></div>
+    <div class="card edge-accent"><h3>⌨️ Terminal CLI</h3><p>The full feature set. <code>claude</code> in any folder.</p></div>
+    <div class="card edge-blue"><h3>🖥 Desktop app</h3><p>Code tab: parallel sessions, visual diffs, browser preview, scheduled tasks.</p></div>
+    <div class="card edge-teal"><h3>☁️ Web</h3><p>claude.ai/code runs in the cloud. <code>claude --teleport</code> pulls it back locally.</p></div>
+    <div class="card edge-gold"><h3>🧩 IDE</h3><p>VS Code / Cursor extension and JetBrains plugin with inline diffs.</p></div>
+    <div class="card edge-rose"><h3>📱 Phone</h3><p><b>Remote Control</b>: steer a session on your lab machine from the Claude app.</p></div>
+    <div class="card edge-green"><h3>🤖 Headless</h3><p><code>claude -p</code> in scripts, cron jobs and GitHub Actions.</p></div>
   </div>
   <aside class="notes"><p>Remote Control needs a claude.ai login (not API key). Team/Enterprise need an admin toggle. Great for long experiments on a workstation.</p></aside>
 </section>
@@ -696,10 +698,10 @@ Never edit files.</pre>
   <div class="kicker">Parallel work</div>
   <h2>From one assistant to a small team</h2>
   <div class="cols c4">
-    <div class="card edge-teal rise d1"><h3>Worktrees</h3><p><code>claude -w fix-loader</code> gives each session its own branch and folder. No collisions.</p></div>
-    <div class="card edge-blue rise d2"><h3>Many sessions</h3><p>Desktop app: run several side by side, each with a task.</p></div>
-    <div class="card edge-rose rise d3"><h3>Agent teams <span class="tag exp">exp</span></h3><p>A lead agent with teammates, a shared task list and messaging.</p></div>
-    <div class="card edge-gold rise d4"><h3>Workflows</h3><p>Say <b>ultracode</b> and Claude writes a script that orchestrates many subagents. Try <code>/deep-research</code>.</p></div>
+    <div class="card edge-teal"><h3>Worktrees</h3><p><code>claude -w fix-loader</code> gives each session its own branch and folder. No collisions.</p></div>
+    <div class="card edge-blue"><h3>Many sessions</h3><p>Desktop app: run several side by side, each with a task.</p></div>
+    <div class="card edge-rose"><h3>Agent teams <span class="tag exp">exp</span></h3><p>A lead agent with teammates, a shared task list and messaging.</p></div>
+    <div class="card edge-gold"><h3>Workflows</h3><p>Say <b>ultracode</b> and Claude writes a script that orchestrates many subagents. Try <code>/deep-research</code>.</p></div>
   </div>
   <div class="card mt-l f"><p><b>When it's worth it:</b> independent pieces (5 baselines to reimplement, 30 configs to sweep, 12 papers to reproduce a table from). <b>When it isn't:</b> one tangled bug, where parallel agents just step on each other. Watch the token bill: many agents = many tokens.</p></div>
   <aside class="notes"><p>Agent teams need CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1. Workflows: monitor with /workflows; up to 16 concurrent agents by default.</p></aside>
@@ -821,8 +823,8 @@ Then propose a plan to add one regression test for the most important result. Do
   <div class="kicker">Office add-ins</div>
   <h2>Excel and PowerPoint, with shared context</h2>
   <div class="cols">
-    <div class="card edge-green rise d1"><h3>📊 Claude for Excel</h3><p>Understands the whole workbook: formulas, pivot tables, conditional formatting. Explains a colleague's 40-tab sheet cell by cell.</p></div>
-    <div class="card edge-accent rise d2"><h3>📽 Claude for PowerPoint</h3><p>Builds and edits slides in your template. Uses your skills.</p></div>
+    <div class="card edge-green"><h3>📊 Claude for Excel</h3><p>Understands the whole workbook: formulas, pivot tables, conditional formatting. Explains a colleague's 40-tab sheet cell by cell.</p></div>
+    <div class="card edge-accent"><h3>📽 Claude for PowerPoint</h3><p>Builds and edits slides in your template. Uses your skills.</p></div>
   </div>
   <div class="flow mt-l">
     <div class="step f"><b>Excel</b><span>clean the instrument export</span></div><div class="arrow f">→</div>
@@ -882,9 +884,9 @@ row = json.loads(next(b.text <span class="k">for</span> b <span class="k">in</sp
   <div class="kicker">Cost levers</div>
   <h2>Same results, a fraction of the bill</h2>
   <div class="cols c3">
-    <div class="card edge-green rise d1"><h3>🗂 Prompt caching</h3><p>Reuse a long shared prefix (instructions, a codebook, a paper) across calls. Cached reads are much cheaper and faster.</p></div>
-    <div class="card edge-gold rise d2"><h3>📦 Batch API</h3><p>Submit thousands of requests and get results within 24 h at 50% off. Ideal for coding survey data or screening abstracts.</p></div>
-    <div class="card edge-blue rise d3"><h3>🪶 Smallest model that works</h3><p>Validate on 50 hand-labelled items. If Haiku agrees with Opus 95% of the time, use Haiku.</p></div>
+    <div class="card edge-green"><h3>🗂 Prompt caching</h3><p>Reuse a long shared prefix (instructions, a codebook, a paper) across calls. Cached reads are much cheaper and faster.</p></div>
+    <div class="card edge-gold"><h3>📦 Batch API</h3><p>Submit thousands of requests and get results within 24 h at 50% off. Ideal for coding survey data or screening abstracts.</p></div>
+    <div class="card edge-blue"><h3>🪶 Smallest model that works</h3><p>Validate on 50 hand-labelled items. If Haiku agrees with Opus 95% of the time, use Haiku.</p></div>
   </div>
   <div class="card mt-l f"><h3>Pattern: screen 5,000 abstracts</h3><p>Codebook in a cached system prompt → Batch API → Haiku 5.5 with a JSON schema → hand-check a random 5% → report agreement (Cohen's κ) in your methods.</p></div>
   <aside class="notes"><p>Back-of-envelope: Haiku 5.5 lists at $0.10 / $0.50 per million input/output tokens (Nov 2026). 5,000 abstracts × ~400 tokens ≈ 2M input tokens ≈ $0.20, halved again by Batch. Cost is no longer the barrier; validation is.</p><p>The validation step is what makes this publishable. Reviewers increasingly ask for agreement with human coders.</p></aside>
@@ -1015,10 +1017,11 @@ opts = ClaudeAgentOptions(
 </section>
 
 <section class="slide title center" data-module="07 · Capstone & Q&A">
-  <div class="orb o1"></div><div class="orb o2"></div>
-  <h1 class="rise">Questions?</h1>
-  <p class="sub rise d1" style="margin-left:auto;margin-right:auto">Stop asking Claude for answers. Start giving it <span class="accent">context, access and checks</span>.</p>
-  <div class="meta rise d2" style="justify-content:center">Thank you · Chayan Kumar Paul</div>
+  
+  <div class="kicker" style="justify-content:center">Thank you</div>
+  <h1 style="font-size:150px">Questions<span class="accent">?</span></h1>
+  <p class="sub">Stop asking Claude for answers. Start giving it <span class="accent">context, access and checks</span>.</p>
+  <div class="meta" style="justify-content:center"><span>Chayan Kumar Paul</span><span>·</span><span>IISc Bengaluru</span></div>
 </section>
 
 </div></div>
@@ -1051,6 +1054,7 @@ opts = ClaudeAgentOptions(
     <tr><td><kbd>F</kbd></td><td>fullscreen</td></tr>
     <tr><td><kbd>T</kbd></td><td>light / dark theme</td></tr>
     <tr><td><kbd>H</kbd></td><td>hide bottom bar</td></tr>
+    <tr><td><kbd>L</kbd></td><td>lite mode (fewer effects, for slow laptops)</td></tr>
   </table>
 </div></div>
 <div class="toast"></div>

@@ -1,5 +1,6 @@
-/* Minimal, dependency-free slide engine with fragments, overview, notes,
-   presenter window sync, timers and copy buttons. */
+/* Dependency-free slide engine: fragments, per-module color grading,
+   staggered entrances, word reveals, overview, notes, presenter sync,
+   exercise timers, copy buttons and an ambient network canvas. */
 (() => {
   const deck = document.getElementById('deck');
   const slides = [...deck.querySelectorAll('.slide')];
@@ -11,6 +12,25 @@
   const overview = document.getElementById('overview');
   const help = document.getElementById('help');
   const chan = 'BroadcastChannel' in window ? new BroadcastChannel('claude-talk') : null;
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------- color grading: one palette per module ---------- */
+  const PALETTE = {
+    '00': ['#ff7a59', '#ffb86b'],   // Opening — coral / amber
+    '01': ['#a78bfa', '#f472b6'],   // Mental model — violet / pink
+    '02': ['#2dd4bf', '#60a5fa'],   // Apps for research — teal / sky
+    '☕': ['#fbbf24', '#ff7a59'],   // Break — amber
+    '03': ['#60a5fa', '#a78bfa'],   // Claude Code — blue / violet
+    '04': ['#4ade80', '#2dd4bf'],   // Chrome & Office — green / teal
+    '05': ['#f472b6', '#a78bfa'],   // API & SDK — pink / violet
+    '06': ['#fb923c', '#fb7185'],   // Integrity — orange / rose
+    '07': ['#ff7a59', '#a78bfa'],   // Capstone — coral / violet
+    try:  ['#fbbf24', '#fb923c'],   // every hands-on slide — amber
+  };
+  const modKey = m => (m || '').split(' ')[0];
+  const colorsOf = s => s.classList.contains('try') ? PALETTE.try : (PALETTE[modKey(s.dataset.module)] || PALETTE['00']);
+  slides.forEach(s => { const [a, b] = colorsOf(s); s.style.setProperty('--sa', a); s.style.setProperty('--sa2', b); });
+  let netColor = PALETTE['00'][0];
 
   let idx = 0;
   let sessionStart = null;
@@ -22,15 +42,56 @@
   }
   window.addEventListener('resize', fit); fit();
 
+  /* ---------- staggered entrances ---------- */
+  const GROUPS = '.cols, .stack, .flow, .timeline, .agenda, ul.clean';
+  function stagger(s) {
+    let i = 0;
+    const mark = el => {
+      if (el.matches('.notes, .timer, .f, script, h1, h2, .num')) return;
+      if (el.matches(GROUPS)) { [...el.children].forEach(mark); return; }
+      el.dataset.anim = ''; el.style.setProperty('--i', i++);
+    };
+    [...s.children].forEach(mark);
+  }
+
+  /* ---------- word-by-word headline split ---------- */
+  function splitWords(el, c) {
+    [...el.childNodes].forEach(n => {
+      if (n.nodeType === 3) {
+        const frag = document.createDocumentFragment();
+        n.textContent.split(/(\s+)/).forEach(p => {
+          if (!p) return;
+          if (/^\s+$/.test(p)) { frag.appendChild(document.createTextNode(' ')); return; }
+          const w = document.createElement('span'); w.className = 'w';
+          const inner = document.createElement('span'); inner.textContent = p;
+          inner.style.setProperty('--wi', c.n++);
+          if (n.parentElement.closest('.accent, .hl')) inner.className = 'grad';
+          w.appendChild(inner); frag.appendChild(w);
+        });
+        n.replaceWith(frag);
+      } else if (n.nodeType === 1) {
+        if (n.matches('.tag, code, kbd, br')) {
+          if (n.tagName === 'BR') return;
+          const w = document.createElement('span'); w.className = 'w';
+          const inner = document.createElement('span'); inner.style.setProperty('--wi', c.n++);
+          n.replaceWith(w); inner.appendChild(n); w.appendChild(inner);
+        } else {
+          if (n.matches('.accent, .hl')) n.classList.add('split');
+          splitWords(n, c);
+        }
+      }
+    });
+  }
+
   /* ---------- fragments ---------- */
   const frags = s => [...s.querySelectorAll('.f')];
-  function fragState(s) { return frags(s).filter(f => f.classList.contains('in')).length; }
-  function setFrags(s, n) { frags(s).forEach((f, i) => f.classList.toggle('in', i < n)); }
+  const fragState = s => frags(s).filter(f => f.classList.contains('in')).length;
+  const setFrags = (s, n) => frags(s).forEach((f, i) => f.classList.toggle('in', i < n));
 
   /* ---------- navigation ---------- */
   function go(n, fragMode = 'none') {
     n = Math.max(0, Math.min(slides.length - 1, n));
-    const prev = slides[idx];
+    const prevSlide = slides[idx];
     idx = n;
     slides.forEach((s, i) => {
       s.classList.toggle('active', i === idx);
@@ -39,8 +100,17 @@
     const s = slides[idx];
     if (fragMode === 'all') setFrags(s, frags(s).length);
     else if (fragMode === 'none') setFrags(s, 0);
-    if (prev !== s) runTyping(s);
+    if (prevSlide !== s || !s.dataset.seen) { runTyping(s); s.dataset.seen = '1'; }
+    grade(s);
     update();
+  }
+  function grade(s) {
+    const [a, b] = colorsOf(s);
+    document.body.style.setProperty('--m', a);
+    document.body.style.setProperty('--m2', b);
+    netColor = a;
+    const hi = s.classList.contains('title') || s.classList.contains('section') || s.id === 'brk';
+    document.body.dataset.net = hi ? 'hi' : 'lo';
   }
   function next() {
     const s = slides[idx], fs = frags(s), k = fragState(s);
@@ -77,18 +147,21 @@
     const g = overview.querySelector('.grid');
     let lastMod = null;
     slides.forEach((s, i) => {
+      const c = colorsOf(s)[0];
       if (s.dataset.module !== lastMod) {
         lastMod = s.dataset.module;
-        const m = document.createElement('div'); m.className = 'mod'; m.textContent = lastMod; g.appendChild(m);
+        const m = document.createElement('div'); m.className = 'mod'; m.textContent = lastMod;
+        m.style.setProperty('--c', (PALETTE[modKey(lastMod)] || PALETTE['00'])[0]);
+        g.appendChild(m);
       }
       const b = document.createElement('button');
-      b.dataset.i = i;
+      b.dataset.i = i; b.style.setProperty('--c', c);
       b.innerHTML = `<small>${i + 1}${s.classList.contains('try') ? ' · TRY IT' : ''}</small>${titleOf(s)}`;
       b.onclick = () => { go(i); toggle(overview, false); };
       g.appendChild(b);
     });
   }
-  function toggle(el, force) { el.classList.toggle('open', force); }
+  const toggle = (el, force) => el.classList.toggle('open', force);
 
   /* ---------- typing terminals ---------- */
   function runTyping(s) {
@@ -96,24 +169,19 @@
       if (!pre.dataset.src) pre.dataset.src = pre.innerHTML;
       const html = pre.dataset.src;
       clearTimeout(pre._t);
-      // tokenise into tags and characters so syntax spans survive
       const parts = html.match(/<[^>]+>|&[a-z]+;|[\s\S]/g) || [];
       let i = 0, out = '';
       pre.classList.add('cursor');
       const speed = +pre.dataset.type || 14;
       const step = () => {
         let chunk = 0;
-        while (i < parts.length && chunk < 2) {
-          out += parts[i];
-          if (!parts[i].startsWith('<')) chunk++;
-          i++;
-        }
+        while (i < parts.length && chunk < 2) { out += parts[i]; if (!parts[i].startsWith('<')) chunk++; i++; }
         pre.innerHTML = out;
         if (i < parts.length) pre._t = setTimeout(step, parts[i - 1] === '\n' ? speed * 18 : speed);
         else pre.classList.remove('cursor');
       };
       pre.innerHTML = '';
-      pre._t = setTimeout(step, 450);
+      pre._t = setTimeout(step, 700);
     });
   }
 
@@ -125,8 +193,7 @@
       b.onclick = e => {
         e.stopPropagation();
         const c = el.cloneNode(true); c.querySelectorAll('.copy-btn').forEach(x => x.remove());
-        const txt = c.textContent.trim();
-        navigator.clipboard?.writeText(txt).then(() => toast('Copied to clipboard'), () => toast('Copy failed'));
+        navigator.clipboard?.writeText(c.textContent.trim()).then(() => toast('Copied to clipboard'), () => toast('Copy failed'));
       };
       el.appendChild(b);
     });
@@ -137,6 +204,7 @@
   }
 
   /* ---------- timers ---------- */
+  const fmt = s => `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`;
   function addTimers() {
     slides.filter(s => s.dataset.timer).forEach(s => {
       const mins = +s.dataset.timer;
@@ -160,7 +228,6 @@
       });
     });
   }
-  const fmt = s => `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`;
 
   setInterval(() => {
     if (!sessionStart) { clock.textContent = '00:00'; return; }
@@ -168,12 +235,66 @@
     clock.textContent = `${String(Math.floor(m / 60)).padStart(2, '0')}:${String(m % 60).padStart(2, '0')} elapsed`;
   }, 5000);
 
+  /* ---------- pointer spotlight on glass cards ---------- */
+  deck.addEventListener('pointermove', e => {
+    const el = e.target.closest('.card');
+    if (!el) return;
+    const r = el.getBoundingClientRect(), k = r.width / el.offsetWidth;
+    el.style.setProperty('--mx', `${(e.clientX - r.left) / k}px`);
+    el.style.setProperty('--my', `${(e.clientY - r.top) / k}px`);
+  });
+
+  /* ---------- ambient network canvas ---------- */
+  function startNet() {
+    const cv = document.getElementById('net');
+    if (!cv) return;
+    const ctx = cv.getContext('2d');
+    let W, H, dpr, nodes = [];
+    const mouse = { x: -1e4, y: -1e4 };
+    const resize = () => {
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      W = innerWidth; H = innerHeight;
+      cv.width = W * dpr; cv.height = H * dpr; cv.style.width = W + 'px'; cv.style.height = H + 'px';
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      const N = Math.min(95, Math.round(W * H / 20000));
+      nodes = Array.from({ length: N }, () => ({ x: Math.random() * W, y: Math.random() * H, vx: (Math.random() - .5) * .35, vy: (Math.random() - .5) * .35, r: Math.random() * 1.6 + .6 }));
+    };
+    resize(); addEventListener('resize', resize);
+    addEventListener('pointermove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
+    const hex = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16)).join(',');
+    const D = 150;
+    const frame = () => {
+      if (document.body.classList.contains('lite') || document.hidden) { requestAnimationFrame(frame); return; }
+      ctx.clearRect(0, 0, W, H);
+      const rgb = hex(netColor);
+      for (const p of nodes) {
+        if (!reduced) { p.x += p.vx; p.y += p.vy; }
+        if (p.x < -20) p.x = W + 20; if (p.x > W + 20) p.x = -20;
+        if (p.y < -20) p.y = H + 20; if (p.y > H + 20) p.y = -20;
+        const dm = Math.hypot(p.x - mouse.x, p.y - mouse.y);
+        if (dm < 180) { p.x += (p.x - mouse.x) / dm * .6; p.y += (p.y - mouse.y) / dm * .6; }
+      }
+      ctx.lineWidth = 1;
+      for (let i = 0; i < nodes.length; i++) {
+        const a = nodes[i];
+        for (let j = i + 1; j < nodes.length; j++) {
+          const b = nodes[j], d = Math.hypot(a.x - b.x, a.y - b.y);
+          if (d < D) { ctx.strokeStyle = `rgba(${rgb},${(1 - d / D) * .38})`; ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke(); }
+        }
+        ctx.fillStyle = `rgba(${rgb},.85)`; ctx.beginPath(); ctx.arc(a.x, a.y, a.r, 0, Math.PI * 2); ctx.fill();
+      }
+      if (!reduced) requestAnimationFrame(frame);
+    };
+    frame();
+  }
+
   /* ---------- theme ---------- */
   function setTheme(t) {
     document.documentElement.dataset.theme = t;
     try { localStorage.setItem('ct-theme', t); } catch (_) {}
   }
   try { const t = localStorage.getItem('ct-theme'); if (t) document.documentElement.dataset.theme = t; } catch (_) {}
+  try { if (localStorage.getItem('ct-lite') === '1') document.body.classList.add('lite'); } catch (_) {}
 
   /* ---------- input ---------- */
   document.addEventListener('keydown', e => {
@@ -193,6 +314,11 @@
     else if (k === 'f' || k === 'F') document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();
     else if (k === 't' || k === 'T') setTheme(document.documentElement.dataset.theme === 'light' ? 'dark' : 'light');
     else if (k === 'h' || k === 'H') document.body.classList.toggle('hide-hud');
+    else if (k === 'l' || k === 'L') {
+      const on = document.body.classList.toggle('lite');
+      try { localStorage.setItem('ct-lite', on ? '1' : '0'); } catch (_) {}
+      toast(on ? 'Lite mode on (fewer effects)' : 'Full effects on');
+    }
     else if (k === '?') toggle(help);
     else if (k === 's' || k === 'S') { const b = slides[idx].querySelector('.timer [data-a=go]'); if (b) b.click(); }
   });
@@ -210,11 +336,15 @@
     if (e.clientX > window.innerWidth * 0.25) next(); else prev();
   });
 
-  document.querySelectorAll('[data-goto]').forEach(a => a.addEventListener('click', e => {
-    e.preventDefault(); e.stopPropagation();
-    const target = slides.findIndex(s => s.id === a.dataset.goto);
-    if (target >= 0) go(target);
-  }));
+  document.querySelectorAll('[data-goto]').forEach(a => {
+    const target = slides.find(s => s.id === a.dataset.goto);
+    if (target) a.style.setProperty('--c', colorsOf(target)[0]);
+    a.addEventListener('click', e => {
+      e.preventDefault(); e.stopPropagation();
+      const t = slides.indexOf(target);
+      if (t >= 0) go(t);
+    });
+  });
   document.getElementById('btn-overview').onclick = () => toggle(overview);
   document.getElementById('btn-notes').onclick = () => toggle(notesPanel);
   document.getElementById('btn-help').onclick = () => toggle(help);
@@ -229,7 +359,13 @@
   };
 
   /* ---------- boot ---------- */
-  buildOverview(); addCopy(); addTimers();
+  buildOverview();
+  slides.forEach(s => {
+    const c = { n: 0 };
+    s.querySelectorAll('h1, h2').forEach(h => splitWords(h, c));
+    stagger(s);
+  });
+  addCopy(); addTimers(); startNet();
   const m = location.hash.match(/#\/(\d+)/);
   go(m ? +m[1] - 1 : 0);
 })();
