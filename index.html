@@ -126,6 +126,40 @@
   <aside class="notes"><p>Ask the room before each reveal: "Which model would you use?" Then click. The orb size and its pulse speed show size vs speed.</p><p>Habit: prototype with a big model, then check whether a smaller one gives the same answers on 20 examples.</p></aside>
 </section>
 
+<!-- Guide: which model -->
+<section class="scene" id="pickmodel" data-module="00 · Opening" data-title="Guide: which model?">
+  <span class="label">Decision guide · which model?</span>
+  <div class="tut-title">Ask in order. <span class="grad">Stop at the first yes.</span></div>
+  <div class="ladder">
+    <div class="lrow" data-in="1" data-fx="rise"><div class="n">1</div><div class="q">Many similar, simple items? Screening, tagging, pulling out fields.</div><div class="ar">YES →</div><div class="ans" style="--c:#4ade80">Haiku 5.5<small>fastest · cheapest · validate on a sample</small></div></div>
+    <div class="lrow" data-in="2" data-fx="rise"><div class="n">2</div><div class="q">Everyday reading, writing, analysis or code?</div><div class="ar">YES →</div><div class="ans" style="--c:#60a5fa">Sonnet 5.5<small>the default for most research work</small></div></div>
+    <div class="lrow" data-in="3" data-fx="rise"><div class="n">3</div><div class="q">Long, multi-step, many files, or a subtle bug?</div><div class="ar">YES →</div><div class="ans" style="--c:#ff7a59">Opus 5.5<small>agentic work · 1M-token context</small></div></div>
+    <div class="lrow" data-in="4" data-fx="rise"><div class="n">4</div><div class="q">Being wrong is very costly? Proofs, study design, deep reasoning.</div><div class="ar">YES →</div><div class="ans" style="--c:#fbbf24">Fable 5.2<small>most capable · slowest · priciest</small></div></div>
+  </div>
+  <div class="ltip" data-in="5" data-fx="rise">Not sure? <b>Start with Sonnet.</b> Move up if it struggles, down if it's overkill.</div>
+  <aside class="notes"><p>Walk the ladder top to bottom and stop at the first yes. Ask the room for one task of theirs and run it through the ladder live.</p><p>Habit: prototype on a bigger model, then check a smaller one gives the same answers on ~20 real examples before you scale up.</p></aside>
+</section>
+
+<!-- Guide: research task → model → effort -->
+<section class="scene" id="tasktable" data-module="00 · Opening" data-title="Guide: research task → model → effort">
+  <span class="label">Starting points for research tasks</span>
+  <div class="dtable">
+    <div class="th">TASK</div><div class="th">MODEL</div><div class="th">EFFORT</div>
+    <div data-in="1" data-fx="rise">Screen 2,000 abstracts for inclusion</div><div data-in="1" data-fx="rise"><span class="mchip haiku">Haiku 5.5</span></div><div data-in="1" data-fx="rise"><span class="eff"><i class="f"></i><i></i><i></i><i></i><span>low</span></span></div>
+    <div data-in="1" data-fx="rise">Pull n, organism, method out of 500 papers</div><div data-in="1" data-fx="rise"><span class="mchip haiku">Haiku 5.5</span></div><div data-in="1" data-fx="rise"><span class="eff"><i class="f"></i><i></i><i></i><i></i><span>low</span></span></div>
+    <div data-in="2" data-fx="rise">Tighten a paragraph, fix the grammar</div><div data-in="2" data-fx="rise"><span class="mchip sonnet">Sonnet 5.5</span></div><div data-in="2" data-fx="rise"><span class="eff"><i class="f"></i><i></i><i></i><i></i><span>low</span></span></div>
+    <div data-in="2" data-fx="rise">A lit note on one paper</div><div data-in="2" data-fx="rise"><span class="mchip sonnet">Sonnet 5.5</span></div><div data-in="2" data-fx="rise"><span class="eff"><i class="f"></i><i class="f"></i><i></i><i></i><span>medium</span></span></div>
+    <div data-in="2" data-fx="rise">Write or clean up an analysis script</div><div data-in="2" data-fx="rise"><span class="mchip sonnet">Sonnet 5.5</span></div><div data-in="2" data-fx="rise"><span class="eff"><i class="f"></i><i class="f"></i><i></i><i></i><span>medium</span></span></div>
+    <div data-in="3" data-fx="rise">Follow a derivation you're stuck on</div><div data-in="3" data-fx="rise"><span class="mchip opus">Opus 5.5</span></div><div data-in="3" data-fx="rise"><span class="eff"><i class="f"></i><i class="f"></i><i class="f"></i><i></i><span>high</span></span></div>
+    <div data-in="3" data-fx="rise">Debug a failing simulation</div><div data-in="3" data-fx="rise"><span class="mchip opus">Opus 5.5</span></div><div data-in="3" data-fx="rise"><span class="eff"><i class="f"></i><i class="f"></i><i class="f"></i><i></i><span>high</span></span></div>
+    <div data-in="3" data-fx="rise">Plan a refactor across a whole repo</div><div data-in="3" data-fx="rise"><span class="mchip opus">Opus 5.5</span></div><div data-in="3" data-fx="rise"><span class="eff"><i class="f"></i><i class="f"></i><i class="f"></i><i></i><span>high + plan</span></span></div>
+    <div data-in="4" data-fx="rise">Critique a study design before you run it</div><div data-in="4" data-fx="rise"><span class="mchip fable">Fable 5.2</span></div><div data-in="4" data-fx="rise"><span class="eff"><i class="f"></i><i class="f"></i><i class="f"></i><i></i><span>high</span></span></div>
+    <div data-in="4" data-fx="rise">Find the flaw in a proof or argument</div><div data-in="4" data-fx="rise"><span class="mchip fable">Fable 5.2</span></div><div data-in="4" data-fx="rise"><span class="eff"><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><span>max</span></span></div>
+  </div>
+  <div class="tut-sub" data-in="5" data-fx="rise">Starting points, not rules. Before scaling up, test a cheaper setting on 20 real examples.</div>
+  <aside class="notes"><p>Beat by beat: bulk work, everyday work, hard work, hardest work. Ask: "Which row is closest to what you did last week?"</p><p>Low-stakes rewrites can even go to Haiku. For anything going in a paper, the validation step matters more than the model choice.</p></aside>
+</section>
+
 <!-- 6. Effort dial -->
 <section class="scene" id="effort" data-module="00 · Opening" data-title="Effort: the second dial">
   <div class="big kin">Same model. <span class="grad">More thinking.</span></div>
@@ -145,6 +179,30 @@
   </div>
   <div class="sm" data-in="4" data-fx="rise">Low for edits and lookups · high for proofs, bugs and plans · <code>/effort</code> in Claude Code</div>
   <aside class="notes"><p>Step the dial: low → max. The dots are the thinking budget growing. Same price per token; more tokens spent.</p></aside>
+</section>
+
+<!-- Guide: effort up or down -->
+<section class="scene" id="effortwhen" data-module="00 · Opening" data-title="Guide: when to raise or lower effort">
+  <span class="label">Decision guide · effort</span>
+  <div class="tut-title">Start at the default. <span class="grad">Then adjust.</span></div>
+  <div class="vs compact">
+    <div class="up"><h4 data-in="1" data-fx="rise">TURN IT UP WHEN</h4>
+      <div class="vi" data-in="1" data-fx="left">answers feel shallow or generic</div>
+      <div class="vi" data-in="1" data-fx="left" style="--d:.1s">it misses edge cases or contradicts itself</div>
+      <div class="vi" data-in="1" data-fx="left" style="--d:.2s">maths, proofs, debugging, planning</div>
+      <div class="vi" data-in="1" data-fx="left" style="--d:.3s">a mistake would be expensive</div>
+    </div>
+    <div class="down"><h4 data-in="2" data-fx="rise">TURN IT DOWN WHEN</h4>
+      <div class="vi" data-in="2" data-fx="right">formatting, renaming, quick lookups</div>
+      <div class="vi" data-in="2" data-fx="right" style="--d:.1s">thousands of similar items</div>
+      <div class="vi" data-in="2" data-fx="right" style="--d:.2s">it overthinks a simple edit</div>
+      <div class="vi" data-in="2" data-fx="right" style="--d:.3s">you need quick back-and-forth</div>
+    </div>
+  </div>
+  <div class="whereset" data-in="3" data-fx="rise">
+    <div>App · <b>model menu</b></div><div>Claude Code · <b>/model</b> · <b>/effort</b></div><div>API · <b>output_config.effort</b></div>
+  </div>
+  <aside class="notes"><p>Levels: low · medium · high · xhigh · max. On the API, Opus 5.5 and Haiku 5.5 default to medium and Sonnet 5.5 to high, so set high explicitly for hard Opus work. Rule: raise one level when quality fails; lower one level when it's fine but slow or costly.</p></aside>
 </section>
 
 <!-- =============================================================== -->
@@ -278,6 +336,65 @@
   <aside class="notes"><p>Level 1: name + description always in context (one line each). Level 2: the SKILL.md body loads when a task matches. Level 3: scripts and files only if needed; scripts are run, not read.</p><p>The description is what makes a skill trigger. Write it like a search query.</p></aside>
 </section>
 
+<!-- Guide: where should it live -->
+<section class="scene" id="wherelive" data-module="01 · Mental model" data-title="Guide: where should this instruction live?">
+  <span class="label">Decision guide · where does it go?</span>
+  <div class="tut-title">Repeating yourself? <span class="grad">Where should it live?</span></div>
+  <div class="ladder">
+    <div class="lrow" data-in="1" data-fx="rise"><div class="n">1</div><div class="q">Only matters for this one request?</div><div class="ar">YES →</div><div class="ans" style="--c:#c4c1cf">In the prompt<small>just say it</small></div></div>
+    <div class="lrow" data-in="2" data-fx="rise"><div class="n">2</div><div class="q">Applies to one paper, chapter or repo?</div><div class="ar">YES →</div><div class="ans" style="--c:#60a5fa">Project instructions<small>CLAUDE.md in Claude Code</small></div></div>
+    <div class="lrow" data-in="3" data-fx="rise"><div class="n">3</div><div class="q">A fact about you, true everywhere?</div><div class="ar">YES →</div><div class="ans" style="--c:#2dd4bf">Memory<small>Settings → Memory</small></div></div>
+    <div class="lrow" data-in="4" data-fx="rise"><div class="n">4</div><div class="q">A procedure you keep explaining?</div><div class="ar">YES →</div><div class="ans" style="--c:#4ade80">Skill<small>SKILL.md, loaded only when needed</small></div></div>
+    <div class="lrow" data-in="5" data-fx="rise"><div class="n">5</div><div class="q">Data that lives in another tool?</div><div class="ar">YES →</div><div class="ans" style="--c:#fbbf24">Connector<small>Drive, GitHub, your lab DB</small></div></div>
+    <div class="lrow" data-in="6" data-fx="rise"><div class="n">6</div><div class="q">Your whole lab should get it?</div><div class="ar">YES →</div><div class="ans" style="--c:#ff7a59">Plugin<small>bundle it and share</small></div></div>
+  </div>
+  <aside class="notes"><p>Examples: "use British spelling" (memory); "this paper's notation" (project); "how we format figures" (skill); "our Zotero library" (connector); "give new students all of the above" (plugin).</p></aside>
+</section>
+
+<!-- Six prompting patterns -->
+<section class="scene" id="patterns" data-module="01 · Mental model" data-title="Six prompting patterns (before/after)">
+  <span class="label">Six prompting patterns for research</span>
+  <div class="ba-wrap">
+    <div class="ba" data-in="0" data-out="1" data-fx="rise">
+      <div class="bh"><span class="pn">1 / 6</span><b>Say who it's for</b></div>
+      <div class="bcol before"><div class="lab">BEFORE</div><div class="txt">Summarise this paper.</div></div>
+      <div class="bcol after"><div class="lab">AFTER</div><div class="txt">Summarise this paper for a PhD student who knows DFT but not machine learning. Five bullets: question, method, data, result, main limitation.</div></div>
+      <div class="gain">Why it works: <b>audience and format</b> set the depth and shape. Without them you get a generic abstract.</div>
+    </div>
+    <div class="ba" data-in="1" data-out="2" data-fx="rise">
+      <div class="bh"><span class="pn">2 / 6</span><b>Let it ask first</b></div>
+      <div class="bcol before"><div class="lab">BEFORE</div><div class="txt">Design an experiment to test whether X affects Y.</div></div>
+      <div class="bcol after"><div class="lab">AFTER</div><div class="txt">I want to test whether X affects Y. Before proposing anything, ask me up to 3 questions about my constraints: equipment, time, sample size.</div></div>
+      <div class="gain">Why it works: it <b>surfaces assumptions</b> you didn't know you were making.</div>
+    </div>
+    <div class="ba" data-in="2" data-out="3" data-fx="rise">
+      <div class="bh"><span class="pn">3 / 6</span><b>Separate evidence from opinion</b></div>
+      <div class="bcol before"><div class="lab">BEFORE</div><div class="txt">What does this paper show?</div></div>
+      <div class="bcol after"><div class="lab">AFTER</div><div class="txt">List the paper's claims. For each, quote the supporting sentence with its page. Mark anything that is your own inference as MY READING.</div></div>
+      <div class="gain">Why it works: you can <b>check every claim in seconds</b>.</div>
+    </div>
+    <div class="ba" data-in="3" data-out="4" data-fx="rise">
+      <div class="bh"><span class="pn">4 / 6</span><b>Ask for its uncertainty</b></div>
+      <div class="bcol before"><div class="lab">BEFORE</div><div class="txt">Is my analysis correct?</div></div>
+      <div class="bcol after"><div class="lab">AFTER</div><div class="txt">Review my analysis. Give a confidence (high / medium / low) for each conclusion, and tell me which one you're least sure about.</div></div>
+      <div class="gain">Why it works: <b>you know where to look first</b>.</div>
+    </div>
+    <div class="ba" data-in="4" data-out="5" data-fx="rise">
+      <div class="bh"><span class="pn">5 / 6</span><b>Show the output shape</b></div>
+      <div class="bcol before"><div class="lab">BEFORE</div><div class="txt">Extract the key information from these papers.</div></div>
+      <div class="bcol after"><div class="lab">AFTER</div><div class="txt">One row per paper: title | n | method | metric | result. Write "not stated" if it's missing. Never guess.</div></div>
+      <div class="gain">Why it works: <b>structured output</b> goes straight into a sheet or a script.</div>
+    </div>
+    <div class="ba" data-in="5" data-fx="rise">
+      <div class="bh"><span class="pn">6 / 6</span><b>Make it argue back</b></div>
+      <div class="bcol before"><div class="lab">BEFORE</div><div class="txt">Is my hypothesis good?</div></div>
+      <div class="bcol after"><div class="lab">AFTER</div><div class="txt">Argue against my hypothesis as a hostile reviewer would. Then tell me which objection is strongest and what data would answer it.</div></div>
+      <div class="gain">Why it works: it avoids <b>the agreeable-assistant trap</b>. Don't reveal the answer you're hoping for.</div>
+    </div>
+  </div>
+  <aside class="notes"><p>One pattern per click. Ask the room which pattern they use least. All six are in the handout.</p></aside>
+</section>
+
 <!-- =============================================================== -->
 <!-- 02 · CLAUDE APPS FOR RESEARCH                                    -->
 <!-- =============================================================== -->
@@ -304,6 +421,23 @@
   </div>
   <div class="layer veil" data-in="3" data-fx="rise"><div class="huge">Stop asking for advice.<br><span class="grad">Hand over the task.</span></div><div class="mid mt">"Here are 40 PDFs. Build the comparison table and flag shared datasets."</div></div>
   <aside class="notes"><p>Beat 1: the circles merge. Cowork used to be a separate mode. Since 16 Sep 2026 any conversation can work on files, run long tasks in the background, use connectors and skills, and produce Docs, Slides and Sheets. Rolled out gradually to Pro and Max on web, desktop and mobile.</p></aside>
+</section>
+
+<!-- Guide: which tool -->
+<section class="scene" id="whichtool" data-module="02 · Claude apps for research" data-title="Guide: which Claude tool for which job?">
+  <span class="label">Decision guide · which tool?</span>
+  <div class="tut-title">Match the tool <span class="grad">to the job.</span></div>
+  <div class="dtable two">
+    <div class="th">YOUR RESEARCH JOB</div><div class="th">USE</div>
+    <div data-in="1" data-fx="rise">A quick question, a one-off rewrite</div><div data-in="1" data-fx="rise">💬 a chat</div>
+    <div data-in="1" data-fx="rise">A paper or thesis chapter you'll work on for weeks</div><div data-in="1" data-fx="rise">📁 a Project</div>
+    <div data-in="2" data-fx="rise">"What's known about X?", with sources</div><div data-in="2" data-fx="rise">🔎 Research (web search)</div>
+    <div data-in="2" data-fx="rise">Literature → code → figures, with an audit trail</div><div data-in="2" data-fx="rise">🧪 Claude Science</div>
+    <div data-in="3" data-fx="rise">Code, data files, experiments on your machine</div><div data-in="3" data-fx="rise">⌨️ Claude Code</div>
+    <div data-in="3" data-fx="rise">The same task over thousands of items</div><div data-in="3" data-fx="rise">🔧 the API + Batch</div>
+    <div data-in="3" data-fx="rise">Data stuck in a web portal, Excel or slides</div><div data-in="3" data-fx="rise">🌐 Chrome · Office add-ins</div>
+  </div>
+  <aside class="notes"><p>Since 16 Sep any chat can also work on files and run in the background, so "chat" covers more than it used to. Projects are about keeping context together across many chats.</p></aside>
 </section>
 
 <section class="scene" id="projects" data-module="02 · Claude apps for research" data-title="Projects">
@@ -427,6 +561,54 @@ Ask me 3 questions first, then give me the skill as a zip.</div>
   <aside class="notes"><p>Ask Claude to keep a SEARCH LOG (queries, databases, dates, counts, exclusions and why) separate from FINDINGS. That log is your methods section.</p><p>Steps 1 and 5 are yours on purpose: Claude is a strong research assistant and a poor PI. Prompts for each step are in the handout.</p></aside>
 </section>
 
+<!-- Walkthrough: literature review -->
+<section class="scene" id="walklit" data-module="02 · Claude apps for research" data-title="Walkthrough: a literature review">
+  <span class="label">Walkthrough · a literature review, step by step</span>
+  <div class="walk">
+    <div class="wsteps">
+      <div class="ws" data-k="1"><span class="n">1</span>Define the scope<span class="own you">YOU</span></div>
+      <div class="ws" data-k="2"><span class="n">2</span>Search, with a log<span class="own">CLAUDE</span></div>
+      <div class="ws" data-k="3"><span class="n">3</span>Screen, then take notes<span class="own">CLAUDE</span></div>
+      <div class="ws" data-k="4"><span class="n">4</span>Compare and find gaps<span class="own">CLAUDE</span></div>
+      <div class="ws" data-k="5"><span class="n">5</span>Write your argument<span class="own you">YOU</span></div>
+      <div class="ws" data-k="6"><span class="n">6</span>Check every citation<span class="own">CLAUDE</span></div>
+    </div>
+    <div class="wpanel">
+      <div class="wp" data-in="0" data-out="1" data-fx="rise"><div class="who">THE GOAL</div><h3>A review you can defend in your methods section.</h3><div class="why">Claude does the volume. <b>You own the scope and the argument.</b> Keep the whole review in one Project so every chat shares the papers and notes.</div></div>
+      <div class="wp" data-in="1" data-out="2" data-fx="rise"><div class="who">STEP 1 · SCOPE</div><h3>Agree the criteria before searching</h3><div class="prompt">Help me define inclusion criteria for a review on [topic]: years, study types, populations, outcomes. Ask me questions first. Don't propose criteria until I answer.</div><div class="chips"><em>USE</em><span class="mchip sonnet">Sonnet 5.5</span><span class="mchip">medium effort</span></div></div>
+      <div class="wp" data-in="2" data-out="3" data-fx="rise"><div class="who">STEP 2 · SEARCH</div><h3>Search with a log you could publish</h3><div class="prompt">Find papers on [topic] from 2019 to 2026. Keep a SEARCH LOG (queries, sources, dates, result counts, exclusions and why) separate from the FINDINGS.</div><div class="chips"><em>USE</em><span class="mchip">Research (web search)</span><span class="mchip sonnet">Sonnet 5.5</span></div><div class="why">The log <b>is</b> your methods section.</div></div>
+      <div class="wp" data-in="3" data-out="4" data-fx="rise"><div class="who">STEP 3 · SCREEN, THEN NOTES</div><h3>Cheap model to screen, better model to read</h3><div class="prompt">For each abstract: include, exclude or unsure against my criteria, with a one-line reason.</div><div class="chips"><em>SCREEN</em><span class="mchip haiku">Haiku 5.5 · low</span><em>THEN NOTES</em><span class="mchip sonnet">Sonnet 5.5 + paper-litnote skill</span></div><div class="why">Spot-check 20 of Haiku's "exclude" decisions yourself before trusting it.</div></div>
+      <div class="wp" data-in="4" data-out="5" data-fx="rise"><div class="who">STEP 4 · COMPARE</div><h3>Turn notes into a table, then into gaps</h3><div class="prompt">From these notes, build a table: paper · method · dataset · metric · result. Then list 3 questions none of them answers, and which paper comes closest to each.</div><div class="chips"><em>USE</em><span class="mchip opus">Opus 5.5</span><span class="mchip">high effort</span></div></div>
+      <div class="wp" data-in="5" data-out="6" data-fx="rise"><div class="who">STEP 5 · YOUR ARGUMENT</div><h3>Write your position first. Then test it.</h3><div class="youcard">Draft your argument yourself, in bullet points. This is the scholarship.</div><div class="prompt">Here is my argument. Where is it weakest? Which paper in our notes contradicts it?</div><div class="chips"><em>USE</em><span class="mchip opus">Opus 5.5</span><span class="mchip">high effort</span></div></div>
+      <div class="wp" data-in="6" data-fx="rise"><div class="who">STEP 6 · CHECK</div><h3>Every reference, every sentence</h3><div class="prompt">Check every reference in this draft: does it exist, are the details right, and does it support the sentence it's attached to? Flag anything you can't verify.</div><div class="chips"><em>USE</em><span class="mchip sonnet">Sonnet 5.5</span><span class="mchip">a citation-check skill</span></div><div class="why">Then open the flagged ones yourself.</div></div>
+    </div>
+  </div>
+  <aside class="notes"><p>One step per click; the left list shows where you are. Every prompt is in the handout. Point out the model chips: the cheap model does the volume (screening), stronger models do the thinking steps.</p></aside>
+</section>
+
+<!-- Walkthrough: understand a hard paper -->
+<section class="scene" id="walkpaper" data-module="02 · Claude apps for research" data-title="Walkthrough: understand a hard paper">
+  <span class="label">Walkthrough · a paper outside your comfort zone</span>
+  <div class="walk">
+    <div class="wsteps">
+      <div class="ws" data-k="1"><span class="n">1</span>Explain at three levels</div>
+      <div class="ws" data-k="2"><span class="n">2</span>Go equation by equation</div>
+      <div class="ws" data-k="3"><span class="n">3</span>Surface the assumptions</div>
+      <div class="ws" data-k="4"><span class="n">4</span>Check the figures</div>
+      <div class="ws" data-k="5"><span class="n">5</span>Quiz yourself</div>
+    </div>
+    <div class="wpanel">
+      <div class="wp" data-in="0" data-out="1" data-fx="rise"><div class="who">THE GOAL</div><h3>Actually understand it, not just summarise it.</h3><div class="why">Attach the PDF once, then go deeper one step at a time in the <b>same chat</b>.</div></div>
+      <div class="wp" data-in="1" data-out="2" data-fx="rise"><div class="who">STEP 1</div><h3>Find your level</h3><div class="prompt">Explain this paper at three levels: a final-year undergraduate, a PhD student in my field, and an expert reviewer. One short paragraph each.</div><div class="chips"><em>USE</em><span class="mchip sonnet">Sonnet 5.5</span><span class="mchip">medium effort</span></div></div>
+      <div class="wp" data-in="2" data-out="3" data-fx="rise"><div class="who">STEP 2</div><h3>Where you're actually stuck</h3><div class="prompt">Walk me through equation (7) term by term. What does each symbol mean physically, and what would change if it were zero?</div><div class="chips"><em>USE</em><span class="mchip opus">Opus 5.5</span><span class="mchip">high effort</span></div></div>
+      <div class="wp" data-in="3" data-out="4" data-fx="rise"><div class="who">STEP 3</div><h3>What has to be true for this to work?</h3><div class="prompt">List every assumption the authors make, explicit and implicit. Which one, if false, would break the main result?</div><div class="chips"><em>USE</em><span class="mchip opus">Opus 5.5</span><span class="mchip">high effort</span></div></div>
+      <div class="wp" data-in="4" data-out="5" data-fx="rise"><div class="who">STEP 4</div><h3>Do the figures support the text?</h3><div class="prompt">[attach Figure 3] First describe exactly what this figure shows. Then: does it support the claim in Section 4.2? What would a sceptic say?</div><div class="chips"><em>USE</em><span class="mchip opus">Opus 5.5</span><span class="mchip">high effort</span></div><div class="why">Describe first, judge second: it stops Claude reading the claim into the plot.</div></div>
+      <div class="wp" data-in="5" data-fx="rise"><div class="who">STEP 5</div><h3>Find what you missed</h3><div class="prompt">Quiz me with 5 questions to check I really understood this paper. Wait for my answers before giving yours.</div><div class="chips"><em>USE</em><span class="mchip sonnet">Sonnet 5.5</span><span class="mchip">medium effort</span></div></div>
+    </div>
+  </div>
+  <aside class="notes"><p>Good for reading-group prep and for papers from neighbouring fields. Step 4 works because Claude reads plots and figures; asking it to describe before judging reduces confirmation bias.</p></aside>
+</section>
+
 <section class="scene try" id="try2" data-module="02 · Claude apps for research" data-title="Try it: note it, then attack it">
   <div class="try-row">
     <div class="ring" data-min="10">
@@ -462,6 +644,27 @@ Ask me 3 questions first, then give me the skill as a zip.</div>
   <aside class="notes"><p>Highlight one sentence and ask for a fix in place (edit-in-place shipped 12 Jun 2026). Writing from nothing gives generic, confidently wrong text; asking for citations invites invented ones; pasting confidential manuscripts is usually a policy breach.</p></aside>
 </section>
 
+<!-- Walkthrough: respond to reviewers -->
+<section class="scene" id="walkreview" data-module="02 · Claude apps for research" data-title="Walkthrough: respond to reviewers">
+  <span class="label">Walkthrough · responding to reviewers</span>
+  <div class="walk">
+    <div class="wsteps">
+      <div class="ws" data-k="1"><span class="n">1</span>Triage the comments<span class="own">CLAUDE</span></div>
+      <div class="ws" data-k="2"><span class="n">2</span>Decide your stance<span class="own you">YOU</span></div>
+      <div class="ws" data-k="3"><span class="n">3</span>Draft the responses<span class="own">CLAUDE</span></div>
+      <div class="ws" data-k="4"><span class="n">4</span>Stress-test them<span class="own">CLAUDE</span></div>
+    </div>
+    <div class="wpanel">
+      <div class="wp" data-in="0" data-out="1" data-fx="rise"><div class="who">THE GOAL</div><h3>A point-by-point reply in your voice.</h3><div class="why">Without promising work you haven't done. Put the paper and the reviews in one Project.</div></div>
+      <div class="wp" data-in="1" data-out="2" data-fx="rise"><div class="who">STEP 1</div><h3>See what's actually being asked</h3><div class="prompt">Here are the reviews. Make a table: reviewer · comment · major / minor / typo · what they are really asking for. Don't respond yet.</div><div class="chips"><em>USE</em><span class="mchip sonnet">Sonnet 5.5</span><span class="mchip">medium effort</span></div></div>
+      <div class="wp" data-in="2" data-out="3" data-fx="rise"><div class="who">STEP 2 · YOU</div><h3>The scientific judgement is yours</h3><div class="youcard">For each row write <b>agree · partly · disagree</b> and one line of reasoning. Note which ones need new analysis.</div></div>
+      <div class="wp" data-in="3" data-out="4" data-fx="rise"><div class="who">STEP 3</div><h3>Draft from your decisions</h3><div class="prompt">Using my decisions, draft a polite, specific response to each comment. Never promise analyses I haven't done. Put [TODO: result] wherever I must add numbers.</div><div class="chips"><em>USE</em><span class="mchip sonnet">Sonnet 5.5</span><span class="mchip">medium effort</span></div></div>
+      <div class="wp" data-in="4" data-fx="rise"><div class="who">STEP 4</div><h3>Read it as Reviewer 2 would</h3><div class="prompt">Act as Reviewer 2. Read my responses. Which ones don't actually address your concern, and why?</div><div class="chips"><em>USE</em><span class="mchip opus">Opus 5.5</span><span class="mchip">high effort</span></div><div class="why">Never paste a manuscript you are reviewing for someone else.</div></div>
+    </div>
+  </div>
+  <aside class="notes"><p>The same shape works for grant feedback and thesis committee comments: triage, decide, draft, stress-test.</p></aside>
+</section>
+
 <section class="scene" id="brk" data-module="☕ · Break" data-net="hi" data-title="Break">
   <div class="try-row">
     <div class="ring" data-min="10">
@@ -487,6 +690,19 @@ Ask me 3 questions first, then give me the skill as a zip.</div>
   <h1 class="huge kin glow">Claude <span class="grad">Code</span></h1>
   <div class="mid mt" data-in="1" data-fx="rise">Not just for software engineers.<br>An agent with a terminal, your files, and a way to check its work.</div>
   <aside class="notes"><p>1:20 → 2:10.</p></aside>
+</section>
+
+<!-- Guide: app or Claude Code -->
+<section class="scene" id="apporcode" data-module="03 · Claude Code" data-title="Guide: Claude app or Claude Code?">
+  <span class="label">Decision guide · app or Claude Code?</span>
+  <div class="tut-title">One question decides it: <span class="grad">does it touch your files?</span></div>
+  <div class="ladder">
+    <div class="lrow" data-in="1" data-fx="rise"><div class="n">1</div><div class="q">Reading, writing or thinking about text and PDFs?</div><div class="ar">→</div><div class="ans" style="--c:#2dd4bf">Claude app<small>a chat or a Project</small></div></div>
+    <div class="lrow" data-in="2" data-fx="rise"><div class="n">2</div><div class="q">Needs to run code, read your data files, or edit a repo?</div><div class="ar">→</div><div class="ans" style="--c:#60a5fa">Claude Code<small>terminal · desktop Code tab · IDE</small></div></div>
+    <div class="lrow" data-in="3" data-fx="rise"><div class="n">3</div><div class="q">Both, e.g. a paper and its analysis code?</div><div class="ar">→</div><div class="ans" style="--c:#a78bfa">Both<small>Code in the repo · a Project for the writing</small></div></div>
+  </div>
+  <div class="ltip" data-in="4" data-fx="rise">If it <b>runs something or changes a file</b>, use Claude Code. It can check its own work.</div>
+  <aside class="notes"><p>Non-coders: the desktop app's Code tab gives Claude Code without a terminal. Point it at a folder of CSVs and ask for plots; that alone sells it to most experimentalists.</p></aside>
 </section>
 
 <section class="scene" id="surfaces" data-module="03 · Claude Code" data-steps="2" data-title="Same agent, many surfaces">
@@ -560,6 +776,29 @@ and with no bounds curve_fit walks into σ &lt; 0.
   <aside class="notes"><p>Click any mode, or step through. Auto mode is the default for interactive sessions: a classifier reviews each action, risky ones are blocked or asked. It pauses after 3 consecutive blocks or 20 total. Deny rules (e.g. never touch data/raw/) apply in every mode. claude -p starts in Manual.</p></aside>
 </section>
 
+<!-- Guide: plan first or just do it -->
+<section class="scene" id="planwhen" data-module="03 · Claude Code" data-title="Guide: plan first, or just do it?">
+  <span class="label">Decision guide · plan mode</span>
+  <div class="tut-title">Plan first, <span class="grad">or just do it?</span></div>
+  <div class="vs compact">
+    <div class="pl"><h4 data-in="1" data-fx="rise">PLAN FIRST WHEN</h4>
+      <div class="vi" data-in="1" data-fx="left">more than one file will change</div>
+      <div class="vi" data-in="1" data-fx="left" style="--d:.1s">you don't know this codebase yet</div>
+      <div class="vi" data-in="1" data-fx="left" style="--d:.2s">it's hard to undo: data, configs, cluster jobs</div>
+      <div class="vi" data-in="1" data-fx="left" style="--d:.3s">you want to agree the approach first</div>
+    </div>
+    <div class="dn"><h4 data-in="2" data-fx="rise">JUST DO IT WHEN</h4>
+      <div class="vi" data-in="2" data-fx="right">a one-line fix you can describe exactly</div>
+      <div class="vi" data-in="2" data-fx="right" style="--d:.1s">renaming, formatting, a typo</div>
+      <div class="vi" data-in="2" data-fx="right" style="--d:.2s">it's small and easy to revert with git</div>
+    </div>
+  </div>
+  <div class="whereset" data-in="3" data-fx="rise">
+    <div><b>Shift+Tab</b> → plan mode</div><div><b>Ctrl+G</b> edits the plan</div><div>approve → <b>auto</b> or <b>approve edits manually</b></div>
+  </div>
+  <aside class="notes"><p>Plan mode is read-only: Claude researches the code and proposes a plan; nothing changes until you approve. Pair it with Opus at high effort for big changes, then let Sonnet implement.</p></aside>
+</section>
+
 <section class="scene" id="claudemd" data-module="03 · Claude Code" data-title="CLAUDE.md">
   <div class="sci-row">
     <div class="tw" style="width:880px">
@@ -602,6 +841,22 @@ and with no bounds curve_fit walks into σ &lt; 0.
   <aside class="notes"><p>Also: /branch and /fork to try alternatives, /resume for yesterday's session, /usage and /status to see what's loaded. Checkpoints don't track changes made only through Bash; git is still the real safety net.</p></aside>
 </section>
 
+<!-- Guide: which context command -->
+<section class="scene" id="ctxwhen" data-module="03 · Claude Code" data-title="Guide: /clear, /compact or /rewind?">
+  <span class="label">Decision guide · managing context</span>
+  <div class="tut-title">Which command, <span class="grad">when?</span></div>
+  <div class="dtable two">
+    <div class="th">SITUATION</div><div class="th">DO THIS</div>
+    <div data-in="1" data-fx="rise">Starting an unrelated task</div><div data-in="1" data-fx="rise" class="cmd">/clear</div>
+    <div data-in="2" data-fx="rise">Same task, long session, answers drifting</div><div data-in="2" data-fx="rise" class="cmd">/compact keep the test names</div>
+    <div data-in="3" data-fx="rise">Claude went down the wrong path</div><div data-in="3" data-fx="rise" class="cmd">Esc Esc · /rewind</div>
+    <div data-in="4" data-fx="rise">Try another approach without losing this one</div><div data-in="4" data-fx="rise" class="cmd">/branch</div>
+    <div data-in="5" data-fx="rise">Picking up yesterday's work</div><div data-in="5" data-fx="rise" class="cmd">/resume</div>
+    <div data-in="6" data-fx="rise">It must know this every session</div><div data-in="6" data-fx="rise" class="cmd">add it to CLAUDE.md</div>
+  </div>
+  <aside class="notes"><p>/compact takes a focus: tell it what must survive the summary. /rewind restores code, conversation or both; it doesn't undo changes made purely through shell commands, so commit often.</p></aside>
+</section>
+
 <section class="scene" id="hooks" data-module="03 · Claude Code" data-steps="3" data-title="Hooks">
   <div class="big kin">Rules Claude <span class="grad">can't forget.</span></div>
   <div class="lane">
@@ -628,6 +883,29 @@ and with no bounds curve_fit walks into σ &lt; 0.
   <div class="kid k4" style="--c:#fbbf24"><div class="e">🍴</div><b>fork</b><span>a copy of this chat</span></div>
   <div class="layer veil" data-in="4" data-fx="rise"><div class="big">50 files of searching →<br><span class="grad">10 lines in your context.</span></div><div class="mid mt">They run in the background · custom ones live in .claude/agents/</div></div>
   <aside class="notes"><p>Beat 1: agents spawn. Beat 2: they work in parallel. Beat 3: only summaries come back. The stats-reviewer agent file is in the handout. Manage with /agents.</p></aside>
+</section>
+
+<!-- Guide: subagent or not -->
+<section class="scene" id="subwhen" data-module="03 · Claude Code" data-title="Guide: subagent, or do it yourself?">
+  <span class="label">Decision guide · subagents</span>
+  <div class="tut-title">Delegate, <span class="grad">or keep it?</span></div>
+  <div class="vs compact">
+    <div class="pl"><h4 data-in="1" data-fx="rise">USE A SUBAGENT FOR</h4>
+      <div class="vi" data-in="1" data-fx="left">searching across many files</div>
+      <div class="vi" data-in="1" data-fx="left" style="--d:.1s">an independent review: stats, security</div>
+      <div class="vi" data-in="1" data-fx="left" style="--d:.2s">several independent pieces in parallel</div>
+      <div class="vi" data-in="1" data-fx="left" style="--d:.3s">keeping your main context clean</div>
+    </div>
+    <div class="dn"><h4 data-in="2" data-fx="rise">DO IT YOURSELF FOR</h4>
+      <div class="vi" data-in="2" data-fx="right">one tangled bug, step after step</div>
+      <div class="vi" data-in="2" data-fx="right" style="--d:.1s">a small, quick edit</div>
+      <div class="vi" data-in="2" data-fx="right" style="--d:.2s">work that needs this whole conversation (use a fork)</div>
+    </div>
+  </div>
+  <div class="whereset" data-in="3" data-fx="rise">
+    <div><b>/agents</b> to create one</div><div>"use the <b>stats-reviewer</b> agent on analysis/"</div><div>cheap model for searching: <b>Haiku</b></div>
+  </div>
+  <aside class="notes"><p>A subagent starts with a fresh context and returns a summary. That's the benefit (clean context) and the cost (it doesn't know what you discussed). A fork copies the conversation instead.</p></aside>
 </section>
 
 <section class="scene" id="worktrees" data-module="03 · Claude Code" data-title="Parallel work">
@@ -714,6 +992,29 @@ and with no bounds curve_fit walks into σ &lt; 0.
   </div>
   <div class="prompt" data-in="4" data-fx="rise" style="width:1180px;font-size:21px">Before changing anything, run the pipeline on data/sample and save the outputs. After your change, run it again and diff every number. Report any difference above 1e-6.</div>
   <aside class="notes"><p>"It runs" is not the bar for science code; "the numbers didn't move" is. Other patterns: write a test that reproduces Table 2 before refactoring; notebook → script with a CLI and config; pin versions and log the commit with every result; SLURM array jobs.</p></aside>
+</section>
+
+<!-- Walkthrough: notebook to pipeline -->
+<section class="scene" id="walknb" data-module="03 · Claude Code" data-title="Walkthrough: notebook → reproducible pipeline">
+  <span class="label">Walkthrough · notebook → reproducible pipeline</span>
+  <div class="walk">
+    <div class="wsteps">
+      <div class="ws" data-k="1"><span class="n">1</span>Plan the structure</div>
+      <div class="ws" data-k="2"><span class="n">2</span>Freeze a baseline</div>
+      <div class="ws" data-k="3"><span class="n">3</span>Refactor</div>
+      <div class="ws" data-k="4"><span class="n">4</span>Diff every number</div>
+      <div class="ws" data-k="5"><span class="n">5</span>Lock it in</div>
+    </div>
+    <div class="wpanel">
+      <div class="wp" data-in="0" data-out="1" data-fx="rise"><div class="who">THE GOAL</div><h3>Someone else reruns it and gets your numbers.</h3><div class="why">In Claude Code, inside the repo, on a branch: <b>claude -w notebook-refactor</b>.</div></div>
+      <div class="wp" data-in="1" data-out="2" data-fx="rise"><div class="who">STEP 1 · PLAN MODE</div><h3>Agree the layout before any code</h3><div class="prompt">Read explore.ipynb. Propose a script layout: config, data loading, analysis, plots, with a command-line entry point. Don't write code yet.</div><div class="chips"><em>USE</em><span class="mchip opus">Opus 5.5</span><span class="mchip">high effort · plan mode</span></div></div>
+      <div class="wp" data-in="2" data-out="3" data-fx="rise"><div class="who">STEP 2</div><h3>Record what "correct" looks like</h3><div class="prompt">Before refactoring, run the notebook end to end and save every output number to baseline.json.</div><div class="chips"><em>USE</em><span class="mchip sonnet">Sonnet 5.5</span><span class="mchip">medium effort</span></div></div>
+      <div class="wp" data-in="3" data-out="4" data-fx="rise"><div class="who">STEP 3</div><h3>Implement the plan</h3><div class="prompt">Implement the plan. Pin package versions in requirements.txt. Every random operation takes its seed from config.yaml.</div><div class="chips"><em>USE</em><span class="mchip sonnet">Sonnet 5.5</span><span class="mchip">medium effort</span><em>STUCK?</em><span class="mchip opus">Opus 5.5</span></div></div>
+      <div class="wp" data-in="4" data-out="5" data-fx="rise"><div class="who">STEP 4</div><h3>"It runs" is not the bar</h3><div class="prompt">Run the new pipeline and diff every number against baseline.json. Report any difference above 1e-6 and explain it.</div><div class="chips"><em>USE</em><span class="mchip sonnet">Sonnet 5.5</span><span class="mchip">medium effort</span></div></div>
+      <div class="wp" data-in="5" data-fx="rise"><div class="who">STEP 5</div><h3>Make it stay correct</h3><div class="prompt">Add a test that reproduces Figure 2's numbers, and a hook that runs the tests after every edit.</div><div class="chips"><em>USE</em><span class="mchip sonnet">Sonnet 5.5</span><span class="mchip">medium effort</span></div><div class="why">Commit. Now future changes can't silently move your results.</div></div>
+    </div>
+  </div>
+  <aside class="notes"><p>Note the model switch: Opus plans, Sonnet implements, and you only go back to Opus if Sonnet gets stuck. That pattern alone saves a lot of usage.</p></aside>
 </section>
 
 <section class="scene try" id="try3" data-module="03 · Claude Code" data-title="Try it: set up a repo properly">
@@ -857,6 +1158,21 @@ row = json.loads(next(b.text <span class="k">for</span> b <span class="k">in</sp
   </div>
   <div class="pipeline" data-in="4" data-fx="rise"><em>codebook</em><span class="ar">→</span><em>cache</em><span class="ar">→</span><em>batch</em><span class="ar">→</span><em>Haiku + schema</em><span class="ar">→</span><em>hand-check 5%</em><span class="ar">→</span><em>report κ</em></div>
   <aside class="notes"><p>The validation step (agreement with human coders, e.g. Cohen's κ) is what makes this publishable. Reviewers increasingly ask for it.</p></aside>
+</section>
+
+<!-- Guide: pipeline checklist -->
+<section class="scene" id="pipecheck" data-module="05 · API & Agent SDK" data-title="Checklist: before you run 10,000 calls">
+  <span class="label">Checklist · before you run 10,000 calls</span>
+  <div class="tut-title">Five questions, <span class="grad">five settings.</span></div>
+  <div class="dtable two">
+    <div class="th">ASK YOURSELF</div><div class="th">IF YES</div>
+    <div data-in="1" data-fx="rise">More than ~100 items, and results can wait up to 24 h?</div><div data-in="1" data-fx="rise" class="cmd">Batch API · −50%</div>
+    <div data-in="2" data-fx="rise">The same long instructions or codebook in every call?</div><div data-in="2" data-fx="rise" class="cmd">prompt caching</div>
+    <div data-in="3" data-fx="rise">A simple, repetitive judgement?</div><div data-in="3" data-fx="rise" class="cmd">Haiku 5.5 · low effort</div>
+    <div data-in="4" data-fx="rise">You need specific fields back?</div><div data-in="4" data-fx="rise" class="cmd">JSON schema (output_config)</div>
+    <div data-in="5" data-fx="rise">Will the results go in a paper?</div><div data-in="5" data-fx="rise" class="cmd">pin model · log prompts · hand-check · report κ</div>
+  </div>
+  <aside class="notes"><p>Run 20 items first and read every output before launching the batch. Pin the exact model ID (e.g. claude-haiku-5-5) and save the prompt text with the results so the methods section can describe them.</p></aside>
 </section>
 
 <section class="scene" id="agents" data-module="05 · API & Agent SDK" data-title="Agents you build">

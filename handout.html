@@ -44,7 +44,7 @@
   table { width: 100%; border-collapse: collapse; font-size: 15px; margin: 10px 0 20px; }
   th, td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--line); vertical-align: top; color: var(--ink-2); }
   th { font: 600 12px "JetBrains Mono", monospace; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); }
-  td:first-child { color: var(--ink); font-weight: 600; white-space: nowrap; }
+  td:first-child { color: var(--ink); font-weight: 600; }
   .note { font-size: 14px; color: var(--ink-3); }
   .theme { position: fixed; top: 14px; right: 14px; font: 600 12px "JetBrains Mono", monospace; border: 1px solid var(--line); background: var(--panel); color: var(--ink-2); border-radius: 8px; padding: 6px 10px; cursor: pointer; }
   footer { margin-top: 70px; padding-top: 20px; border-top: 1px solid var(--line); font-size: 14px; color: var(--ink-3); }
@@ -72,7 +72,38 @@
   <tr><td>Opus 5.5</td><td><code>claude-opus-5-5</code></td><td>long agentic work, hard reasoning, 1M context</td><td>4 · 20</td></tr>
   <tr><td>Fable 5.2</td><td><code>claude-fable-5-2</code></td><td>proofs, research design, deepest debugging</td><td>8 · 40</td></tr>
 </table>
-<p>Effort is a second dial: same model, more or less thinking. Use low for edits and lookups, high for maths, debugging and plans. In Claude Code: <code>/effort</code>. Habit: prototype with a big model, then check whether a smaller one gives the same answers on 20 examples.</p>
+<h3>Which model? Ask in order, stop at the first yes</h3>
+<ol>
+  <li>Many similar, simple items (screening, tagging, pulling out fields)? → <b>Haiku 5.5</b>, and validate on a sample.</li>
+  <li>Everyday reading, writing, analysis or code? → <b>Sonnet 5.5</b>, the default for most research work.</li>
+  <li>Long, multi-step, many files, or a subtle bug? → <b>Opus 5.5</b>.</li>
+  <li>Being wrong is very costly (proofs, study design, deep reasoning)? → <b>Fable 5.2</b>.</li>
+</ol>
+<p>Not sure? Start with Sonnet. Move up if it struggles, down if it's overkill.</p>
+<h3>Starting points for research tasks</h3>
+<table>
+  <tr><th>Task</th><th>Model</th><th>Effort</th></tr>
+  <tr><td>Screen 2,000 abstracts for inclusion</td><td>Haiku 5.5</td><td>low</td></tr>
+  <tr><td>Pull n, organism, method out of 500 papers</td><td>Haiku 5.5</td><td>low</td></tr>
+  <tr><td>Tighten a paragraph, fix the grammar</td><td>Sonnet 5.5</td><td>low</td></tr>
+  <tr><td>A lit note on one paper</td><td>Sonnet 5.5</td><td>medium</td></tr>
+  <tr><td>Write or clean up an analysis script</td><td>Sonnet 5.5</td><td>medium</td></tr>
+  <tr><td>Follow a derivation you're stuck on</td><td>Opus 5.5</td><td>high</td></tr>
+  <tr><td>Debug a failing simulation</td><td>Opus 5.5</td><td>high</td></tr>
+  <tr><td>Plan a refactor across a whole repo</td><td>Opus 5.5</td><td>high + plan mode</td></tr>
+  <tr><td>Critique a study design before you run it</td><td>Fable 5.2</td><td>high</td></tr>
+  <tr><td>Find the flaw in a proof or argument</td><td>Fable 5.2</td><td>max</td></tr>
+</table>
+<p class="note">Starting points, not rules. Before scaling up, test a cheaper setting on 20 real examples.</p>
+<h3>Effort: start at the default, then adjust</h3>
+<table>
+  <tr><th>Turn it up when</th><th>Turn it down when</th></tr>
+  <tr><td>answers feel shallow or generic</td><td>formatting, renaming, quick lookups</td></tr>
+  <tr><td>it misses edge cases or contradicts itself</td><td>thousands of similar items</td></tr>
+  <tr><td>maths, proofs, debugging, planning</td><td>it overthinks a simple edit</td></tr>
+  <tr><td>a mistake would be expensive</td><td>you need quick back-and-forth</td></tr>
+</table>
+<p>Where to set it: app → model menu · Claude Code → <code>/model</code>, <code>/effort</code> · API → <code>output_config.effort</code> (low · medium · high · xhigh · max). On the API, Opus 5.5 and Haiku 5.5 default to medium and Sonnet 5.5 to high.</p>
 
 <h2 id="mental"><small>01 · Mental model</small>Instructions, access, delegation</h2>
 <table>
@@ -82,6 +113,37 @@
   <tr><td>Plugin</td><td>a bundle to share</td><td><code>plugin.json</code> + skills, agents, hooks, MCP</td><td>"lab-toolkit"</td></tr>
 </table>
 <p><b>Rule of thumb:</b> explained it twice → skill. Pasted the same data twice → connector. Sharing with your lab → plugin. All three are listed at <a href="https://claude.ai/directory">claude.ai/directory</a>.</p>
+<h3>Where should an instruction live?</h3>
+<table>
+  <tr><th>If it…</th><th>Put it in</th></tr>
+  <tr><td>only matters for this one request</td><td>the prompt</td></tr>
+  <tr><td>applies to one paper, chapter or repo</td><td>Project instructions (CLAUDE.md in Claude Code)</td></tr>
+  <tr><td>is a fact about you, true everywhere</td><td>memory (Settings → Memory)</td></tr>
+  <tr><td>is a procedure you keep explaining</td><td>a skill</td></tr>
+  <tr><td>is data that lives in another tool</td><td>a connector</td></tr>
+  <tr><td>should go to your whole lab</td><td>a plugin</td></tr>
+</table>
+<h3>Six prompting patterns</h3>
+<table>
+  <tr><th>Pattern</th><th>Try this</th></tr>
+  <tr><td>Say who it's for</td><td>"Summarise this paper for a PhD student who knows DFT but not machine learning. Five bullets: question, method, data, result, main limitation."</td></tr>
+  <tr><td>Let it ask first</td><td>"Before proposing anything, ask me up to 3 questions about my constraints: equipment, time, sample size."</td></tr>
+  <tr><td>Separate evidence from opinion</td><td>"For each claim, quote the supporting sentence with its page. Mark your own inferences as MY READING."</td></tr>
+  <tr><td>Ask for its uncertainty</td><td>"Give a confidence (high / medium / low) for each conclusion, and tell me which one you're least sure about."</td></tr>
+  <tr><td>Show the output shape</td><td>"One row per paper: title | n | method | metric | result. Write 'not stated' if missing. Never guess."</td></tr>
+  <tr><td>Make it argue back</td><td>"Argue against my hypothesis as a hostile reviewer would. Which objection is strongest, and what data would answer it?"</td></tr>
+</table>
+<h3>Which Claude tool for which job?</h3>
+<table>
+  <tr><th>Job</th><th>Use</th></tr>
+  <tr><td>A quick question, a one-off rewrite</td><td>a chat</td></tr>
+  <tr><td>A paper or thesis chapter over weeks</td><td>a Project</td></tr>
+  <tr><td>"What's known about X?", with sources</td><td>Research (web search)</td></tr>
+  <tr><td>Literature → code → figures, with an audit trail</td><td>Claude Science</td></tr>
+  <tr><td>Code, data files, experiments on your machine</td><td>Claude Code</td></tr>
+  <tr><td>The same task over thousands of items</td><td>the API + Batch</td></tr>
+  <tr><td>Data in a web portal, Excel or slides</td><td>Claude in Chrome · Office add-ins</td></tr>
+</table>
 
 <h2 id="apps"><small>02 · Claude apps</small>Projects, memory, skills</h2>
 <h3>Project instructions template</h3>
@@ -120,6 +182,25 @@ Never fill gaps from memory; write "not stated".</pre></div>
 <p><b>1 · You:</b> criteria (scope, years, study types). <b>2 · Claude:</b> search with a log. <b>3 · Skill:</b> one lit note per paper. <b>4 · Claude:</b> compare and find gaps. <b>5 · You:</b> argue your position. <b>6 · Claude:</b> check every citation.</p>
 <div class="box prompt"><div class="lab">Prompt · search log</div><pre>Keep two separate sections: SEARCH LOG (queries, databases, dates, counts, what you excluded and why) and FINDINGS. Never mix interpretation into the log.</pre></div>
 <div class="box prompt"><div class="lab">Prompt · compare</div><pre>From these notes, build a table: paper · method · dataset · metric · result. Then list 3 questions none of them answers, and which paper comes closest to each.</pre></div>
+<div class="box prompt"><div class="lab">Prompt · step 1, scope</div><pre>Help me define inclusion criteria for a review on [topic]: years, study types, populations, outcomes. Ask me questions first. Don't propose criteria until I answer.</pre></div>
+<div class="box prompt"><div class="lab">Prompt · step 3, screening (Haiku 5.5, low effort)</div><pre>For each abstract: include, exclude or unsure against my criteria, with a one-line reason.</pre></div>
+<div class="box prompt"><div class="lab">Prompt · step 5, test your argument (Opus 5.5, high)</div><pre>Here is my argument. Where is it weakest? Which paper in our notes contradicts it?</pre></div>
+<div class="box prompt"><div class="lab">Prompt · step 6, check citations</div><pre>Check every reference in this draft: does it exist, are the details right, and does it support the sentence it's attached to? Flag anything you can't verify.</pre></div>
+<p class="note">Spot-check 20 of the screening "exclude" decisions yourself before trusting them.</p>
+
+<h3>Walkthrough · understand a hard paper</h3>
+<div class="box prompt"><div class="lab">1 · three levels (Sonnet, medium)</div><pre>Explain this paper at three levels: a final-year undergraduate, a PhD student in my field, and an expert reviewer. One short paragraph each.</pre></div>
+<div class="box prompt"><div class="lab">2 · equation by equation (Opus, high)</div><pre>Walk me through equation (7) term by term. What does each symbol mean physically, and what would change if it were zero?</pre></div>
+<div class="box prompt"><div class="lab">3 · assumptions (Opus, high)</div><pre>List every assumption the authors make, explicit and implicit. Which one, if false, would break the main result?</pre></div>
+<div class="box prompt"><div class="lab">4 · figures (Opus, high)</div><pre>[attach Figure 3] First describe exactly what this figure shows. Then: does it support the claim in Section 4.2? What would a sceptic say?</pre></div>
+<div class="box prompt"><div class="lab">5 · quiz yourself (Sonnet, medium)</div><pre>Quiz me with 5 questions to check I really understood this paper. Wait for my answers before giving yours.</pre></div>
+
+<h3>Walkthrough · responding to reviewers</h3>
+<div class="box prompt"><div class="lab">1 · triage</div><pre>Here are the reviews. Make a table: reviewer · comment · major / minor / typo · what they are really asking for. Don't respond yet.</pre></div>
+<p><b>2 · You:</b> mark each row agree · partly · disagree, with one line of reasoning.</p>
+<div class="box prompt"><div class="lab">3 · draft</div><pre>Using my decisions, draft a polite, specific response to each comment. Never promise analyses I haven't done. Put [TODO: result] wherever I must add numbers.</pre></div>
+<div class="box prompt"><div class="lab">4 · stress-test (Opus, high)</div><pre>Act as Reviewer 2. Read my responses. Which ones don't actually address your concern, and why?</pre></div>
+
 <h3>Try it · note it, then attack it (10 min)</h3>
 <div class="box prompt"><div class="lab">Prompt 1</div><pre>[attach your PDF]
 Make a lit note of this paper.</pre></div>
@@ -151,6 +232,33 @@ Then tell me which of your 5 points you are least sure about.</pre></div>
   <tr><td>claude -w name</td><td>work in an isolated git worktree</td></tr>
   <tr><td>claude -p "…" --output-format json</td><td>headless runs for scripts and CI</td></tr>
 </table>
+<h3>App or Claude Code?</h3>
+<p>If it runs something or changes a file on your machine, use Claude Code (terminal, desktop Code tab or IDE). Reading and writing text and PDFs → the app. A paper plus its analysis code → Code in the repo, a Project for the writing.</p>
+<h3>Plan first, or just do it?</h3>
+<table>
+  <tr><th>Plan first (Shift+Tab) when</th><th>Just do it when</th></tr>
+  <tr><td>more than one file will change</td><td>a one-line fix you can describe exactly</td></tr>
+  <tr><td>you don't know the codebase yet</td><td>renaming, formatting, a typo</td></tr>
+  <tr><td>it's hard to undo: data, configs, cluster jobs</td><td>it's small and easy to revert with git</td></tr>
+</table>
+<h3>Which context command?</h3>
+<table>
+  <tr><th>Situation</th><th>Do this</th></tr>
+  <tr><td>Starting an unrelated task</td><td><code>/clear</code></td></tr>
+  <tr><td>Same task, long session, answers drifting</td><td><code>/compact keep the test names</code></td></tr>
+  <tr><td>Claude went down the wrong path</td><td>Esc Esc · <code>/rewind</code></td></tr>
+  <tr><td>Try another approach without losing this one</td><td><code>/branch</code></td></tr>
+  <tr><td>Picking up yesterday's work</td><td><code>/resume</code></td></tr>
+  <tr><td>It must know this every session</td><td>add it to CLAUDE.md</td></tr>
+</table>
+<h3>Subagent, or do it yourself?</h3>
+<p><b>Subagent:</b> searching many files · an independent review (stats, security) · independent pieces in parallel · keeping your main context clean. <b>Yourself:</b> one tangled bug · a small quick edit · work that needs the whole conversation (use a fork).</p>
+<h3>Walkthrough · notebook → reproducible pipeline</h3>
+<div class="box prompt"><div class="lab">1 · plan (Opus, high, plan mode)</div><pre>Read explore.ipynb. Propose a script layout: config, data loading, analysis, plots, with a command-line entry point. Don't write code yet.</pre></div>
+<div class="box prompt"><div class="lab">2 · baseline</div><pre>Before refactoring, run the notebook end to end and save every output number to baseline.json.</pre></div>
+<div class="box prompt"><div class="lab">3 · implement (Sonnet, medium)</div><pre>Implement the plan. Pin package versions in requirements.txt. Every random operation takes its seed from config.yaml.</pre></div>
+<div class="box prompt"><div class="lab">4 · diff</div><pre>Run the new pipeline and diff every number against baseline.json. Report any difference above 1e-6 and explain it.</pre></div>
+<div class="box prompt"><div class="lab">5 · lock it in</div><pre>Add a test that reproduces Figure 2's numbers, and a hook that runs the tests after every edit.</pre></div>
 <h3>Example CLAUDE.md</h3>
 <div class="box"><div class="lab">CLAUDE.md</div><pre># Project: cryo-EM particle analysis
 ## Run
@@ -251,6 +359,16 @@ msg = client.messages.create(
 row = json.loads(next(b.text for b in msg.content if b.type == "text"))</pre></div>
 <p><b>Cost levers:</b> cache the shared prefix (instructions, codebook) · Batch API for bulk (50% off, results within 24 h) · the smallest model that agrees with a bigger one on 50 hand-labelled items.</p>
 <p><b>Pattern:</b> codebook → cache → batch → Haiku + JSON schema → hand-check a random 5% → report agreement (e.g. Cohen's κ) in your methods.</p>
+<h3>Checklist · before you run 10,000 calls</h3>
+<table>
+  <tr><th>Ask yourself</th><th>If yes</th></tr>
+  <tr><td>More than ~100 items, results can wait up to 24 h?</td><td>Batch API (50% off)</td></tr>
+  <tr><td>The same long instructions or codebook in every call?</td><td>prompt caching</td></tr>
+  <tr><td>A simple, repetitive judgement?</td><td>Haiku 5.5 at low effort</td></tr>
+  <tr><td>You need specific fields back?</td><td>a JSON schema (<code>output_config.format</code>)</td></tr>
+  <tr><td>Will the results go in a paper?</td><td>pin the model ID, log prompts, hand-check a sample, report agreement</td></tr>
+</table>
+<p class="note">Run 20 items first and read every output before launching the full batch.</p>
 <div class="box"><div class="lab">Agent SDK (Python)</div><pre>from claude_agent_sdk import query, ClaudeAgentOptions
 
 opts = ClaudeAgentOptions(allowed_tools=["Read", "Grep", "Bash"], cwd="./runs")

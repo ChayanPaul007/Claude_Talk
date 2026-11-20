@@ -32,7 +32,7 @@
   /* ---------- steps ---------- */
   scenes.forEach(s => {
     let max = 0;
-    $$('[data-in],[data-out]', s).forEach(e => { max = Math.max(max, +(e.dataset.in || 0), +(e.dataset.out || 0)); });
+    $$('[data-in],[data-out],[data-k]', s).forEach(e => { max = Math.max(max, +(e.dataset.in || 0), +(e.dataset.out || 0), +(e.dataset.k || 0)); });
     s._steps = s.dataset.steps ? +s.dataset.steps : max;
   });
 
@@ -53,7 +53,7 @@
         [e, ...$$('[data-count]', e)].filter(x => x.dataset.count).forEach(countUp);
       }
     });
-    if (slam && !reduced) { s.classList.remove('shake'); void s.offsetWidth; s.classList.add('shake'); flash(); }
+    $$('[data-k]', s).forEach(e => { const k = +e.dataset.k; e.classList.toggle('cur', st === k); e.classList.toggle('done', st > k); });
     H[s.id]?.render?.(s, st, dir);
     paintSteps(s, st);
   }

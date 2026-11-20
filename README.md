@@ -6,7 +6,7 @@ GitHub Pages.
 
 | Page | What it is |
 | --- | --- |
-| `index.html` | **The keynote**: 56 scenes, one idea per screen, step-by-step "beats" |
+| `index.html` | **The keynote**: 71 scenes, including research decision guides and step-by-step walkthroughs |
 | `handout.html` | Attendee handout: every prompt, command and snippet, with copy buttons |
 | `presenter.html` | Presenter window: notes, next scene, beats, clock, time plan (press **P**) |
 | `classic.html` | The earlier text-heavy slide version, kept for reference |
@@ -42,7 +42,8 @@ Each `<section class="scene">` is one idea. Elements appear on beats:
 <div data-in="1" data-out="3">visible on beats 1–2 only</div>
 ```
 
-- Effects (`data-fx`): `rise`, `zoom`, `slam` (with screen shake), `pop`, `drop`, `left`, `right`, `flip`.
+- Effects (`data-fx`): `rise`, `zoom`, `slam`, `pop`, `drop`, `left`, `right`, `flip`.
+- Walkthroughs: give step-list items `data-k="n"`; they get `.cur` on step n and `.done` after it.
 - The scene also gets cumulative classes `s1`, `s2`, … so CSS can choreograph bigger moves.
 - `.kin` headlines rise word by word; `.grad` gives the shimmering italic accent.
 - Each module has its own color grade (set in `PALETTE` in `assets/keynote.js`); hands-on scenes turn amber.
