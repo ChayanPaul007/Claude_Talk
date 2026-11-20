@@ -6,11 +6,11 @@ GitHub Pages.
 
 | Page | What it is |
 | --- | --- |
-| `index.html` | **The keynote**: 71 scenes, including research decision guides and step-by-step walkthroughs |
+| `index.html` | **The keynote**: 90 scenes, including research decision guides, step-by-step walkthroughs and a 20-scene Claude Science deep dive |
 | `handout.html` | Attendee handout: every prompt, command and snippet, with copy buttons |
 | `presenter.html` | Presenter window: notes, next scene, beats, clock, time plan (press **P**) |
 | `classic.html` | The earlier text-heavy slide version, kept for reference |
-| `research/notes.md` | Fact sheet + sources behind the content (checked 19 Nov 2026) |
+| `research/notes.md` | Fact sheet + sources behind the content (checked 19–20 Nov 2026) |
 
 ## Run it
 

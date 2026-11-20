@@ -98,7 +98,7 @@
   </div>
   <aside class="notes">
     <ul>
-      <li>Claude Science: public beta 30 Jun 2026; Pro/Max/Team/Enterprise; macOS/Linux, can run on an HPC login node.</li>
+      <li>Claude Science: public beta 30 Jun 2026; Pro/Max/Ultra/Team/Enterprise; macOS, Windows 11 and Linux; runs on a laptop, a lab server or an HPC login node. Full deep dive in module 02+.</li>
       <li>Memory: categorized entries (10 Jul); shared across chat and Cowork, editable Topics, sensitive topics excluded by default (25 Aug).</li>
       <li>16 Sep: Cowork no longer a separate mode; Docs/Slides/Design in any chat.</li>
       <li>Fable 5.2 + Mythos 5.2 on 9 Nov (Mythos for verified orgs only). Meetings beta for Team/Enterprise. Code Mode experimental in Claude Code 2.1.323.</li>
@@ -526,26 +526,6 @@ Ask me 3 questions first, then give me the skill as a zip.</div>
   <aside class="notes"><p>Docs, Slides and Design arrived in chat on 16 Sep 2026 (beta on Enterprise). Sheets and Whiteboards are beta; Claude Data (formerly Dashboards) is GA.</p></aside>
 </section>
 
-<section class="scene" id="science" data-module="02 · Claude apps for research" data-title="Claude Science">
-  <div class="sci-row">
-    <div class="cycle" data-in="0" data-fx="zoom">
-      <div class="oring"></div><div class="comet"></div>
-      <div class="cnode" data-in="1" data-fx="pop" style="left:280px;top:70px;--c:#60a5fa"><div class="e">📚</div><b>Literature</b></div>
-      <div class="cnode" data-in="2" data-fx="pop" style="left:490px;top:280px;--c:#2dd4bf"><div class="e">💻</div><b>Code</b></div>
-      <div class="cnode" data-in="3" data-fx="pop" style="left:280px;top:490px;--c:#fbbf24"><div class="e">📊</div><b>Figures</b></div>
-      <div class="cnode" data-in="4" data-fx="pop" style="left:70px;top:280px;--c:#fb7185"><div class="e">🔍</div><b>Reviewer</b><i>checks citations &amp; maths</i></div>
-      <div class="ccenter"><div class="l">AUDIT TRAIL</div></div>
-    </div>
-    <div>
-      <span class="label">Public beta · since 30 Jun 2026</span>
-      <div class="huge mt" style="font-size:110px">Claude <span class="grad">Science</span></div>
-      <div class="mid mt">A research workbench,<br>not a new model.</div>
-      <div class="sm mt" data-in="5" data-fx="rise">macOS · Linux · local, remote, or an HPC login node<br>Pro · Max · Team · Enterprise (admin approval)</div>
-    </div>
-  </div>
-  <aside class="notes"><p>Literature analysis, multi-step research, code execution and figures in one place, with an auditable history of how each output was made and a reviewer agent that checks citations and calculations.</p><p>Early coverage: scientists like the workflow, but reasoning gaps remain. Same verification rules apply. Anthropic also expanded programs for scientists in Aug 2026; check eligibility.</p></aside>
-</section>
-
 <section class="scene" id="belt" data-module="02 · Claude apps for research" data-title="A literature-review pipeline">
   <div class="top-label"><span class="label">A literature review · who owns each step?</span></div>
   <div class="stations">
@@ -663,6 +643,457 @@ Ask me 3 questions first, then give me the skill as a zip.</div>
     </div>
   </div>
   <aside class="notes"><p>The same shape works for grant feedback and thesis committee comments: triage, decide, draft, stress-test.</p></aside>
+</section>
+
+<!-- ===================== 02+ · CLAUDE SCIENCE DEEP DIVE ===================== -->
+<section class="scene section" id="mS" data-module="🔬 · Claude Science deep dive" data-net="hi" data-title="🔬 · Claude Science deep dive">
+  <div class="secnum">02+</div>
+  <h1 class="huge kin glow">Claude Science, <span class="grad">from the inside</span></h1>
+  <div class="mid mt" data-in="1" data-fx="rise">What it is · how it works · what "local" really means · how to use it well</div>
+  <aside class="notes"><p>The deep dive. Facts come from Anthropic's Claude Science docs (claude.com/docs/claude-science), the 30 Jun 2026 launch post and the product page, all read 20 Nov 2026, plus early independent reviews (The Scientist, Future Stack Reviews, An Inquisitive Mind, Run Data Run). It is a beta that ships often: re-check the day before.</p></aside>
+</section>
+
+<section class="scene" id="science" data-module="🔬 · Claude Science deep dive" data-title="Claude Science">
+  <div class="sci-row">
+    <div class="cycle" data-in="0" data-fx="zoom">
+      <div class="oring"></div><div class="comet"></div>
+      <div class="cnode" data-in="1" data-fx="pop" style="left:280px;top:70px;--c:#60a5fa"><div class="e">📚</div><b>Literature</b><i>60+ databases</i></div>
+      <div class="cnode" data-in="2" data-fx="pop" style="left:490px;top:280px;--c:#2dd4bf"><div class="e">💻</div><b>Code</b><i>live Python &amp; R</i></div>
+      <div class="cnode" data-in="3" data-fx="pop" style="left:280px;top:490px;--c:#fbbf24"><div class="e">📊</div><b>Figures</b><i>versioned artifacts</i></div>
+      <div class="cnode" data-in="4" data-fx="pop" style="left:70px;top:280px;--c:#fb7185"><div class="e">🔍</div><b>Reviewer</b><i>checks claims vs. log</i></div>
+      <div class="ccenter"><div class="l">AUDIT TRAIL</div></div>
+    </div>
+    <div>
+      <span class="label">Public beta · since 30 Jun 2026</span>
+      <div class="huge mt" style="font-size:110px">Claude <span class="grad">Science</span></div>
+      <div class="mid mt">A research workbench,<br>not a new model.</div>
+      <div class="sm mt" data-in="5" data-fx="rise">An app on <b>your</b> machine: live Python and R, science databases,<br>your cluster and GPUs, a reviewer, and a record of how<br>every output was made.</div>
+    </div>
+  </div>
+  <aside class="notes"><p>"An app that integrates the tools and packages that researchers most commonly use, produces auditable artifacts, and provides flexible access to computing resources" (launch post). A coordinating agent with 60+ curated skills and connectors; it can split work into parallel tracks.</p><p>macOS 13+, Windows 11, Linux x64. Pro, Max, Ultra, Team, Enterprise (Owner switches it on for Team/Enterprise). Included in the plan; nothing extra to buy.</p></aside>
+</section>
+
+<!-- Myths -->
+<section class="scene" id="cs-not" data-module="🔬 · Claude Science deep dive" data-title="Four things people get wrong">
+  <span class="label">First, clear the air</span>
+  <div class="tut-title">Four things people <span class="grad">get wrong.</span></div>
+  <div class="myths">
+    <div class="mrow" data-in="1" data-fx="rise"><div class="my"><s>It's a new science model.</s></div><div class="ar">→</div><div class="fa">An app. It runs the Claude models your plan already has.<small>Same safeguards. Some sensitive life-science requests may be handled by a different Claude model.</small></div></div>
+    <div class="mrow" data-in="2" data-fx="rise"><div class="my"><s>It's a website.</s></div><div class="ar">→</div><div class="fa">A local app. The browser tab points at localhost.<small>No public URL. Mac and Linux open a browser tab; Windows opens its own window.</small></div></div>
+    <div class="mrow" data-in="3" data-fx="rise"><div class="my"><s>"Local" means offline and private.</s></div><div class="ar">→</div><div class="fa">Your files and code stay put. The thinking is remote.<small>Whatever Claude reads into the conversation is sent to Anthropic.</small></div></div>
+    <div class="mrow" data-in="4" data-fx="rise"><div class="my"><s>It's only for biologists.</s></div><div class="ar">→</div><div class="fa">Any field works. The built-ins are mostly life science.<small>Physics, ML, maths, social science: the bench works, bring your own skills and connectors.</small></div></div>
+  </div>
+  <aside class="notes"><p>The third row is the one people get wrong most often, and the next three scenes unpack it. Docs: "Claude Science is a local application, not a website, so there's no public URL to visit." The docs list CS/ML, engineering, materials, maths, physics and social sciences as supported fields.</p></aside>
+</section>
+
+<!-- Comparison -->
+<section class="scene" id="cs-diff" data-module="🔬 · Claude Science deep dive" data-title="Why it's different">
+  <span class="label">Why it's different</span>
+  <div class="tut-title">Same Claude. <span class="grad">A different bench.</span></div>
+  <div class="ctab">
+    <div class="crow th"><div></div><div>CLAUDE APP</div><div>CLAUDE CODE</div><div class="hl">CLAUDE SCIENCE</div></div>
+    <div class="crow" data-in="1" data-fx="rise"><div class="k">Where code runs</div><div>A sandbox Anthropic hosts</div><div>Your terminal, your repo</div><div class="hl"><span>An OS sandbox on <b>your</b> machine, plus your cluster and GPUs</span></div></div>
+    <div class="crow" data-in="2" data-fx="rise"><div class="k">State between steps</div><div>Files in the chat</div><div>Files and git</div><div class="hl">Live Python and R kernels: data stays in memory</div></div>
+    <div class="crow" data-in="3" data-fx="rise"><div class="k">Science databases</div><div>Connectors you add</div><div>MCP servers you set up</div><div class="hl">Dozens built in, on by default</div></div>
+    <div class="crow" data-in="4" data-fx="rise"><div class="k">Heavy compute</div><div>—</div><div>Whatever your shell reaches</div><div class="hl">Slurm over SSH, Modal GPUs, each job approved</div></div>
+    <div class="crow" data-in="5" data-fx="rise"><div class="k">How a result was made</div><div>The conversation</div><div>git history, if you keep it</div><div class="hl">Code, log, environment and messages on every artifact</div></div>
+    <div class="crow" data-in="6" data-fx="rise"><div class="k">Checking</div><div>You</div><div>You, or a subagent you build</div><div class="hl">A built-in reviewer agent</div></div>
+    <div class="crow best" data-in="7" data-fx="rise"><div class="k">Best for</div><div>Reading, writing, thinking</div><div>Building software</div><div class="hl"><b>Analyses you must defend</b></div></div>
+  </div>
+  <aside class="notes"><p>It looks like Claude Code with a lab attached, and that is roughly right: an agent, a sandbox, permission cards, skills and MCP. The differences are research-specific: persistent kernels, science connectors pre-wired, compute targets with approval cards, provenance on every output, and a reviewer.</p></aside>
+</section>
+
+<!-- Architecture -->
+<section class="scene" id="cs-arch" data-module="🔬 · Claude Science deep dive" data-title="How it works: what runs where">
+  <span class="label">How it works · what runs where</span>
+  <div class="arch">
+    <div class="zone you" data-in="0" data-fx="rise">
+      <div class="zh">YOUR COMPUTER <i>· or a lab server · or an HPC login node</i></div>
+      <div class="zc">🌐 A browser tab (or app window) → <code>localhost:8000</code></div>
+      <div class="zc app"><b>The claude-science app</b> runs the agent loop, the plan and the permission cards</div>
+      <div class="sbx">
+        <div class="sbh">OS SANDBOX · NETWORK DENY-BY-DEFAULT</div>
+        <div class="zrow"><div class="zc k">🐍 Python kernel</div><div class="zc k">📈 R kernel</div><div class="zc k">⌨️ shell</div></div>
+        <div class="zc">Writes only to the session workspace, artifacts and temp</div>
+      </div>
+      <div class="zrow"><div class="zc"><b>~/.claude-science</b><small>history · artifacts · memory · encrypted keys</small></div><div class="zc"><b>Your data folders</b><small>read in place · read-only to code</small></div></div>
+    </div>
+    <svg class="arrows" viewBox="0 0 1420 600">
+      <g data-in="1"><path class="ln" pathLength="1" d="M 662 150 C 750 150, 752 85, 838 85"/><path class="dot" pathLength="1" d="M 662 150 C 750 150, 752 85, 838 85"/><path class="dot rev" pathLength="1" d="M 662 150 C 750 150, 752 85, 838 85"/></g>
+      <g data-in="2"><path class="ln" pathLength="1" d="M 662 300 C 750 300, 752 300, 838 300"/><path class="dot" pathLength="1" d="M 662 300 C 750 300, 752 300, 838 300"/></g>
+      <g data-in="3"><path class="ln" pathLength="1" d="M 662 470 C 750 470, 752 515, 838 515"/><path class="dot" pathLength="1" d="M 662 470 C 750 470, 752 515, 838 515"/></g>
+    </svg>
+    <div class="zone anth" data-in="1" data-fx="right">
+      <div class="zh">ANTHROPIC</div>
+      <b class="zt">Claude models: the thinking</b>
+      <small>Receives the conversation so far: prompts, contents of files Claude read, code output, connector results</small>
+    </div>
+    <div class="zone db" data-in="2" data-fx="right">
+      <div class="zh">PUBLIC SCIENCE DATABASES</div>
+      <div class="tags"><span>UniProt</span><span>PDB</span><span>Ensembl</span><span>GEO</span><span>ClinVar</span><span>PubChem</span><span>OpenAlex</span><span>arXiv</span><span>+ dozens</span></div>
+      <small>Through a local allowlist proxy, straight from your machine</small>
+    </div>
+    <div class="zone comp" data-in="3" data-fx="right">
+      <div class="zh">YOUR COMPUTE · YOUR BILL</div>
+      <div class="tags"><span>Slurm cluster over SSH</span><span>Modal GPUs</span><span>NVIDIA NIM endpoints</span></div>
+      <small>Outside the sandbox, as your user. Every job is approved first.</small>
+    </div>
+  </div>
+  <div class="ltip" data-in="4" data-fx="rise">The <b>brain</b> is remote. The <b>bench</b>, the data and the compute are yours.</div>
+  <aside class="notes"><p>Beat by beat: your machine runs the app, the sandbox and kernels, and keeps all state in ~/.claude-science. Every reply is a model call to Anthropic carrying the conversation so far. Database queries, SSH jobs, Modal jobs and model endpoints go "directly from the computer or your own compute and without passing through Anthropic" (data docs).</p><p>Sign-in uses your Claude account; no API key. Sandbox: bubblewrap + socat on Linux, an AppContainer on Windows.</p></aside>
+</section>
+
+<!-- What local means -->
+<section class="scene" id="cs-local" data-module="🔬 · Claude Science deep dive" data-title="What 'runs locally' actually means">
+  <span class="label">"It runs locally" · what that actually means</span>
+  <div class="tut-title">Local storage. Local code. <span class="grad">Remote thinking.</span></div>
+  <div class="lcols">
+    <div class="lcol stay" data-in="1" data-fx="left">
+      <h4>⌂ STAYS ON YOUR MACHINE OR SERVER</h4>
+      <div class="ci"><b>Raw datasets</b>Anthropic doesn't host or store your files</div>
+      <div class="ci"><b>Code execution</b>local sandbox, your cluster, your Modal</div>
+      <div class="ci"><b>History and artifacts</b>every version, in ~/.claude-science</div>
+      <div class="ci"><b>Memory</b>stored locally, not synced</div>
+      <div class="ci"><b>Credentials</b>encrypted on the device</div>
+      <div class="ci"><b>Jobs and database queries</b>go direct, not via Anthropic</div>
+    </div>
+    <div class="lcol sent" data-in="2" data-fx="right">
+      <h4>↗ SENT TO ANTHROPIC WITH EVERY REPLY</h4>
+      <div class="ci"><b>Your prompts</b>and the conversation so far</div>
+      <div class="ci"><b>Files Claude reads</b>their contents, PDFs included</div>
+      <div class="ci"><b>Code and command output</b>tables, logs, printed values</div>
+      <div class="ci"><b>Connector results</b>and images Claude is shown</div>
+      <div class="ci"><b>Recalled memory</b>facts used in that session</div>
+      <div class="ci"><b>Web searches</b>via Anthropic's search provider</div>
+    </div>
+  </div>
+  <div class="lbottom">
+    <div class="lb" data-in="3" data-fx="rise"><b>A 40 GB BAM file stays on the cluster.</b> The 200-line summary Claude prints from it does not.</div>
+    <div class="lb warn" data-in="4" data-fx="rise">Not in the beta: zero data retention · BAA cover (keep patient data out) · inference in your own cloud</div>
+  </div>
+  <aside class="notes"><p>Quote the docs: each model call carries "the conversation so far, including the member's prompts, the contents of files Claude has read (PDFs included), code and command output, connector results, images Claude is shown, and recalled memory facts." The launch post's "only the context needed for each step" is the friendly version of the same thing.</p><p>Team/Enterprise: Commercial Terms, no training on your content; model-call logs follow commercial retention; requests to "Covered Models" kept 30 days for safety. Pro/Max: consumer terms, so check your privacy (training) setting. Telemetry has no conversation content or file names; turn it off with disable_telemetry = true in config.toml.</p></aside>
+</section>
+
+<!-- Anatomy -->
+<section class="scene" id="cs-anatomy" data-module="🔬 · Claude Science deep dive" data-title="Anatomy: project, session, artifact">
+  <span class="label">The parts · project → session → artifact</span>
+  <div class="tut-title">How the work is <span class="grad">organised.</span></div>
+  <div class="anat">
+    <div class="cproj" data-in="1" data-fx="zoom">
+      <div class="ph">PROJECT <i>one question, one paper</i></div>
+      <div class="pchips"><span>📝 instructions, read every session</span><span>🧠 memory</span><span>📂 folder grants</span><span>🎓 a specialist</span></div>
+      <div class="sess-row">
+        <div class="sess" data-in="2" data-fx="rise">
+          <div class="sh">SESSION · ONE THREAD</div>
+          <div class="kern" data-in="3" data-fx="pop"><b>🐍 Python</b><b>📈 R</b><small>live kernels: dataframes stay in memory · end after ~30 min idle</small></div>
+          <div class="wsp" data-in="3" data-fx="pop" style="--d:.12s">🗂 workspace: scratch, cleared ~12 h after the last reply</div>
+          <div class="plan" data-in="4" data-fx="pop">✅ a plan you approve → ⫽ parallel tracks</div>
+        </div>
+        <div class="sess alt" data-in="2" data-fx="rise" style="--d:.15s">
+          <div class="sh">MORE SESSIONS</div>
+          <small><b>Fork</b> to compare two approaches. <b>Continue as a new session</b> to carry work over. <b>Side chats</b> for quick questions.</small>
+          <small class="keys"><code>@</code> artifact · <code>#</code> past session · <code>/</code> skill</small>
+        </div>
+      </div>
+    </div>
+    <div class="arrowx" data-in="5">→</div>
+    <div class="arts" data-in="5" data-fx="right">
+      <div class="ph">ARTIFACTS</div>
+      <div class="vstack"><div>v1</div><div>v2</div><div>fig2_volcano.png <i>v3</i></div></div>
+      <small>Every save is a new, immutable version with its provenance. Comment on any part; Claude reads the comment on its next turn.</small>
+    </div>
+  </div>
+  <div class="ltip" data-in="6" data-fx="rise">The workspace is scratch. <b>If you want it tomorrow, save it as an artifact.</b></div>
+  <aside class="notes"><p>A specialist is "a named set of skills, connectors, and instructions that a session answers as" (glossary). Delegation splits a request into parallel tracks, each with its own folder; Stop ends the whole session. Deleting a session keeps its artifacts; deleting a project deletes everything in it. Don't move files inside ~/.claude-science by hand. Projects stay on the computer where they were made.</p></aside>
+</section>
+
+<!-- What's in the box -->
+<section class="scene" id="cs-box" data-module="🔬 · Claude Science deep dive" data-title="What's in the box">
+  <span class="label">What's in the box</span>
+  <div class="tut-title" style="font-size:54px">Databases and models built in, <span class="grad">room for yours.</span></div>
+  <div class="tb3">
+    <div class="tbc" data-in="1" data-fx="rise">
+      <h4>FEATURED CONNECTORS <i>on by default · read-only</i></h4>
+      <div class="cgrid">
+        <div><b>Genomes</b>Ensembl · VEP · BioMart</div>
+        <div><b>Genes &amp; ontologies</b>UniProt · GO · Reactome · OLS</div>
+        <div><b>Variants</b>gnomAD · ClinVar · dbSNP</div>
+        <div><b>Human genetics</b>GWAS Catalog · FinnGen · BBJ</div>
+        <div><b>Clinical genomics</b>ClinGen · CIViC · Open Targets</div>
+        <div><b>Expression &amp; regulation</b>GTEx · JASPAR · UniBind</div>
+        <div><b>Protein annotation</b>InterPro · Pfam · HPA · STRING</div>
+        <div><b>Structures</b>PDB · AlphaFold · EMDB · IntAct</div>
+        <div><b>Omics archives</b>GEO · ArrayExpress · PRIDE</div>
+        <div><b>Cells, cancer, RNA</b>CELLxGENE · cBioPortal · Rfam</div>
+        <div><b>Chemistry</b>PubChem · ChEBI · BindingDB · ZINC</div>
+        <div><b>Drugs</b>FDA drug data · openFDA</div>
+        <div><b>Literature</b>OpenAlex (free key) · arXiv</div>
+        <div><b>Research resources</b>Grants.gov · Antibody Registry</div>
+      </div>
+      <small>Add from the directory: PubMed · ClinicalTrials.gov · ChEMBL · bioRxiv</small>
+    </div>
+    <div class="tbc" data-in="2" data-fx="rise">
+      <h4>FEATURED SKILLS <i>methods &amp; models</i></h4>
+      <div class="skchips"><span class="hot">literature review</span><span class="hot">indication dossier</span><span>AlphaFold2</span><span>Boltz-2</span><span>Chai-1</span><span>OpenFold3</span><span>ESMFold2</span><span>ProteinMPNN</span><span>DiffDock</span><span>ESM-2</span><span>Evo 2</span><span>Borzoi</span><span>scGPT</span><span>scvi-tools</span></div>
+      <small>Evo 2, Boltz-2 and OpenFold3 come via NVIDIA's BioNeMo toolkit. Folding skills may send sequences to the public ColabFold server, directly, not via Anthropic.</small>
+    </div>
+    <div class="tbc" data-in="3" data-fx="rise">
+      <h4>BRING YOUR OWN</h4>
+      <div class="byo"><b>Skills</b>Write one, upload one, import from GitHub, or "turn this session into a skill"</div>
+      <div class="byo"><b>Connectors</b>Any MCP server: a remote URL or a local command</div>
+      <div class="byo"><b>Scripts</b>Your existing Python, R and shell workflows</div>
+      <div class="byo"><b>Websites</b>Sandboxed code can reach sites you approve. Try asking before writing a connector.</div>
+    </div>
+  </div>
+  <aside class="notes"><p>Featured connectors are read-only and need no account, except OpenAlex search (free key). Some underlying databases have non-commercial or attribution terms; you are responsible for having the rights. Directory connectors (PubMed, Clinical Trials, ChEMBL, bioRxiv) are Anthropic-hosted; on Team/Enterprise an admin adds them. Skills can come from private GitHub repos with a saved token (100 MB limits).</p></aside>
+</section>
+
+<!-- Sandbox + permission cards -->
+<section class="scene" id="cs-sandbox" data-module="🔬 · Claude Science deep dive" data-title="The sandbox and permission cards">
+  <span class="label">Safety by default · the sandbox and the cards</span>
+  <div class="tut-title">It asks <span class="grad">before it reaches.</span></div>
+  <div class="sbwrap">
+    <div class="sbrules" data-in="0" data-fx="left">
+      <div class="rl"><span>🌐</span><div><b>Network: deny by default</b>Only package sites, the featured databases and hosts you approve, through a local proxy</div></div>
+      <div class="rl"><span>✍️</span><div><b>Writes: its own folders only</b>Workspace, artifacts, temp. Folders you grant are read-only to code.</div></div>
+      <div class="rl"><span>🏠</span><div><b>Home directory: blocked</b>Except folders you grant, read-only or read &amp; write</div></div>
+      <div class="rl out"><span>⚠️</span><div><b>Outside the sandbox: only what you approve</b>Cluster and Modal jobs run as <i>you</i>, with everything your account can touch</div></div>
+    </div>
+    <div class="cards">
+      <div class="pcard" data-in="0" data-out="1" data-fx="rise"><div class="pt">PERMISSION CARD · CODE</div><div class="pq">🐍 Run Python code?</div><pre class="pcode">import scanpy as sc
+adata = sc.read_h5ad("pbmc.h5ad")</pre><div class="pscopes"><span>Once</span><span class="sel">This conversation</span><span>This project</span><span>Global</span></div><div class="pnote">Broad scopes for routine code, <b>Once</b> for anything new.</div></div>
+      <div class="pcard" data-in="1" data-out="2" data-fx="rise"><div class="pt">PERMISSION CARD · FOLDER</div><div class="pq">📂 Access ~/data/rnaseq?</div><div class="pscopes"><span class="sel">Read-only</span><span>Read &amp; write</span><span class="deny">Deny</span></div><div class="pnote">It starts on <b>read-only</b>, even when Claude asks to write. Claude works on copies in its workspace.</div></div>
+      <div class="pcard" data-in="2" data-out="3" data-fx="rise"><div class="pt">PERMISSION CARD · NETWORK</div><div class="pq">🌐 Connect to zenodo.org?</div><div class="pscopes"><span class="sel">Allow</span><span class="deny">Deny</span></div><div class="pnote">Approved hosts stay allowed until you revoke them in <b>Settings → Network</b>.</div></div>
+      <div class="pcard" data-in="3" data-out="4" data-fx="rise"><div class="pt">PERMISSION CARD · REMOTE JOB</div><div class="pq">🖥 Run this job on cluster?</div><pre class="pcode">sbatch · 32 CPUs · 64 GB · ~2 h
+inputs → /scratch/you/claude-jobs/</pre><div class="pscopes"><span class="sel">Once</span><span>This conversation</span><span>This project</span><span>Global</span></div><div class="pnote">Runs <b>outside</b> the sandbox, as you. Read the resources before you click.</div></div>
+      <div class="pcard" data-in="4" data-fx="rise"><div class="pt">PERMISSION CARD · CLOUD</div><div class="pq">☁️ Start a Modal job?</div><pre class="pcode">H100 · 8 CPUs · 32 GiB
+billed per second · max 12 h</pre><div class="pscopes"><span class="sel">Once</span><span>This conversation</span><span>This project</span><span>Global</span></div><div class="pnote">Billed to <b>your</b> Modal account. The app has no spend ceiling.</div></div>
+    </div>
+  </div>
+  <div class="ltip" data-in="5" data-fx="rise">The docs' own words: these rules <b>"aren't a guarantee."</b> Grant the folder you need, never your whole home directory.</div>
+  <aside class="notes"><p>Other cards: install packages, use a saved credential, call a connector tool you added. Standing grants live in Settings → Permissions and Settings → Network. Auto mode can skip some cards; the docs warn "no mode replaces your judgment." The network allowlist doesn't cover cluster or Modal jobs, which use those machines' own networks. On Team/Enterprise, admins can manage the allowlist and switch SSH hosts and Modal off.</p></aside>
+</section>
+
+<!-- Guide: where to install -->
+<section class="scene" id="cs-where" data-module="🔬 · Claude Science deep dive" data-title="Guide: where should it run?">
+  <span class="label">Decision guide · where do you install it?</span>
+  <div class="tut-title">Install it <span class="grad">next to the data.</span></div>
+  <div class="ladder">
+    <div class="lrow" data-in="1" data-fx="rise"><div class="n">1</div><div class="q">Data fits on your laptop, and you're exploring?</div><div class="ar">YES →</div><div class="ans">Laptop app<small>macOS 13+ · Windows 11 · Linux x64</small></div></div>
+    <div class="lrow" data-in="2" data-fx="rise"><div class="n">2</div><div class="q">Data on a lab server or VM you can SSH into?</div><div class="ar">YES →</div><div class="ans" style="--c:#60a5fa">On that server<small>serve --no-browser · reach it by SSH tunnel</small></div></div>
+    <div class="lrow" data-in="3" data-fx="rise"><div class="n">3</div><div class="q">Heavy jobs belong on a Slurm cluster?</div><div class="ar">YES →</div><div class="ans" style="--c:#a78bfa">Cluster as SSH host<small>jobs via sbatch · nothing installed there</small></div></div>
+    <div class="lrow" data-in="4" data-fx="rise"><div class="n">4</div><div class="q">Need GPUs or more memory than you have?</div><div class="ar">YES →</div><div class="ans" style="--c:#fbbf24">Your Modal account<small>billed per second · set a budget at Modal</small></div></div>
+    <div class="lrow" data-in="5" data-fx="rise"><div class="n">5</div><div class="q">Calling one protein model over and over?</div><div class="ar">YES →</div><div class="ans" style="--c:#ff7a59">A model endpoint<small>NVIDIA NIM · hosted API or local GPU</small></div></div>
+  </div>
+  <div class="ltip" data-in="6" data-fx="rise">Install the app <b>where the data lives</b>. Send the heavy work <b>where the compute is.</b></div>
+  <aside class="notes"><p>You can combine them: app on a lab server, the HPC cluster added as an SSH host, Modal for GPUs. Installing on an HPC login node is supported, but check your centre's rules: heavy work belongs in Slurm jobs, not on the login node. Model endpoints aren't available in the Windows app.</p></aside>
+</section>
+
+<!-- Remote install -->
+<section class="scene" id="cs-remote" data-module="🔬 · Claude Science deep dive" data-title="Step by step: on a server or HPC login node">
+  <span class="label">Step by step · on a remote server or HPC login node</span>
+  <div class="cs-split">
+    <div class="tw" data-in="0" data-fx="rise"><div class="bar"><i></i><i></i><i></i><span>laptop ⇄ server</span></div>
+<pre data-type="10" class="sm-term"><span class="c"># 1 · laptop: open the tunnel first (sign-in link expires in ~3 min)</span>
+<span class="k">$</span> ssh -L 8000:localhost:8000 -L 8001:localhost:8001 you@server
+
+<span class="c"># 2 · server: sandbox tools (or ask your admin)</span>
+<span class="k">$</span> sudo apt-get install -y curl bubblewrap socat
+<span class="k">$</span> /usr/bin/bwrap --version     <span class="c"># needs 0.8.0 or later</span>
+
+<span class="c"># 3 · server: install and start (no root needed)</span>
+<span class="k">$</span> curl -fsSL https://claude.ai/install-claude-science.sh | bash
+<span class="k">$</span> claude-science serve --no-browser --detached
+<span class="s">  → http://localhost:8000/?nonce=…</span>  <span class="c"># open on the laptop</span>
+
+<span class="c"># later: claude-science status / logs / update / stop</span></pre></div>
+    <div class="rnotes">
+      <div class="rn" data-in="1" data-fx="right"><b>No sudo on the cluster?</b>Install bubblewrap and socat with conda, then <code>claude-science sandbox approve</code> them. Or keep the app on your laptop and add the cluster as an SSH host.</div>
+      <div class="rn" data-in="2" data-fx="right"><b>Login-node manners</b>Check your centre's rules. Heavy work goes in Slurm jobs. Pick a non-default port (<code>--port 8765</code>) and tunnel to the exact node (<code>hostname</code>).</div>
+      <div class="rn" data-in="3" data-fx="right"><b>Requirements</b>x64 Linux with glibc (no arm64, no Alpine) · ~10 GB free in home · Python 3.8+ at /usr/bin/python3</div>
+    </div>
+  </div>
+  <aside class="notes"><p>From the docs page "Run on a remote Linux server". Ubuntu 24.04's bubblewrap is new enough; 22.04's is not. Without admin: conda create -y --copy --override-channels -p ~/claude-science-tools -c conda-forge bubblewrap socat, then claude-science sandbox approve --bwrap ~/claude-science-tools/bin/bwrap --socat ~/claude-science-tools/bin/socat. Both commands are in the handout. On Windows the Linux CLI also runs under WSL 2 (Ubuntu 24.04+).</p></aside>
+</section>
+
+<!-- Cluster job flow -->
+<section class="scene" id="cs-cluster" data-module="🔬 · Claude Science deep dive" data-title="Under the hood: one cluster job">
+  <span class="label">Under the hood · one cluster job, start to finish</span>
+  <div class="tut-title">From "run it on the cluster" <span class="grad">to results.</span></div>
+  <div class="flow6">
+    <div class="fs" data-in="1" data-fx="rise"><span class="fn">1</span><b>Add the host once</b><p>Settings → Compute → SSH hosts. Uses your <code>~/.ssh/config</code> and key or agent. Installs nothing there.</p></div>
+    <div class="fs" data-in="2" data-fx="rise"><span class="fn">2</span><b>It probes the machine</b><p>CPUs, memory, GPUs, CUDA, conda, modules, Apptainer, scratch, Slurm partitions. Saved as notes you can edit.</p></div>
+    <div class="fs" data-in="3" data-fx="rise"><span class="fn">3</span><b>Claude proposes a job</b><p>A card asks <i>"Run this job on &lt;host&gt;?"</i> You choose how long the approval lasts.</p></div>
+    <div class="fs" data-in="4" data-fx="rise"><span class="fn">4</span><b>Script and inputs go to scratch</b><p>Submitted with <code>sbatch</code>. No Slurm? A detached process. PBS and LSF aren't supported.</p></div>
+    <div class="fs" data-in="5" data-fx="rise"><span class="fn">5</span><b>It runs as you</b><p>Outside the sandbox, with your account's access. Survives a dropped connection. Default timeout: 30 min.</p></div>
+    <div class="fs" data-in="6" data-fx="rise"><span class="fn">6</span><b>Results come back</b><p>Outputs return to the session. Files over ~100 MB stay on the cluster, with their paths recorded.</p></div>
+  </div>
+  <div class="ltip" data-in="7" data-fx="rise">Modal works the same way, on your bill: <b>10 jobs at once, a 12 h timeout (23 h max), and closing the app doesn't stop them.</b></div>
+  <aside class="notes"><p>The scratch directory must be on a shared filesystem for Slurm. The concurrent job limit defaults to 100 per host. The host's Details document holds notes Claude reads and updates: environments, data locations, scheduling conventions. Edit it to teach Claude your cluster's habits ("use partition gpu-a100", "module load cuda/12").</p></aside>
+</section>
+
+<!-- Reviewer -->
+<section class="scene" id="cs-reviewer" data-module="🔬 · Claude Science deep dive" data-title="The reviewer">
+  <span class="label">The reviewer · a second agent that checks the first</span>
+  <div class="rv-wrap">
+    <div class="rv-chat">
+      <div class="msg" data-in="0" data-fx="rise"><div class="mh">CLAUDE <i>· illustrative</i></div>412 genes differ between treated and control (FDR &lt; 0.05). The top hit, <b>FOXO3</b>, is up 3.1-fold, consistent with Smith et al. (2021). See Fig. 2.</div>
+      <div class="rcard" data-in="1" data-fx="left"><b>Reported as computed, but nothing ran</b>The 3.1-fold change isn't in the execution log.</div>
+      <div class="rcard" data-in="2" data-fx="left"><b>Value contradicts its source file</b>de_results.csv has 398 genes at FDR &lt; 0.05, not 412.</div>
+      <div class="rcard" data-in="3" data-fx="left"><b>Citation doesn't support the claim</b>The DOI given resolves to a different article.</div>
+      <div class="rcard" data-in="4" data-fx="left"><b>Approved plan step not done</b>Step 3, batch correction, was never run.</div>
+    </div>
+    <div class="rv-side">
+      <div class="rvs bad" data-in="5" data-fx="rise"><h4>WHAT IT DOESN'T DO</h4><div class="vi">Re-run your analysis</div><div class="vi">Judge whether the method was right</div><div class="vi">Stand outside the model: same Claude family</div></div>
+      <div class="rvs" data-in="6" data-fx="rise"><h4>SET IT UP</h4><p>Automatic on Max, Ultra, Team and Enterprise. On Pro: click <b>Request review</b>, or turn auto-review on per session.</p><p>Add your field's checks in <b>Settings → Specialists → Reviewer</b>. You can add checks, not remove the built-in ones.</p></div>
+    </div>
+  </div>
+  <aside class="notes"><p>The example message is invented to show the four kinds of finding the docs list (plus "a conclusion not supported by the method used"). The reviewer re-reads recent responses, the approved plan, saved artifacts and the execution record. Findings appear as cards; "View reviewer transcript" shows its reasoning. Reviews use your plan's usage.</p><p>Real failure: in Future Stack Reviews' hands-on test (Jul 2026), the narrative credited a four-factor model's survival split to one gene, and the reviewer didn't flag it. It is a smoke alarm, not a referee.</p></aside>
+</section>
+
+<!-- Provenance -->
+<section class="scene" id="cs-prov" data-module="🔬 · Claude Science deep dive" data-title="Provenance: every artifact's methods section">
+  <span class="label">Provenance · every artifact carries its own methods section</span>
+  <div class="pv">
+    <div class="pvfig" data-in="0" data-fx="zoom">
+      <div class="pvh">fig2_volcano.png <span class="ver">◂ v3 ▸</span><span class="dbtn">diff</span></div>
+      <svg class="volc" viewBox="0 0 420 300"></svg>
+      <div class="pvm">3 versions · saved from session "DE analysis"</div>
+    </div>
+    <div class="pvr">
+      <div class="tabs"><span data-k="1">Messages</span><span data-k="2">Code</span><span data-k="3">Execution log</span><span data-k="4">Environment</span><span data-k="5">Review</span></div>
+      <div class="tabp">
+        <div class="tp" data-in="1" data-out="2" data-fx="rise"><div class="tpw">The conversation around the save</div><div class="chatline you">Label the top 10 genes, drop the gridlines, use the Okabe–Ito palette.</div><div class="chatline">Relabelled the top 10 by adjusted p, removed gridlines, switched palette. Saved as v3.</div></div>
+        <div class="tp" data-in="2" data-out="3" data-fx="rise"><div class="tpw">A script that reproduces it · download as .py or notebook</div><pre class="pcode">res = pd.read_csv("de_results.csv")
+sig = res[res.padj &lt; 0.05]
+ax.scatter(res.log2fc, -np.log10(res.padj),
+           s=6, c=okabe_ito(res))
+label_top(ax, sig.nsmallest(10, "padj"))</pre></div>
+        <div class="tp" data-in="3" data-out="4" data-fx="rise"><div class="tpw">Every command that actually ran</div><pre class="pcode">[14] ✓ 0.8 s  read de_results.csv · 18,204 rows
+[15] ✓ 0.2 s  filter padj &lt; 0.05 → 398 rows
+[16] ✓ 1.9 s  plot, savefig fig2_volcano.png</pre><div class="pnote">If the Code tab and the log disagree, <b>trust the log.</b></div></div>
+        <div class="tp" data-in="4" data-out="5" data-fx="rise"><div class="tpw">The environment · every package, every version</div><pre class="pcode">env  rnaseq-de · python 3.12
+pandas 2.2 · numpy 2.1 · matplotlib 3.9
+adjustText 1.2 · … 140 more</pre></div>
+        <div class="tp" data-in="5" data-fx="rise"><div class="tpw">What the reviewer found on this version</div><div class="rcard flat"><b>No findings on v3</b>v2's mislabelled axis was fixed in this version.</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="ltip" data-in="6" data-fx="rise">Saved versions never change. <b>That's your supplementary material, ready made.</b></div>
+  <aside class="notes"><p>Open Provenance from an artifact's menu in Files. Five tabs: Messages, Code (download as a script or notebook), Execution Log ("the authoritative record of what ran"), Environment, Review. Versions are immutable; a diff mode compares them; to restore an old version, ask Claude to save it again. The figure, code and log here are illustrative.</p></aside>
+</section>
+
+<!-- Walkthrough -->
+<section class="scene" id="cs-walk" data-module="🔬 · Claude Science deep dive" data-title="Walkthrough: raw data to a figure you can defend">
+  <span class="label">Walkthrough · raw data to a figure you can defend</span>
+  <div class="walk">
+    <div class="wsteps">
+      <div class="ws" data-k="1"><span class="n">1</span>Set the project's rules<span class="own you">YOU</span></div>
+      <div class="ws" data-k="2"><span class="n">2</span>Ask for a plan, not results<span class="own you">YOU</span></div>
+      <div class="ws" data-k="3"><span class="n">3</span>Look before you test<span class="byo">CLAUDE</span></div>
+      <div class="ws" data-k="4"><span class="n">4</span>Bring in the databases<span class="byo">CLAUDE</span></div>
+      <div class="ws" data-k="5"><span class="n">5</span>Heavy step to the cluster<span class="own you">YOU OK</span></div>
+      <div class="ws" data-k="6"><span class="n">6</span>Mark up the figure<span class="own you">YOU</span></div>
+      <div class="ws" data-k="7"><span class="n">7</span>Reviewer, then you<span class="own both">BOTH</span></div>
+      <div class="ws" data-k="8"><span class="n">8</span>Leave with methods + a skill<span class="own you">YOU</span></div>
+    </div>
+    <div class="wpanel">
+      <div class="wp" data-in="0" data-out="1" data-fx="rise"><div class="who">THE GOAL</div><h3>A result whose every number you can trace.</h3><div class="why">Example: RNA-seq counts, treated vs control. Swap in your own data; <b>the shape of the workflow is the same in any field.</b></div></div>
+      <div class="wp" data-in="1" data-out="2" data-fx="rise"><div class="who">STEP 1 · PROJECT INSTRUCTIONS</div><h3>Give the rules before the data</h3><div class="prompt">Use R for statistics and Python for figures. Report n, the test and an effect size with every p-value. Colour-blind-safe palettes. Never write into my data folders. Ask before any job longer than an hour.</div><div class="chips"><em>GRANT</em><span class="mchip">~/data/study · Read-only</span></div><div class="why">Project instructions are read at the start of every session.</div></div>
+      <div class="wp" data-in="2" data-out="3" data-fx="rise"><div class="who">STEP 2 · PLAN</div><h3>Ask for a plan, not results</h3><div class="prompt">Plan an analysis of the counts in ~/data/study: QC, normalisation, differential expression treated vs control, pathway enrichment. Give the method for each step and why. Don't run anything until I approve.</div><div class="why">Iterate until it's right. <b>Approved steps are tracked</b>, and the reviewer flags any that never ran.</div></div>
+      <div class="wp" data-in="3" data-out="4" data-fx="rise"><div class="who">STEP 3 · EXPLORE</div><h3>Look before you test</h3><div class="prompt">Load the counts. Show library sizes and a PCA coloured by batch and by condition. Stop and tell me if batch explains more variance than condition.</div><div class="chips"><em>CARD</em><span class="mchip">Run Python code? → This conversation</span></div><div class="why">The data stays loaded in the kernel, so every follow-up is instant.</div></div>
+      <div class="wp" data-in="4" data-out="5" data-fx="rise"><div class="who">STEP 4 · DATABASES</div><h3>Bring in the public databases</h3><div class="prompt">For the top 20 genes, add Ensembl IDs, GTEx tissue expression and any ClinVar pathogenic variants. One table, with the source and access date for every value.</div><div class="chips"><em>CONNECTORS</em><span class="mchip">Ensembl</span><span class="mchip">GTEx</span><span class="mchip">ClinVar</span><em>NO CARD NEEDED</em></div></div>
+      <div class="wp" data-in="5" data-out="6" data-fx="rise"><div class="who">STEP 5 · CLUSTER</div><h3>Heavy work goes to the cluster</h3><div class="prompt">Run the 10,000-permutation test as a Slurm job on my cluster host. Estimate runtime and memory first.</div><div class="chips"><em>CARD</em><span class="mchip">Run this job on cluster? → Once</span></div><div class="why">Approve big jobs <b>Once</b>. Read the resources on the card before you click.</div></div>
+      <div class="wp" data-in="6" data-out="7" data-fx="rise"><div class="who">STEP 6 · FIGURE</div><h3>Edit a figure by commenting on it</h3><div class="youcard">Select part of the figure and comment: "Label the top 10 genes, drop the gridlines, Okabe–Ito palette, show n per group."</div><div class="why">Claude reads pending comments on its next turn, <b>edits its own code</b> and saves a new version.</div></div>
+      <div class="wp" data-in="7" data-out="8" data-fx="rise"><div class="who">STEP 7 · CHECK</div><h3>Clear the flags. Then attack it yourself.</h3><div class="prompt">Address every reviewer finding. Then list three ways this result could be an artefact, and test the cheapest one.</div><div class="why">The reviewer checks claims against the log. <b>Only you can check the science.</b></div></div>
+      <div class="wp" data-in="8" data-fx="rise"><div class="who">STEP 8 · EXPORT</div><h3>Leave with methods, code and a skill</h3><div class="prompt">Write the methods paragraph from the execution log and environment, with package versions. Then turn this workflow into a skill called de-analysis.</div><div class="chips"><em>THEN</em><span class="mchip">Provenance → Code → download notebook</span></div></div>
+    </div>
+  </div>
+  <aside class="notes"><p>Point at the owner tags: you set the rules, approve the plan, approve the expensive job and judge the science. Claude does the volume. Every prompt is in the handout. Non-biologists: swap step 4's databases for arXiv, your own MCP connector, or simply a website you allow.</p></aside>
+</section>
+
+<!-- By field -->
+<section class="scene" id="cs-uses" data-module="🔬 · Claude Science deep dive" data-title="What you can do with it, by field">
+  <span class="label">What you can do with it · by field</span>
+  <div class="tut-title">Strongest in biology. <span class="grad">Useful well beyond it.</span></div>
+  <div class="fields">
+    <div class="fd" data-in="1" data-fx="rise"><div class="fh"><span class="e">🧬</span><b>Genomics &amp; genetics</b><span class="meter3"><i class="f"></i><i class="f"></i><i class="f"></i></span></div><ul><li>Variant workup: gnomAD → ClinVar → GWAS Catalog → Open Targets</li><li>Re-analyse a GEO dataset end to end</li><li>Single-cell with scvi-tools or scGPT</li></ul></div>
+    <div class="fd" data-in="1" data-fx="rise" style="--d:.1s"><div class="fh"><span class="e">🧪</span><b>Structure &amp; protein design</b><span class="meter3"><i class="f"></i><i class="f"></i><i class="f"></i></span></div><ul><li>Fold with AlphaFold2, Boltz-2, Chai-1, OpenFold3</li><li>Design with ProteinMPNN, dock with DiffDock</li><li>Inspect structures in 3D, inline</li></ul></div>
+    <div class="fd" data-in="2" data-fx="rise"><div class="fh"><span class="e">⚗️</span><b>Chemistry</b><span class="meter3"><i class="f"></i><i class="f"></i><i></i></span></div><ul><li>Look up PubChem, ChEBI, BindingDB, ZINC</li><li>Sketch molecules in Ketcher</li><li>Property tables where every value has a source</li></ul></div>
+    <div class="fd" data-in="2" data-fx="rise" style="--d:.1s"><div class="fh"><span class="e">📚</span><b>Literature</b><span class="meter3"><i class="f"></i><i class="f"></i><i></i></span></div><ul><li>Literature maps from OpenAlex, arXiv, PubMed, bioRxiv</li><li>An indication dossier, as a skill</li><li>Long reviews with writer and critic skills</li></ul></div>
+    <div class="fd" data-in="3" data-fx="rise"><div class="fh"><span class="e">🛰️</span><b>Physics · materials · ML</b><span class="meter3"><i class="f"></i><i></i><i></i></span></div><ul><li>Parameter sweeps as Slurm jobs or on Modal GPUs</li><li>A messy notebook → a script with its environment</li><li>arXiv, plus your own skills and connectors</li></ul></div>
+    <div class="fd" data-in="3" data-fx="rise" style="--d:.1s"><div class="fh"><span class="e">📊</span><b>Statistics &amp; social science</b><span class="meter3"><i class="f"></i><i></i><i></i></span></div><ul><li>An R kernel with tidyverse and ggplot2 ready</li><li>A provenance trail behind every number you report</li><li>No field connectors yet: add your own</li></ul></div>
+  </div>
+  <div class="legend" data-in="1" data-fx="rise"><span class="meter3"><i class="f"></i><i class="f"></i><i class="f"></i></span> lots built in · <span class="meter3"><i class="f"></i><i></i><i></i></span> the bench works, bring your own skills</div>
+  <aside class="notes"><p>From the launch customers: Allen Institute (Jérôme Lecoq) built about 20 skills for 100+ page computational reviews with writer and critic agents; UCSF (Stephen Francis) ran germline workups in roughly a tenth of the time, and found a lab virus contaminant in bulk RNA-seq. An independent test counted 54 databases across 24 connectors, mostly genetics and genomics. Ask the room which field they're in, and point to the row.</p></aside>
+</section>
+
+<!-- Guide: which bench -->
+<section class="scene" id="cs-when" data-module="🔬 · Claude Science deep dive" data-title="Guide: Science, Code or the app?">
+  <span class="label">Decision guide · Science, Code or the app?</span>
+  <div class="tut-title">Pick the bench <span class="grad">for the job.</span></div>
+  <div class="ladder">
+    <div class="lrow" data-in="1" data-fx="rise"><div class="n">1</div><div class="q">Reading, writing or thinking through papers?</div><div class="ar">YES →</div><div class="ans" style="--c:#60a5fa">Claude app · a Project<small>nothing to install, any device</small></div></div>
+    <div class="lrow" data-in="2" data-fx="rise"><div class="n">2</div><div class="q">Building software: a package, tests, a repo?</div><div class="ar">YES →</div><div class="ans" style="--c:#a78bfa">Claude Code<small>git, CLAUDE.md, hooks, worktrees</small></div></div>
+    <div class="lrow" data-in="3" data-fx="rise"><div class="n">3</div><div class="q">A data analysis where every number must be traceable?</div><div class="ar">YES →</div><div class="ans">Claude Science<small>kernels + provenance + reviewer</small></div></div>
+    <div class="lrow" data-in="4" data-fx="rise"><div class="n">4</div><div class="q">Science databases, a cluster or GPUs, all in one place?</div><div class="ar">YES →</div><div class="ans">Claude Science<small>featured connectors · Slurm · Modal</small></div></div>
+    <div class="lrow" data-in="5" data-fx="rise"><div class="n">5</div><div class="q">Patient data, or a clinical decision?</div><div class="ar">YES →</div><div class="ans" style="--c:#fb7185">None of them, as-is<small>no BAA cover · not for clinical use</small></div></div>
+  </div>
+  <div class="ltip" data-in="6" data-fx="rise">Moving between them is cheap: <b>skills import from GitHub</b>, so one lab skills repo can serve Claude Code and Claude Science.</div>
+  <aside class="notes"><p>A common split: explore and analyse in Claude Science, then move a pipeline that has to become software (tests, packaging, CI) into Claude Code. Usage is shared: Claude Science counts against the same 5-hour and weekly limits as Claude Code and chat.</p></aside>
+</section>
+
+<!-- Limits -->
+<section class="scene" id="cs-limits" data-module="🔬 · Claude Science deep dive" data-title="Know the edges">
+  <span class="label">Know the edges · it's a beta</span>
+  <div class="tut-title">Where it <span class="grad">falls short.</span></div>
+  <div class="lims">
+    <div class="lm" data-in="1" data-fx="rise"><b>Confident wrongness survives review</b>One hands-on test: a survival result credited to the wrong variable. The reviewer missed it.</div>
+    <div class="lm" data-in="1" data-fx="rise" style="--d:.1s"><b>The reviewer isn't independent</b>Same model family. It doesn't re-run code or question your method.</div>
+    <div class="lm" data-in="2" data-fx="rise"><b>No paywalled full text</b>No reference library, no PRISMA screening, no dual review.</div>
+    <div class="lm" data-in="2" data-fx="rise" style="--d:.1s"><b>Built-ins skew to life science</b>Other fields get the bench, not the databases.</div>
+    <div class="lm" data-in="3" data-fx="rise"><b>Slurm only, x64 only</b>No PBS or LSF. Linux servers must be x64 with glibc.</div>
+    <div class="lm" data-in="3" data-fx="rise" style="--d:.1s"><b>Modal has no spend ceiling</b>Jobs keep running, and billing, after you close the app.</div>
+    <div class="lm" data-in="4" data-fx="rise"><b>Scratch disappears</b>Workspace cleared ~12 h after the last reply. Kernels end after ~30 min idle.</div>
+    <div class="lm" data-in="4" data-fx="rise" style="--d:.1s"><b>Projects live on one computer</b>They don't sync between your laptop and a server.</div>
+    <div class="lm" data-in="5" data-fx="rise"><b>Some biology prompts get refused</b>Biosecurity safeguards, especially around pathogens.</div>
+    <div class="lm" data-in="5" data-fx="rise" style="--d:.1s"><b>Not for patient data</b>No BAA, no zero data retention, not for clinical use.</div>
+  </div>
+  <aside class="notes"><p>Sources: The Scientist (Sep 2026, scientists' early verdicts: faster, but check everything; paywalls; refusals on herpesvirus prompts), Future Stack Reviews (hands-on, Jul 2026), An Inquisitive Mind (Jul 2026: "Confident wrongness survives"), ThesisAI (no PRISMA, no reference manager; note it sells a competing tool). Limits on Slurm, Modal, workspace and kernels are from Anthropic's docs. It also spends your plan's usage, and the reviewer does too.</p></aside>
+</section>
+
+<!-- Access -->
+<section class="scene" id="cs-access" data-module="🔬 · Claude Science deep dive" data-title="Getting access">
+  <span class="label">Getting it · you, your lab, your institution</span>
+  <div class="tut-title">Three ways <span class="grad">in.</span></div>
+  <div class="acc3">
+    <div class="ac" data-in="1" data-fx="rise"><div class="ah">YOU</div><b>Pro · Max · Ultra</b><p>On by default. Download from <code>claude.com/product/claude-science</code> and sign in with your Claude account. No API key.</p><p class="fine">Uses your plan's 5-hour and weekly limits, shared with Claude Code and chat.</p></div>
+    <div class="ac hl" data-in="2" data-fx="rise"><div class="ah">YOUR LAB</div><b>Team plan for scientists</b><p>The PI verifies the lab, 1–25 seats. Standard seats <b>$0</b>, Premium <b>$15</b>/month with 5× usage, for 12 months. Science, Code and chat included.</p><p class="fine">Academic and nonprofit labs. Promotional pricing: check the current terms.</p></div>
+    <div class="ac" data-in="3" data-fx="rise"><div class="ah">YOUR INSTITUTION</div><b>Team · Enterprise</b><p>An Owner turns it on in <b>Organization settings → Claude Science</b>. Enterprise adds SSO, SCIM, usage analytics and control over connectors, skills and remote compute.</p><p class="fine">HIPAA-enabled organisations: off by default.</p></div>
+  </div>
+  <div class="acc-foot" data-in="4" data-fx="rise">
+    <div class="qr" data-url="https://claude.com/docs/claude-science/overview" data-size="120"></div>
+    <div><b>Install:</b> macOS 13+ · Windows 11 · Linux x64 (glibc) · about 5 GB free<br><b>Also:</b> AI for Science credits for projects · Life Sciences Verification Program (beta) for approved use cases<br><span>claude.com/docs/claude-science</span></div>
+  </div>
+  <aside class="notes"><p>Team plan for scientists (from Aug 2026): verified PIs at accredited universities and nonprofit institutes; review takes about a week; Standard normally $20 and Premium $100 per seat. Pricing is promotional for 12 months and not guaranteed after. The 30 Jun AI for Science cohort (up to $30k credits; Modal compute on top) closed on 15 Jul; ask about current rounds.</p></aside>
+</section>
+
+<!-- Try it -->
+<section class="scene try" id="cs-try" data-module="🔬 · Claude Science deep dive" data-title="Try it: your first ten minutes in Claude Science">
+  <div class="try-row">
+    <div class="ring" data-min="10">
+      <svg viewBox="0 0 200 200"><circle class="rt" cx="100" cy="100" r="88"/><circle class="rf" cx="100" cy="100" r="88" pathLength="100"/></svg>
+      <div class="rv"><b>10:00</b><span>click or S to start</span></div>
+    </div>
+    <div>
+      <span class="try-badge">⌨ TRY IT · 10 MIN · PICK ONE</span>
+      <div class="big kin" style="font-size:54px;margin-top:18px">Your first ten minutes <span class="grad">in Claude Science.</span></div>
+      <div class="prompt" style="font-size:18px;padding:16px 76px 16px 22px;margin-top:18px"><b>A ·</b> Make a literature map of [your topic] since 2020 from OpenAlex and arXiv (or PubMed). Save a table: DOI, year, method, dataset, finding. Flag preprint/published duplicates and any source you couldn't reach.</div>
+      <div class="prompt" style="font-size:18px;padding:16px 76px 16px 22px;margin-top:12px"><b>B ·</b> For [a protein or compound], pull what UniProt, PDB and AlphaFold (or PubChem and ChEMBL) hold. Show the structure, then save a one-page summary with a source and access date for every fact.</div>
+      <div class="prompt" style="font-size:18px;padding:16px 76px 16px 22px;margin-top:12px"><b>C ·</b> [grant one data folder, read-only] Propose a plan to check this data's quality and answer [question]. Don't run anything until I approve. Then open Provenance on the first figure.</div>
+    </div>
+  </div>
+  <aside class="notes"><p>No Claude Science yet? Pair with someone who has it, or run A in the Claude app and compare what you get back: the size of the source list and whether each row is traceable. OpenAlex search needs a free API key; without one, it falls back to other sources. Check: open Provenance on one output and find the exact command that made it.</p></aside>
 </section>
 
 <section class="scene" id="brk" data-module="☕ · Break" data-net="hi" data-title="Break">

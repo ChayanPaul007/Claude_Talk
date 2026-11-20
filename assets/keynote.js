@@ -18,7 +18,7 @@
   const PALETTE = {
     '00': ['#ff7a59', '#ffb86b'], '01': ['#a78bfa', '#f472b6'], '02': ['#2dd4bf', '#60a5fa'], '☕': ['#fbbf24', '#ff7a59'],
     '03': ['#60a5fa', '#a78bfa'], '04': ['#4ade80', '#2dd4bf'], '05': ['#f472b6', '#a78bfa'], '06': ['#fb923c', '#fb7185'],
-    '07': ['#ff7a59', '#a78bfa'], try: ['#fbbf24', '#fb923c'],
+    '07': ['#ff7a59', '#a78bfa'], '🔬': ['#a3e635', '#22d3ee'], try: ['#fbbf24', '#fb923c'],
   };
   const modKey = m => (m || '').split(' ')[0];
   const colorsOf = s => s.classList.contains('try') ? PALETTE.try : (PALETTE[modKey(s.dataset.module)] || PALETTE['00']);
@@ -214,6 +214,39 @@
       new window.QRCode(el, { text: el.dataset.url, width: size, height: size, colorDark: '#0b0a10', colorLight: '#ffffff', correctLevel: window.QRCode.CorrectLevel.M });
     });
   }
+
+  /* CLAUDE SCIENCE · provenance: draw a small, deterministic volcano plot */
+  H['cs-prov'] = {
+    init(s) {
+      const svg = $('.volc', s); if (!svg) return;
+      let seed = 11; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+      const font = 'font-family="Inter, sans-serif" fill="#55555f"';
+      let out = '<line x1="40" y1="262" x2="400" y2="262" stroke="#8d8d98"/><line x1="40" y1="20" x2="40" y2="262" stroke="#8d8d98"/>' +
+        '<line x1="40" y1="190" x2="400" y2="190" stroke="#d4d4dc" stroke-dasharray="4 4"/>' +
+        '<line x1="178" y1="20" x2="178" y2="262" stroke="#d4d4dc" stroke-dasharray="4 4"/><line x1="262" y1="20" x2="262" y2="262" stroke="#d4d4dc" stroke-dasharray="4 4"/>';
+      const up = [], down = [];
+      for (let i = 0; i < 320; i++) {
+        const fc = (rnd() + rnd() + rnd() - 1.5) * 2.4;
+        const p = Math.min(13, Math.abs(fc) * (0.6 + rnd() * 2.4) + rnd() * 1.1);
+        const x = 220 + fc * 42, y = 262 - p * 18;
+        const sig = Math.abs(fc) > 1 && p > 4;
+        const c = !sig ? '#b5b5c0' : fc > 0 ? '#D55E00' : '#0072B2';
+        if (sig) (fc > 0 ? up : down).push([p, x, y]);
+        out += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${sig ? 3.6 : 2.4}" fill="${c}" fill-opacity="${sig ? .9 : .55}"/>`;
+      }
+      /* label the two strongest hits on each side, with leader lines to a stacked column */
+      [[up, ['FOXO3', 'KLF4'], 1], [down, ['TXNIP', 'CDKN1A'], -1]].forEach(([pts, names, side]) => {
+        pts.sort((a, b) => b[0] - a[0]).slice(0, 2).forEach(([, x, y], j) => {
+          const lx = side > 0 ? 392 : 52, ly = 34 + j * 18;
+          out += `<line x1="${x.toFixed(1)}" y1="${y.toFixed(1)}" x2="${side > 0 ? lx - 44 : lx + 48}" y2="${ly - 4}" stroke="#9a9aa6" stroke-width=".8"/>` +
+            `<text x="${lx}" y="${ly}" font-size="11" font-weight="600" text-anchor="${side > 0 ? 'end' : 'start'}" ${font}>${names[j]}</text>`;
+        });
+      });
+      out += `<text x="220" y="288" text-anchor="middle" font-size="12" ${font}>log2 fold change</text>` +
+        `<text x="16" y="141" text-anchor="middle" font-size="12" transform="rotate(-90 16 141)" ${font}>−log10 adj. p</text>`;
+      svg.innerHTML = out;
+    }
+  };
 
   /* PERMISSIONS: interactive mode slider */
   H.perms = {

@@ -44,6 +44,7 @@
   table { width: 100%; border-collapse: collapse; font-size: 15px; margin: 10px 0 20px; }
   th, td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--line); vertical-align: top; color: var(--ink-2); }
   th { font: 600 12px "JetBrains Mono", monospace; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); }
+  @media (max-width: 640px) { table { display: block; overflow-x: auto; } th, td { padding: 8px; } .wrap { padding-left: 16px; padding-right: 16px; } }
   td:first-child { color: var(--ink); font-weight: 600; }
   .note { font-size: 14px; color: var(--ink-3); }
   .theme { position: fixed; top: 14px; right: 14px; font: 600 12px "JetBrains Mono", monospace; border: 1px solid var(--line); background: var(--panel); color: var(--ink-2); border-radius: 8px; padding: 6px 10px; cursor: pointer; }
@@ -59,7 +60,7 @@
   <h1>Working with Claude, <em>the handout</em></h1>
   <p>Every prompt, command and snippet from the session, ready to copy. Feature details checked on 19 Nov 2026; beta features change often.</p>
   <nav>
-    <a href="#models">Models</a><a href="#apps">Claude apps</a><a href="#litreview">Lit review</a><a href="#code">Claude Code</a>
+    <a href="#models">Models</a><a href="#apps">Claude apps</a><a href="#litreview">Lit review</a><a href="#science">Claude Science</a><a href="#code">Claude Code</a>
     <a href="#hooks">Hooks</a><a href="#agents">Subagents</a><a href="#api">API</a><a href="#integrity">Integrity</a><a href="#links">Links</a>
   </nav>
 </header>
@@ -214,6 +215,153 @@ Then tell me which of your 5 points you are least sure about.</pre></div>
   <li>"Where would a reader from [other field] get lost?"</li>
   <li>"Shorten by 30% without losing any number."</li>
 </ul>
+
+<h2 id="science"><small>02+ · Deep dive</small>Claude Science</h2>
+<p>A research workbench, not a new model: a desktop app that pairs Claude (the models your plan already has) with an analysis environment <b>on your computer</b>. You get live Python and R kernels, dozens of science databases, your cluster and GPUs, a reviewer agent, and a record of how every output was made. Public beta since 30 Jun 2026. Details checked against <a href="https://claude.com/docs/claude-science/overview">the docs</a> on 20 Nov 2026.</p>
+
+<h3>Four things people get wrong</h3>
+<table>
+  <tr><th>Myth</th><th>Fact</th></tr>
+  <tr><td>It's a new science model</td><td>An app. It runs the Claude models in your plan, with the same safeguards. Some sensitive life-science requests may go to a different Claude model.</td></tr>
+  <tr><td>It's a website</td><td>A local app. The browser tab points at <code>localhost</code>; Windows opens its own window.</td></tr>
+  <tr><td>"Local" means offline and private</td><td>Your files and code stay put. The thinking is remote: whatever Claude reads into the conversation goes to Anthropic.</td></tr>
+  <tr><td>It's only for biologists</td><td>Any field works, but the built-in databases and models are mostly life science. Bring your own skills and connectors.</td></tr>
+</table>
+
+<h3>How it differs from the Claude app and Claude Code</h3>
+<table>
+  <tr><th></th><th>Claude app</th><th>Claude Code</th><th>Claude Science</th></tr>
+  <tr><td>Where code runs</td><td>a sandbox Anthropic hosts</td><td>your terminal, your repo</td><td>an OS sandbox on your machine, plus your cluster and GPUs</td></tr>
+  <tr><td>State between steps</td><td>files in the chat</td><td>files and git</td><td>live Python and R kernels: data stays in memory</td></tr>
+  <tr><td>Science databases</td><td>connectors you add</td><td>MCP servers you set up</td><td>dozens built in, on by default</td></tr>
+  <tr><td>Heavy compute</td><td>—</td><td>whatever your shell reaches</td><td>Slurm over SSH, Modal GPUs, each job approved</td></tr>
+  <tr><td>How a result was made</td><td>the conversation</td><td>git history, if you keep it</td><td>code, execution log, environment and messages on every artifact</td></tr>
+  <tr><td>Checking</td><td>you</td><td>you, or a subagent you build</td><td>a built-in reviewer agent</td></tr>
+  <tr><td>Best for</td><td>reading, writing, thinking</td><td>building software</td><td><b>analyses you must defend</b></td></tr>
+</table>
+
+<h3>What "runs locally" means</h3>
+<table>
+  <tr><th>Stays on your machine or server</th><th>Sent to Anthropic with every reply</th></tr>
+  <tr><td>Raw datasets (Anthropic doesn't host or store your files)</td><td>Your prompts and the conversation so far</td></tr>
+  <tr><td>Code execution: local sandbox, your cluster, your Modal account</td><td>The contents of files Claude reads, PDFs included</td></tr>
+  <tr><td>History, artifacts and every version, in <code>~/.claude-science</code></td><td>Code and command output: tables, logs, printed values</td></tr>
+  <tr><td>Memory (stored locally, not synced)</td><td>Connector results and images Claude is shown</td></tr>
+  <tr><td>Credentials (encrypted on the device)</td><td>Recalled memory facts used in that session</td></tr>
+  <tr><td>Cluster jobs and database queries (direct, not via Anthropic)</td><td>Web searches, via Anthropic's search provider</td></tr>
+</table>
+<p class="note">Rule of thumb: a 40 GB BAM file stays on the cluster; the 200-line summary Claude prints from it does not. Not available in the beta: zero data retention, BAA cover (keep patient data out), inference in your own cloud. Team/Enterprise: no training on your content. Pro/Max: consumer terms, so check your privacy setting. Telemetry has no conversation content; turn it off with <code>disable_telemetry = true</code> in <code>~/.claude-science/config.toml</code>.</p>
+
+<h3>The parts</h3>
+<ul>
+  <li><b>Project:</b> one question or paper. It holds instructions (read at the start of every session), memory, folder grants, and optionally a <b>specialist</b> (a named set of skills, connectors and instructions).</li>
+  <li><b>Session:</b> one thread, with its own live Python/R kernels (they end after ~30 min idle) and a scratch <b>workspace</b>, cleared ~12 h after the last reply. Fork a session to compare approaches; "Continue as a new session" to carry work over; side chats for quick questions.</li>
+  <li><b>Plan:</b> for multi-step work Claude proposes a plan; approved steps are tracked. Delegation splits work into parallel tracks.</li>
+  <li><b>Artifact:</b> any file Claude saves. Every save is a new immutable version with provenance. Comment on part of an artifact and Claude acts on it next turn.</li>
+  <li>Composer shortcuts: <code>@</code> an artifact or upload · <code>#</code> a past session · <code>/</code> a skill.</li>
+</ul>
+<p class="note">The workspace is scratch. If you want it tomorrow, save it as an artifact. Don't move files inside <code>~/.claude-science</code> by hand.</p>
+
+<h3>What's in the box</h3>
+<p><b>Featured connectors</b> (on by default, read-only, no key): Ensembl/VEP, BioMart, MyGene, UniProt, GO, Reactome, OLS, gnomAD, ClinVar, dbSNP, GWAS Catalog, FinnGen, BioBank Japan, ClinGen, CIViC, Open Targets, GTEx, JASPAR, UniBind, InterPro, Pfam, Human Protein Atlas, STRING, PDB, AlphaFold DB, EMDB, Complex Portal, IntAct, Rfam, GEO, ArrayExpress, PRIDE, MGnify, MetaboLights, CELLxGENE, cBioPortal, PubChem, ChEBI, Rhea, BindingDB, ZINC, Ketcher, FDA drug data, openFDA, OpenAlex (free key for search), arXiv, Grants.gov, Antibody Registry. <b>From the directory:</b> PubMed, ClinicalTrials.gov, ChEMBL, bioRxiv.</p>
+<p><b>Featured skills:</b> literature review, indication dossier, AlphaFold2, Boltz-2, Chai-1, ESMFold2, OpenFold3, ProteinMPNN (+ LigandMPNN, SolubleMPNN), DiffDock, ESM-2, Evo 2, Borzoi, scGPT, scvi-tools. Evo 2, Boltz-2 and OpenFold3 come via NVIDIA's BioNeMo Agent Toolkit. Folding skills may send protein sequences to the public ColabFold server (directly, not via Anthropic).</p>
+<p><b>Bring your own:</b> skills (Settings → Skills → Add skill: write, upload, import from GitHub, or ask Claude to turn a session into a skill) · connectors (Settings → Connectors → Add connector: an MCP remote URL or a local command) · your existing Python, R and shell scripts · websites you allow the sandbox to reach.</p>
+
+<h3>The sandbox and permission cards</h3>
+<ul>
+  <li><b>Network:</b> deny by default; only package sites, featured databases and hosts you approve, through a local proxy (Settings → Network).</li>
+  <li><b>Writes:</b> only the session workspace, artifacts and temp. Granted folders are read-only to code; a new folder grant starts on Read-only.</li>
+  <li><b>Outside the sandbox:</b> only jobs you approve. Cluster and Modal jobs run as you, with everything your account can touch.</li>
+  <li><b>Approval scopes:</b> Once · This conversation · This project · Global. Review standing grants in Settings → Permissions.</li>
+</ul>
+<p class="note">The docs say the sandbox rules "aren't a guarantee". Grant the folder you need, never your whole home directory.</p>
+
+<h3>Where to install it</h3>
+<ol>
+  <li>Data fits on your laptop? → the laptop app (macOS 13+, Windows 11, Linux x64).</li>
+  <li>Data on a lab server or VM you can SSH into? → install it there; open it through an SSH tunnel.</li>
+  <li>Heavy jobs belong on a Slurm cluster? → add the cluster as an SSH host (nothing is installed there).</li>
+  <li>Need GPUs or more memory? → connect your own Modal account (billed per second, to you).</li>
+  <li>Calling one protein model over and over? → register an NVIDIA NIM model endpoint (not in the Windows app).</li>
+</ol>
+
+<div class="box"><div class="lab">Install · Linux workstation</div><pre>sudo apt-get update && sudo apt-get install -y curl bubblewrap socat   # Fedora: dnf · Arch: pacman
+/usr/bin/bwrap --version          # needs 0.8.0+ (Ubuntu 24.04 yes, 22.04 no)
+curl -fsSL https://claude.ai/install-claude-science.sh | bash
+claude-science serve</pre></div>
+<div class="box"><div class="lab">Run on a remote server or HPC login node</div><pre># on your laptop, BEFORE starting (the sign-in link expires in ~3 min)
+ssh -L 8000:localhost:8000 -L 8001:localhost:8001 you@server
+
+# on the server
+curl -fsSL https://claude.ai/install-claude-science.sh | bash
+claude-science serve --no-browser --detached     # add --port 8765 on a shared login node
+# open the printed http://localhost:8000/?nonce=... link on your laptop
+# later: claude-science status | logs | url | update | stop</pre></div>
+<div class="box"><div class="lab">No sudo? Bring your own sandbox tools</div><pre>conda create -y --copy --override-channels -p ~/claude-science-tools -c conda-forge bubblewrap socat
+claude-science sandbox approve --bwrap ~/claude-science-tools/bin/bwrap --socat ~/claude-science-tools/bin/socat</pre></div>
+<div class="box"><div class="lab">Modal for GPUs</div><pre>pip install modal && modal token new      # writes ~/.modal.toml
+# then in the app: Settings → Compute → Cloud providers → Connect on Modal</pre></div>
+<p class="note">Requirements on servers: x64 Linux with glibc (no arm64, no Alpine), ~10 GB free in home, Python 3.8+ at /usr/bin/python3. On login nodes: follow your centre's rules and keep heavy work in Slurm jobs. macOS and Windows: download the installer from <a href="https://claude.com/product/claude-science">claude.com/product/claude-science</a>. Sign in with your Claude account; no API key.</p>
+
+<h3>One cluster job, start to finish</h3>
+<ol>
+  <li>Add the host once: Settings → Compute → SSH hosts. It uses your <code>~/.ssh/config</code> and key or ssh-agent.</li>
+  <li>It probes the machine: CPUs, memory, GPUs, CUDA, conda/modules/Apptainer, scratch, Slurm partitions. Edit the host's notes to teach it your conventions ("partition gpu", "module load cuda/12").</li>
+  <li>Claude proposes a job; a card asks "Run this job on &lt;host&gt;?".</li>
+  <li>Script and inputs are copied to scratch (must be a shared filesystem) and submitted with <code>sbatch</code>. No Slurm: a detached process. PBS and LSF aren't supported.</li>
+  <li>It runs outside the sandbox, as you, and survives a dropped connection. Default timeout 30 min.</li>
+  <li>Outputs come back; files over ~100 MB stay on the cluster with their paths recorded.</li>
+</ol>
+<p class="note">Modal: 10 concurrent jobs by default, 12 h container timeout (23 h max), 1 GiB input per submit, 5 GiB outputs. No spend ceiling in the app, and closing the app doesn't stop a running job: set a budget in Modal.</p>
+
+<h3>The reviewer and provenance</h3>
+<p>The reviewer re-reads Claude's recent responses, the approved plan, saved artifacts and the execution record, and flags: results reported as computed when nothing ran · values that contradict their source file · citations that don't support the claim · DOIs that resolve to a different article · approved plan steps not done · conclusions the method doesn't support. It <b>doesn't</b> re-run analyses or judge whether your method was right, and it is the same model family. Automatic on Max, Ultra, Team and Enterprise; on Pro use <b>Request review</b> or turn auto-review on per session. Add field-specific checks in Settings → Specialists → Reviewer.</p>
+<div class="box prompt"><div class="lab">Reviewer instructions · example</div><pre>Also flag: any p-value without the test named and n given; any effect reported without a confidence interval; any preprint cited as if peer-reviewed; any figure whose axis labels lack units.</pre></div>
+<p><b>Provenance</b> (artifact menu → Provenance) has five tabs: Messages, Code (download as a script or notebook), Execution Log, Environment (every package and version), Review. If the Code tab and the log disagree, trust the log.</p>
+
+<h3>Walkthrough · raw data to a figure you can defend</h3>
+<div class="box prompt"><div class="lab">1 · project instructions (you)</div><pre>Use R for statistics and Python for figures. Report n, the test and an effect size with every p-value. Colour-blind-safe palettes. Never write into my data folders. Ask before any job longer than an hour.</pre></div>
+<div class="box prompt"><div class="lab">2 · ask for a plan, not results (you)</div><pre>Plan an analysis of the counts in ~/data/study: QC, normalisation, differential expression treated vs control, pathway enrichment. Give the method for each step and why. Don't run anything until I approve.</pre></div>
+<div class="box prompt"><div class="lab">3 · look before you test</div><pre>Load the counts. Show library sizes and a PCA coloured by batch and by condition. Stop and tell me if batch explains more variance than condition.</pre></div>
+<div class="box prompt"><div class="lab">4 · bring in the databases</div><pre>For the top 20 genes, add Ensembl IDs, GTEx tissue expression and any ClinVar pathogenic variants. One table, with the source and access date for every value.</pre></div>
+<div class="box prompt"><div class="lab">5 · heavy step to the cluster (approve the card "Once")</div><pre>Run the 10,000-permutation test as a Slurm job on my cluster host. Estimate runtime and memory first.</pre></div>
+<div class="box prompt"><div class="lab">6 · comment on the figure (select part of it)</div><pre>Label the top 10 genes, drop the gridlines, Okabe–Ito palette, show n per group.</pre></div>
+<div class="box prompt"><div class="lab">7 · clear the flags, then attack it</div><pre>Address every reviewer finding. Then list three ways this result could be an artefact, and test the cheapest one.</pre></div>
+<div class="box prompt"><div class="lab">8 · leave with methods and a skill</div><pre>Write the methods paragraph from the execution log and environment, with package versions. Then turn this workflow into a skill called de-analysis.</pre></div>
+<p class="note">Not a biologist? The same eight steps work for a simulation sweep or a survey analysis: swap step 4's databases for arXiv, your own MCP connector, or a website you allow.</p>
+
+<h3>Science, Code or the app?</h3>
+<ol>
+  <li>Reading, writing or thinking through papers? → the Claude app, in a Project.</li>
+  <li>Building software: a package, tests, a repo? → Claude Code.</li>
+  <li>A data analysis where every number must be traceable? → Claude Science.</li>
+  <li>Science databases, a cluster or GPUs, all in one place? → Claude Science.</li>
+  <li>Patient data or a clinical decision? → none of them, as-is (no BAA cover; not for clinical use).</li>
+</ol>
+
+<h3>Know the edges</h3>
+<ul>
+  <li>Confident wrongness survives review: in one hands-on test, a survival result was credited to the wrong variable and the reviewer missed it.</li>
+  <li>No paywalled full text, no reference library, no PRISMA screening or dual review.</li>
+  <li>Built-in connectors and skills skew heavily to life science.</li>
+  <li>Slurm only (no PBS/LSF); Linux servers must be x64 glibc.</li>
+  <li>Workspace cleared ~12 h after the last reply; kernels end after ~30 min idle; projects don't sync between computers.</li>
+  <li>Some biology prompts (e.g. around pathogens) are refused by biosecurity safeguards.</li>
+  <li>Usage counts against your plan's 5-hour and weekly limits, shared with Claude Code and chat; the reviewer uses usage too.</li>
+</ul>
+
+<h3>Getting access</h3>
+<ul>
+  <li><b>You:</b> Pro, Max or Ultra: on by default. Download, sign in, no API key.</li>
+  <li><b>Your lab:</b> the <a href="https://claude.com/programs/claude-team-plan-for-research-labs">Claude Team plan for scientists</a>. A PI at an academic or nonprofit institute verifies the lab (1–25 seats); Standard seats $0 and Premium $15/month (5× usage) for 12 months, promotional and subject to change. Claude Science is on by default.</li>
+  <li><b>Your institution:</b> Team or Enterprise. An Owner enables it in Organization settings → Claude Science. HIPAA-enabled orgs: off by default.</li>
+  <li><b>Also:</b> AI for Science credits for projects; the Life Sciences Verification Program (beta) for approved life-science use cases.</li>
+</ul>
+
+<h3>Try it · your first ten minutes (pick one)</h3>
+<div class="box prompt"><div class="lab">A · literature map</div><pre>Make a literature map of [your topic] since 2020 from OpenAlex and arXiv (or PubMed). Save a table: DOI, year, method, dataset, finding. Flag preprint/published duplicates and any source you couldn't reach.</pre></div>
+<div class="box prompt"><div class="lab">B · database tour</div><pre>For [a protein or compound], pull what UniProt, PDB and AlphaFold (or PubChem and ChEMBL) hold. Show the structure, then save a one-page summary with a source and access date for every fact.</pre></div>
+<div class="box prompt"><div class="lab">C · your own data, safely (grant one folder, read-only)</div><pre>Propose a plan to check this data's quality and answer [question]. Don't run anything until I approve. Then open Provenance on the first figure.</pre></div>
 
 <h2 id="code"><small>03 · Claude Code</small>Setup and daily habits</h2>
 <div class="box"><div class="lab">Install</div><pre>curl -fsSL https://claude.ai/install.sh | bash
@@ -400,6 +548,7 @@ async for m in query(prompt="Which runs diverged? Why?", options=opts):
   <li><a href="https://support.claude.com/en/articles/12138966-release-notes">Claude app release notes</a></li>
   <li><a href="https://code.claude.com/docs/en/overview">Claude Code docs</a> · <a href="https://code.claude.com/docs/en/changelog">changelog</a></li>
   <li><a href="https://platform.claude.com/docs/en/release-notes/overview">Claude Platform (API) docs</a> · <a href="https://platform.claude.com/docs/en/managed-agents/overview">Managed Agents</a></li>
+  <li><a href="https://claude.com/docs/claude-science/overview">Claude Science docs</a> · <a href="https://claude.com/docs/claude-science/how-claude-science-works-with-your-data">how it handles your data</a> · <a href="https://claude.com/docs/claude-science/run-on-remote-linux-server">run on a remote server</a> · <a href="https://www.anthropic.com/news/claude-science-ai-workbench">launch post</a></li>
   <li><a href="https://www.anthropic.com/news/announcements">Anthropic announcements</a></li>
   <li>Inside Claude Code, ask the built-in claude-code-guide agent "how do I…"</li>
 </ul>
